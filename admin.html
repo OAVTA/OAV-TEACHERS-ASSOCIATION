@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OAVTA - Admin Dashboard</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+    <!-- SheetJS CDN for exporting to Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyBgVnOxo6wb6Ahrs2dqhVwgrqCFtZQRlRU",
+        authDomain: "oavta-28105.firebaseapp.com",
+        databaseURL: "https://oavta-28105-default-rtdb.firebaseio.com",
+        projectId: "oavta-28105",
+        storageBucket: "oavta-28105.firebasestorage.app",
+        messagingSenderId: "123510841027",
+        appId: "1:123510841027:web:ba924a6bd865531cab0c76",
+        measurementId: "G-6PZQR5J90C"
+      };
+
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+    </script>
+</head>
+<body class="bg-slate-100 font-sans min-h-screen">
+
+    <div class="max-w-7xl mx-auto p-6">
+        <!-- Top Navigation Bar -->
+        <div class="flex justify-between items-center bg-white p-6 rounded-lg shadow-sm mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-slate-800"><i class="fa-solid fa-users-gear text-blue-900 mr-2"></i>OAVTA Admin Portal</h1>
+                <p class="text-slate-500 text-sm">View, filter, edit, and export registered member records</p>
+            </div>
+            <a href="index.html" class="bg-slate-200 text-slate-700 px-4 py-2 rounded font-medium hover:bg-slate-300 transition flex items-center gap-2">
+                <i class="fa-solid fa-arrow-left"></i> Back to Main Website
+            </a>
+        </div>
+
+        <!-- Filters, Controls & Action Bar -->
+        <div class="bg-white p-4 rounded-lg shadow-sm mb-6 flex flex-col md:flex-row gap-4 justify-between items-center">
+            <div class="flex flex-col md:flex-row gap-4 w-full md:w-auto">
+                <!-- Search Input -->
+                <div class="relative w-full md:w-64">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    <input type="text" id="search-input" onkeyup="filterTable()" placeholder="Search by name, ID, or school..." class="border pl-9 pr-3 py-2 rounded w-full text-sm outline-none focus:ring-2 focus:ring-blue-900">
+                </div>
+                
+                <!-- District Filter Dropdown -->
+                <select id="district-filter" onchange="filterTable()" class="border px-3 py-2 rounded w-full md:w-48 text-sm outline-none focus:ring-2 focus:ring-blue-900">
+                    <option value="">All Districts</option>
+                </select>
+            </div>
+
+            <div class="flex gap-3 w-full md:w-auto">
+                <button onclick="exportToExcel()" class="bg-emerald-600 text-white px-5 py-2 rounded font-medium hover:bg-emerald-700 transition w-full md:w-auto flex items-center justify-center gap-2 text-sm shadow">
+                    <i class="fa-solid fa-file-excel"></i> Export to Excel (.xlsx)
+                </button>
+            </div>
+        </div>
+
+        <!-- Member Records Data Table -->
+        <div class="bg-white rounded-lg shadow-sm overflow-x-auto">
+            <table class="w-full text-left border-collapse" id="members-table">
+                <thead>
+                    <tr class="bg-slate-800 text-white text-xs uppercase tracking-wider">
+                        <th class="p-4">Member ID</th>
+                        <th class="p-4">Full Name</th>
+                        <th class="p-4">Phone</th>
+                        <th class="p-4">Designation</th>
+                        <th class="p-4">District</th>
+                        <th class="p-4">Block</th>
+                        <th class="p-4">School (OAV)</th>
+                        <th class="p-4 text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body" class="divide-y text-sm text-slate-700">
+                    <tr>
+                        <td colspan="8" class="p-6 text-center text-slate-400">Loading member database...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- EDIT MEMBER MODAL -->
+    <div id="editModal" class="fixed inset-0 bg-black/60 hidden backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden">
+            <div class="bg-blue-950 text-white p-4 flex justify-between items-center">
+                <h3 class="font-bold flex items-center gap-2"><i class="fa-solid fa-user-pen text-sky-400"></i> Edit Member Profile</h3>
+                <button onclick="closeEditModal()" class="text-slate-300 hover:text-white text-xl font-bold">&times;</button>
+            </div>
+            
+            <form id="editForm" onsubmit="saveMemberChanges(event)" class="p-6 space-y-4">
+                <input type="hidden" id="edit-doc-id">
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Member ID (Read Only)</label>
+                    <input type="text" id="edit-member-id" disabled class="w-full p-2 bg-slate-100 border border-slate-300 rounded text-sm text-slate-500 font-mono">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Full Name</label>
+                        <input type="text" id="edit-name" required class="w-full p-2 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-blue-900 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Phone Number</label>
+                        <input type="tel" id="edit-phone" required class="w-full p-2 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-blue-900 outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Designation</label>
+                        <input type="text" id="edit-designation" required class="w-full p-2 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-blue-900 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase mb-1">District</label>
+                        <select id="edit-district" required class="w-full p-2 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-blue-900 outline-none">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Block Name</label>
+                        <input type="text" id="edit-block" required class="w-full p-2 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-blue-900 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase mb-1">OAV School</label>
+                        <input type="text" id="edit-oav" required class="w-full p-2 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-blue-900 outline-none">
+                    </div>
+                </div>
+
+                <div class="pt-4 flex justify-end gap-3 border-t border-slate-100">
+                    <button type="button" onclick="closeEditModal()" class="px-4 py-2 border border-slate-300 rounded text-slate-600 hover:bg-slate-100 text-sm font-medium">Cancel</button>
+                    <button type="submit" class="px-5 py-2 bg-blue-900 hover:bg-blue-950 text-white rounded text-sm font-bold shadow flex items-center gap-2">
+                        <i class="fa-solid fa-floppy-disk"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        let allMembers = [];
+        const odishaDistricts = [
+            "Angul", "Balangir", "Balasore", "Bargarh", "Bhadrak", "Baudh", 
+            "Cuttack", "Deogarh", "Dhenkanal", "Gajapati", "Ganjam", "Jagatsinghpur", 
+            "Jajpur", "Jharsuguda", "Kalahandi", "Kandhamal", "Kendrapara", "Kendujhar", 
+            "Khordha", "Koraput", "Malkangiri", "Mayurbhanj", "Nabarangpur", "Nayagarh", 
+            "Nuapada", "Puri", "Rayagada", "Sambalpur", "Subarnapur", "Sundargarh"
+        ];
+
+        window.onload = function() {
+            populateDistrictDropdowns();
+            fetchMembers();
+        };
+
+        function populateDistrictDropdowns() {
+            const filterSelect = document.getElementById('district-filter');
+            const editSelect = document.getElementById('edit-district');
+            
+            odishaDistricts.forEach(dist => {
+                filterSelect.innerHTML += `<option value="${dist}">${dist}</option>`;
+                editSelect.innerHTML += `<option value="${dist}">${dist}</option>`;
+            });
+        }
+
+        // Fetch records from Firestore
+        function fetchMembers() {
+            db.collection("members").get().then((querySnapshot) => {
+                allMembers = [];
+                const tbody = document.getElementById('table-body');
+                tbody.innerHTML = '';
+
+                if (querySnapshot.empty) {
+                    tbody.innerHTML = '<tr><td colspan="8" class="p-6 text-center text-slate-400">No member records found.</td></tr>';
+                    return;
+                }
+
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    data.docId = doc.id; // Record Firestore Document ID for editing
+                    allMembers.push(data);
+
+                    renderRow(data);
+                });
+            }).catch((error) => {
+                console.error("Error fetching documents: ", error);
+            });
+        }
+
+        function renderRow(data) {
+            const tbody = document.getElementById('table-body');
+            const row = document.createElement('tr');
+            row.className = 'hover:bg-slate-50 transition border-b';
+            row.innerHTML = `
+                <td class="p-4 font-mono font-bold text-blue-600">${data.memberId || 'N/A'}</td>
+                <td class="p-4 font-semibold">${data.fullName || 'N/A'}</td>
+                <td class="p-4">${data.phone || 'N/A'}</td>
+                <td class="p-4">${data.designation || 'N/A'}</td>
+                <td class="p-4">${data.district || 'N/A'}</td>
+                <td class="p-4">${data.blockName || 'N/A'}</td>
+                <td class="p-4">${data.schoolOav || 'N/A'}</td>
+                <td class="p-4 text-center">
+                    <button onclick='openEditModal(${JSON.stringify(data)})' class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-3 py-1.5 rounded text-xs transition flex items-center gap-1 mx-auto shadow-sm">
+                        <i class="fa-solid fa-pen-to-square"></i> Edit
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        }
+
+        // Search and Filter functionality
+        function filterTable() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const selectedDistrict = document.getElementById('district-filter').value;
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = '';
+
+            const filtered = allMembers.filter(member => {
+                const matchesSearch = Object.values(member).some(val => 
+                    String(val).toLowerCase().includes(query)
+                );
+                const matchesDistrict = !selectedDistrict || member.district === selectedDistrict;
+                return matchesSearch && matchesDistrict;
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="p-6 text-center text-slate-400">No matching records found.</td></tr>';
+                return;
+            }
+
+            filtered.forEach(member => renderRow(member));
+        }
+
+        // Modal Controls
+        function openEditModal(member) {
+            document.getElementById('edit-doc-id').value = member.docId;
+            document.getElementById('edit-member-id').value = member.memberId;
+            document.getElementById('edit-name').value = member.fullName || '';
+            document.getElementById('edit-phone').value = member.phone || '';
+            document.getElementById('edit-designation').value = member.designation || '';
+            document.getElementById('edit-district').value = member.district || '';
+            document.getElementById('edit-block').value = member.blockName || '';
+            document.getElementById('edit-oav').value = member.schoolOav || '';
+
+            document.getElementById('editModal').classList.remove('hidden');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.add('hidden');
+        }
+
+        // Save Edits to Firestore
+        async function saveMemberChanges(e) {
+            e.preventDefault();
+            const docId = document.getElementById('edit-doc-id').value;
+
+            const updatedData = {
+                fullName: document.getElementById('edit-name').value,
+                phone: document.getElementById('edit-phone').value,
+                designation: document.getElementById('edit-designation').value,
+                district: document.getElementById('edit-district').value,
+                blockName: document.getElementById('edit-block').value,
+                schoolOav: document.getElementById('edit-oav').value,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            try {
+                await db.collection("members").doc(docId).update(updatedData);
+                alert("Member details updated successfully!");
+                closeEditModal();
+                fetchMembers(); // Reload data
+            } catch (error) {
+                console.error("Error updating document: ", error);
+                alert("Failed to update member: " + error.message);
+            }
+        }
+
+        // Export data to Excel
+        function exportToExcel() {
+            if (allMembers.length === 0) {
+                alert("No member data available to export!");
+                return;
+            }
+
+            const exportData = allMembers.map(({ docId, ...rest }) => rest);
+            const worksheet = XLSX.utils.json_to_sheet(exportData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "OAVTA Members");
+
+            XLSX.writeFile(workbook, "OAVTA_Member_List.xlsx");
+        }
+    </script>
+</body>
+</html>
