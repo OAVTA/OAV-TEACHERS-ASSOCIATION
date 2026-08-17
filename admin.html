@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OAVTA - Admin Dashboard</title>
+    <title>OAVTA - Unified Admin Management Portal</title>
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -15,6 +15,7 @@
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
     <script>
       const firebaseConfig = {
@@ -24,12 +25,12 @@
         projectId: "oavta-28105",
         storageBucket: "oavta-28105.firebasestorage.app",
         messagingSenderId: "123510841027",
-        appId: "1:123510841027:web:ba924a6bd865531cab0c76",
-        measurementId: "G-6PZQR5J90C"
+        appId: "1:123510841027:web:ba924a6bd865531cab0c76"
       };
 
       firebase.initializeApp(firebaseConfig);
       const db = firebase.firestore();
+      const auth = firebase.auth();
     </script>
 </head>
 <body class="bg-slate-100 font-sans min-h-screen">
@@ -38,15 +39,21 @@
         <!-- Top Navigation Bar -->
         <div class="flex justify-between items-center bg-white p-6 rounded-lg shadow-sm mb-6">
             <div>
-                <h1 class="text-2xl font-bold text-slate-800"><i class="fa-solid fa-users-gear text-blue-900 mr-2"></i>OAVTA Admin Portal</h1>
-                <p class="text-slate-500 text-sm">View, filter, edit, and export registered member records</p>
+                <h1 class="text-2xl font-bold text-slate-800"><i class="fa-solid fa-users-gear text-blue-900 mr-2"></i>OAVTA Management Portal</h1>
+                <p class="text-slate-500 text-sm" id="role-badge">Checking permissions...</p>
             </div>
-            <a href="index.html" class="bg-slate-200 text-slate-700 px-4 py-2 rounded font-medium hover:bg-slate-300 transition flex items-center gap-2">
-                <i class="fa-solid fa-arrow-left"></i> Back to Main Website
-            </a>
+            <div class="flex gap-3">
+                <!-- State Admin Only Action Button -->
+                <button id="state-user-btn" onclick="openUserModal()" class="hidden bg-sky-600 text-white px-4 py-2 rounded font-medium hover:bg-sky-700 transition flex items-center gap-2 text-sm shadow">
+                    <i class="fa-solid fa-user-plus"></i> Create Admin Credentials
+                </button>
+                <button onclick="logout()" class="bg-red-600 text-white px-4 py-2 rounded font-medium hover:bg-red-700 transition text-sm">
+                    Logout
+                </button>
+            </div>
         </div>
 
-        <!-- Filters, Controls & Action Bar -->
+        <!-- Filters & Search Bar -->
         <div class="bg-white p-4 rounded-lg shadow-sm mb-6 flex flex-col md:flex-row gap-4 justify-between items-center">
             <div class="flex flex-col md:flex-row gap-4 w-full md:w-auto">
                 <!-- Search Input -->
@@ -55,17 +62,20 @@
                     <input type="text" id="search-input" onkeyup="filterTable()" placeholder="Search by name, ID, or school..." class="border pl-9 pr-3 py-2 rounded w-full text-sm outline-none focus:ring-2 focus:ring-blue-900">
                 </div>
                 
-                <!-- District Filter Dropdown -->
-                <select id="district-filter" onchange="filterTable()" class="border px-3 py-2 rounded w-full md:w-48 text-sm outline-none focus:ring-2 focus:ring-blue-900">
+                <!-- District Dropdown -->
+                <select id="district-filter" onchange="onDistrictChange('district-filter', 'block-filter'); filterTable();" class="border px-3 py-2 rounded w-full md:w-48 text-sm outline-none focus:ring-2 focus:ring-blue-900">
                     <option value="">All Districts</option>
+                </select>
+
+                <!-- Block Dropdown (Cascading) -->
+                <select id="block-filter" onchange="filterTable()" class="border px-3 py-2 rounded w-full md:w-48 text-sm outline-none focus:ring-2 focus:ring-blue-900">
+                    <option value="">All Blocks</option>
                 </select>
             </div>
 
-            <div class="flex gap-3 w-full md:w-auto">
-                <button onclick="exportToExcel()" class="bg-emerald-600 text-white px-5 py-2 rounded font-medium hover:bg-emerald-700 transition w-full md:w-auto flex items-center justify-center gap-2 text-sm shadow">
-                    <i class="fa-solid fa-file-excel"></i> Export to Excel (.xlsx)
-                </button>
-            </div>
+            <button onclick="exportToExcel()" class="bg-emerald-600 text-white px-5 py-2 rounded font-medium hover:bg-emerald-700 transition w-full md:w-auto flex items-center justify-center gap-2 text-sm shadow">
+                <i class="fa-solid fa-file-excel"></i> Export to Excel (.xlsx)
+            </button>
         </div>
 
         <!-- Member Records Data Table -->
@@ -84,11 +94,52 @@
                     </tr>
                 </thead>
                 <tbody id="table-body" class="divide-y text-sm text-slate-700">
-                    <tr>
-                        <td colspan="8" class="p-6 text-center text-slate-400">Loading member database...</td>
-                    </tr>
+                    <tr><td colspan="8" class="p-6 text-center text-slate-400">Loading authorized database...</td></tr>
                 </tbody>
             </table>
+        </div>
+    </div>
+
+    <!-- STATE ADMIN: CREATE CREDENTIALS MODAL -->
+    <div id="userModal" class="fixed inset-0 bg-black/60 hidden backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden">
+            <div class="bg-blue-950 text-white p-4 flex justify-between items-center">
+                <h3 class="font-bold flex items-center gap-2"><i class="fa-solid fa-key text-sky-400"></i> Assign District / State Account</h3>
+                <button onclick="closeUserModal()" class="text-slate-300 hover:text-white text-xl font-bold">&times;</button>
+            </div>
+            
+            <form onsubmit="handleCreateUser(event)" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Select Access Role</label>
+                    <select id="new-user-role" onchange="toggleDistrictSelect()" class="w-full p-2 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-blue-900 outline-none">
+                        <option value="district">District Admin</option>
+                        <option value="state">State Super Admin</option>
+                    </select>
+                </div>
+
+                <div id="district-assign-box">
+                    <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Assign District</label>
+                    <select id="new-user-district" class="w-full p-2 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-blue-900 outline-none">
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Manual Assign ID (Username/Email)</label>
+                    <input type="text" id="new-user-id" placeholder="e.g. dist_khordha or admin@oavta.in" required class="w-full p-2 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-blue-900 outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Assign Password</label>
+                    <input type="password" id="new-user-pass" placeholder="••••••••" required class="w-full p-2 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-blue-900 outline-none">
+                </div>
+
+                <div class="pt-4 flex justify-end gap-3 border-t border-slate-100">
+                    <button type="button" onclick="closeUserModal()" class="px-4 py-2 border border-slate-300 rounded text-slate-600 hover:bg-slate-100 text-sm font-medium">Cancel</button>
+                    <button type="submit" class="px-5 py-2 bg-blue-900 hover:bg-blue-950 text-white rounded text-sm font-bold shadow flex items-center gap-2">
+                        <i class="fa-solid fa-user-check"></i> Save Credentials
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -126,7 +177,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-600 uppercase mb-1">District</label>
-                        <select id="edit-district" required class="w-full p-2 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-blue-900 outline-none">
+                        <select id="edit-district" onchange="onDistrictChange('edit-district', 'edit-block')" required class="w-full p-2 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-blue-900 outline-none">
                         </select>
                     </div>
                 </div>
@@ -134,7 +185,8 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Block Name</label>
-                        <input type="text" id="edit-block" required class="w-full p-2 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-blue-900 outline-none">
+                        <select id="edit-block" required class="w-full p-2 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-blue-900 outline-none">
+                        </select>
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-600 uppercase mb-1">OAV School</label>
@@ -154,33 +206,101 @@
 
     <!-- JavaScript Logic -->
     <script>
+        let currentUserRole = sessionStorage.getItem("userRole") || "member";
+        let currentUserDistrict = sessionStorage.getItem("userDistrict") || "";
         let allMembers = [];
-        const odishaDistricts = [
-            "Angul", "Balangir", "Balasore", "Bargarh", "Bhadrak", "Baudh", 
-            "Cuttack", "Deogarh", "Dhenkanal", "Gajapati", "Ganjam", "Jagatsinghpur", 
-            "Jajpur", "Jharsuguda", "Kalahandi", "Kandhamal", "Kendrapara", "Kendujhar", 
-            "Khordha", "Koraput", "Malkangiri", "Mayurbhanj", "Nabarangpur", "Nayagarh", 
-            "Nuapada", "Puri", "Rayagada", "Sambalpur", "Subarnapur", "Sundargarh"
-        ];
 
-        window.onload = function() {
-            populateDistrictDropdowns();
-            fetchMembers();
+        // Complete Map of All 30 Districts and Their Respective Blocks in Odisha
+        const odishaData = {
+            "Angul": ["Angul", "Athmallik", "Baniarpal", "Chhendipada", "Kaniha", "Kishorenagar", "Pallahara", "Talcher"],
+            "Balangir": ["Agalpur", "Balangir", "Belpara", "Bungamunda", "Deogaon", "Gudvella", "Khaprakhol", "Loisingha", "Muribahal", "Patnagarh", "Puintala", "Saintala", "Tituslagarh", "Turekela"],
+            "Balasore": ["Bahanaga", "Balia", "Basta", "Bhadrak", "Bhograi", "Jaleswar", "Khaira", "Nilagiri", "Oupada", "Remuna", "Soro", "Simulia"],
+            "Bargarh": ["Attabira", "Bargarh", "Barpali", "Bheden", "Bijepur", "Bhatli", "Gaisilet", "Jharbandh", "Padampur", "Paikmal", "Sohela", "Ambabhona"],
+            "Bhadrak": ["Bhadrak", "Bhandaripokhari", "Banth", " Dhamnagar", "Tihidi", "Chandbali", "Basudevpur"],
+            "Baudh": ["Baudh", "Kantamal", "Harbhanga"],
+            "Cuttack": ["Athagarh", "Banki", "Baramba", "Cuttack Sadar", "Choudwar", "Kantapada", "Mahanga", "Narasinghpur", "Niali", "Nischintakoili", "Salepur", "Tangi-Choudwar"],
+            "Deogarh": ["Barkote", "Reamal", "Tileibani"],
+            "Dhenkanal": ["Anugul", "Bhuban", "Dhenkanal Sadar", "Gondia", "Kamakhyanagar", "Kankadahad", "Odalapanga", "Parjang"],
+            "Gajapati": ["Gumma", "Kashinagara", "Mohana", "Nuagada", "Paralakhemundi", "R.Udayagiri", "Rayagada"],
+            "Ganjam": ["Aska", "Bhanjanagar", "Beguniapada", "Bellaguntha", "Bhanjanagar", "Buguda", "Chhatrapur", "Dharakote", "Digapahandi", "Ganjam", "Hinjilicut", "Jagannathprasad", "Kabisuryanagar", "Khallikote", "Kukudakhandi", "Patrapur", "Polasara", "Purushottampur", "Rangeilunda", "Sanakhemundi", "Sheragada"],
+            "Jagatsinghpur": ["Balikuda", "Biridi", "Erasama", "Jagatsinghpur", "Kujang", "Naugaon", "Raghunathpur", "Tirtol"],
+            "Jajpur": ["Bari", "Binjharpur", "Danagadi", "Dharmasala", "Jajpur", "Korei", "Rasulpur", "Sukinda", "Wyasanagar"],
+            "Jharsuguda": ["Jharsuguda", "Kirmira", "Laikera", "Kolabira", "Lakhanpur"],
+            "Kalahandi": ["Bhawanipatna", "Dharamgarh", "Golamunda", "Jaipatna", "Junagarh", "Karlamunda", "Kesinga", "Lanjigarh", "M.Rampur", "Narla", "Thuamul Rampur", "Koksara"],
+            "Kandhamal": ["Balliguda", "Chakapad", "Daringbadi", "G.Udayagiri", "K.Nuagaon", "Khajuripada", "Kotagarh", "Phiringia", "Phulbani", "Raikia", "Tikabali"],
+            "Kendrapara": ["Aul", "Derabish", "Garadapur", "Kendrapara", "Mahakalapada", "Marshaghai", "Pattamundai", "Rajnagar", "Rajkanika"],
+            "Kendujhar": ["Anandapur", "Banspal", "Champua", "Ghatagaon", "Harichandanpur", "Hatadihi", "Jhumpura", "Joda", "Keonjhar Sadar", "Patana", "Saharapada", "Telkoi"],
+            "Khordha": ["Balianta", "Balipatna", "Banapur", "Begunia", "Bhubaneswar", "Bolagarh", "Chilika", "Jatni", "Khordha", "Tangi"],
+            "Koraput": ["Bandhugaon", "Boipariguda", "Bori", "Dasmantpur", "Jeypore", "Koraput", "Kotpad", "Lamtaput", "Laxmipur", "Nandapur", "Narayapatna", "Pottangi", "Pujariput", "Similiguda"],
+            "Malkangiri": ["Kalimela", "Khairaput", "Kudumulu Guma", "Malkangiri", "Mathili", "Podia", "Korkunda"],
+            "Mayurbhanj": ["Badasahi", "Bahalda", "Bangriposi", "Baripada", "Betnoti", "Bijatala", "Bisoi", "Gopabandhunagar", "Jamda", "Jashipur", "Kaptipada", "Karanjia", "Khunta", "Kuliana", "Kusumi", "Morada", "Rairangpur", "Raruan", "Rasgovindpur", "Sarasdata", "Shamakhunta", "Suliapada", "Thakurmunda", "Tiring", "Udala"],
+            "Nabarangpur": ["Chandahandi", "Dabugam", "Jharigam", "Koshagumuda", "Nabarangpur", "Nandahandi", "Papadahandi", "Raighar", "Tentulikhunti", "Umerkote"],
+            "Nayagarh": ["Bhapur", "Daspalla", "Gania", "Khandapada", "Nayagarh", "Nuagaon", "Odagaon", "Ranpur"],
+            "Nuapada": ["Boden", "Khariar", "Komna", "Nuapada", "Sinapali"],
+            "Puri": ["Brahmagiri", "Delanga", "Gop", "Kanas", "Krushnaprasad", "Nimapapada", "Puri Sadar", "Pipili", "Satyabadi"],
+            "Rayagada": ["Bissam Cuttack", "Chandrapur", "Gudari", "Gunupur", "Kalyansinghpur", "Kashipur", "Kolnara", "Muniguda", "Padmapur", "Ramanaguda", "Rayagada"],
+            "Sambalpur": ["Bamra", "Batli", "Dhankauda", "Jamankira", "Jujomura", "Kuchainga", "Maneswar", "Naktideul", "Rairakhol", "Rengali"],
+            "Subarnapur": ["Birmaharajpur", "Dunguripali", "Sonepur", "Tarbha", "Ullunda"],
+            "Sundargarh": ["Bargaon", "Bisra", "Bonaigarh", "Gurundia", "Hemgir", "Kutra", "Koida", "Lahunipara", "Lathikata", "Lephripara", "Nabal", "Rajgangpur", "Subdega", "Sundargarh", "Tangarpali"]
         };
 
-        function populateDistrictDropdowns() {
-            const filterSelect = document.getElementById('district-filter');
-            const editSelect = document.getElementById('edit-district');
-            
-            odishaDistricts.forEach(dist => {
-                filterSelect.innerHTML += `<option value="${dist}">${dist}</option>`;
-                editSelect.innerHTML += `<option value="${dist}">${dist}</option>`;
+        window.onload = function() {
+            populateInitialDropdowns();
+            setupRolePermissions();
+            fetchAuthorizedMembers();
+        };
+
+        function populateInitialDropdowns() {
+            const filterDist = document.getElementById('district-filter');
+            const editDist = document.getElementById('edit-district');
+            const newDist = document.getElementById('new-user-district');
+
+            Object.keys(odishaData).forEach(dist => {
+                filterDist.innerHTML += `<option value="${dist}">${dist}</option>`;
+                editDist.innerHTML += `<option value="${dist}">${dist}</option>`;
+                newDist.innerHTML += `<option value="${dist}">${dist}</option>`;
             });
         }
 
-        // Fetch records from Firestore
-        function fetchMembers() {
-            db.collection("members").get().then((querySnapshot) => {
+        function onDistrictChange(districtElemId, blockElemId) {
+            const distVal = document.getElementById(districtElemId).value;
+            const blockSelect = document.getElementById(blockElemId);
+            
+            blockSelect.innerHTML = '<option value="">All Blocks</option>';
+
+            if (distVal && odishaData[distVal]) {
+                odishaData[distVal].forEach(b => {
+                    blockSelect.innerHTML += `<option value="${b}">${b}</option>`;
+                });
+            }
+        }
+
+        function setupRolePermissions() {
+            const badge = document.getElementById('role-badge');
+            const distSelect = document.getElementById('district-filter');
+
+            if (currentUserRole === 'state') {
+                badge.textContent = "Role: State Super Admin (Full Access)";
+                document.getElementById('state-user-btn').classList.remove('hidden');
+            } else if (currentUserRole === 'district') {
+                badge.textContent = `Role: District Admin (${currentUserDistrict})`;
+                distSelect.value = currentUserDistrict;
+                distSelect.disabled = true; // Restrict district admin to their district
+                onDistrictChange('district-filter', 'block-filter');
+            } else {
+                badge.textContent = "Role: Member Access";
+            }
+        }
+
+        // Fetch Data from Firestore based on credentials
+        function fetchAuthorizedMembers() {
+            let query = db.collection("members");
+
+            if (currentUserRole === 'district') {
+                query = query.where("district", "==", currentUserDistrict);
+            }
+
+            query.get().then((querySnapshot) => {
                 allMembers = [];
                 const tbody = document.getElementById('table-body');
                 tbody.innerHTML = '';
@@ -192,13 +312,10 @@
 
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
-                    data.docId = doc.id; // Record Firestore Document ID for editing
+                    data.docId = doc.id;
                     allMembers.push(data);
-
                     renderRow(data);
                 });
-            }).catch((error) => {
-                console.error("Error fetching documents: ", error);
             });
         }
 
@@ -206,6 +323,9 @@
             const tbody = document.getElementById('table-body');
             const row = document.createElement('tr');
             row.className = 'hover:bg-slate-50 transition border-b';
+
+            const canEdit = currentUserRole === 'state' || (currentUserRole === 'district' && data.district === currentUserDistrict);
+
             row.innerHTML = `
                 <td class="p-4 font-mono font-bold text-blue-600">${data.memberId || 'N/A'}</td>
                 <td class="p-4 font-semibold">${data.fullName || 'N/A'}</td>
@@ -215,9 +335,7 @@
                 <td class="p-4">${data.blockName || 'N/A'}</td>
                 <td class="p-4">${data.schoolOav || 'N/A'}</td>
                 <td class="p-4 text-center">
-                    <button onclick='openEditModal(${JSON.stringify(data)})' class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-3 py-1.5 rounded text-xs transition flex items-center gap-1 mx-auto shadow-sm">
-                        <i class="fa-solid fa-pen-to-square"></i> Edit
-                    </button>
+                    ${canEdit ? `<button onclick='openEditModal(${JSON.stringify(data)})' class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-3 py-1.5 rounded text-xs transition shadow-sm">Edit</button>` : `<span class="text-xs text-slate-400 font-semibold">Read Only</span>`}
                 </td>
             `;
             tbody.appendChild(row);
@@ -227,6 +345,7 @@
         function filterTable() {
             const query = document.getElementById('search-input').value.toLowerCase();
             const selectedDistrict = document.getElementById('district-filter').value;
+            const selectedBlock = document.getElementById('block-filter').value;
             const tbody = document.getElementById('table-body');
             tbody.innerHTML = '';
 
@@ -235,7 +354,8 @@
                     String(val).toLowerCase().includes(query)
                 );
                 const matchesDistrict = !selectedDistrict || member.district === selectedDistrict;
-                return matchesSearch && matchesDistrict;
+                const matchesBlock = !selectedBlock || member.blockName === selectedBlock;
+                return matchesSearch && matchesDistrict && matchesBlock;
             });
 
             if (filtered.length === 0) {
@@ -246,25 +366,57 @@
             filtered.forEach(member => renderRow(member));
         }
 
-        // Modal Controls
+        // STATE ADMIN: MANUALLY ASSIGN CREDENTIALS
+        function openUserModal() { document.getElementById('userModal').classList.remove('hidden'); }
+        function closeUserModal() { document.getElementById('userModal').classList.add('hidden'); }
+        
+        function toggleDistrictSelect() {
+            const role = document.getElementById('new-user-role').value;
+            document.getElementById('district-assign-box').style.display = role === 'state' ? 'none' : 'block';
+        }
+
+        async function handleCreateUser(e) {
+            e.preventDefault();
+            const role = document.getElementById('new-user-role').value;
+            const district = role === 'district' ? document.getElementById('new-user-district').value : 'ALL';
+            const manualId = document.getElementById('new-user-id').value;
+            const password = document.getElementById('new-user-pass').value;
+
+            try {
+                // Save manually assigned credentials directly to Firestore
+                await db.collection("users").doc(manualId).set({
+                    username: manualId,
+                    password: password,
+                    role: role,
+                    district: district,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                alert(`Account created successfully!\nID: ${manualId}\nRole: ${role}\nDistrict: ${district}`);
+                closeUserModal();
+            } catch (err) {
+                alert("Error creating user: " + err.message);
+            }
+        }
+
+        // Edit Modal Controls
         function openEditModal(member) {
             document.getElementById('edit-doc-id').value = member.docId;
             document.getElementById('edit-member-id').value = member.memberId;
             document.getElementById('edit-name').value = member.fullName || '';
             document.getElementById('edit-phone').value = member.phone || '';
             document.getElementById('edit-designation').value = member.designation || '';
+            
             document.getElementById('edit-district').value = member.district || '';
+            onDistrictChange('edit-district', 'edit-block');
             document.getElementById('edit-block').value = member.blockName || '';
+            
             document.getElementById('edit-oav').value = member.schoolOav || '';
-
             document.getElementById('editModal').classList.remove('hidden');
         }
 
-        function closeEditModal() {
-            document.getElementById('editModal').classList.add('hidden');
-        }
+        function closeEditModal() { document.getElementById('editModal').classList.add('hidden'); }
 
-        // Save Edits to Firestore
         async function saveMemberChanges(e) {
             e.preventDefault();
             const docId = document.getElementById('edit-doc-id').value;
@@ -281,28 +433,26 @@
 
             try {
                 await db.collection("members").doc(docId).update(updatedData);
-                alert("Member details updated successfully!");
+                alert("Member record updated successfully!");
                 closeEditModal();
-                fetchMembers(); // Reload data
+                fetchAuthorizedMembers();
             } catch (error) {
-                console.error("Error updating document: ", error);
-                alert("Failed to update member: " + error.message);
+                alert("Failed to update: " + error.message);
             }
         }
 
-        // Export data to Excel
         function exportToExcel() {
-            if (allMembers.length === 0) {
-                alert("No member data available to export!");
-                return;
-            }
-
+            if (allMembers.length === 0) return alert("No member data available to export!");
             const exportData = allMembers.map(({ docId, ...rest }) => rest);
             const worksheet = XLSX.utils.json_to_sheet(exportData);
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "OAVTA Members");
-
             XLSX.writeFile(workbook, "OAVTA_Member_List.xlsx");
+        }
+
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = "index.html";
         }
     </script>
 </body>
