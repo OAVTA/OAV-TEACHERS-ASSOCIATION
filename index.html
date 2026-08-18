@@ -5,11 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OAVTA - Odisha Adarsha Vidyalaya Teachers Association</title>
   
-  <!-- Font Awesome & Google Fonts -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
   
-  <!-- Firebase App & Auth SDKs (Compat Version) -->
+  <!-- Firebase App & SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -50,7 +49,6 @@
 
     .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
 
-    /* Forms & Cards */
     .card {
       background: white;
       padding: 2rem;
@@ -77,9 +75,7 @@
       cursor: pointer;
       width: 100%;
     }
-    .btn:hover { opacity: 0.9; }
 
-    /* Modal Styling */
     .modal {
       display: none;
       position: fixed;
@@ -115,7 +111,7 @@
     </nav>
   </header>
 
-  <!-- MAIN REGISTRATION FORM -->
+  <!-- MEMBER REGISTRATION FORM -->
   <div class="container">
     <div class="card">
       <h2 style="color: var(--primary); font-family: 'Cinzel', serif; margin-bottom: 1.5rem;">
@@ -139,12 +135,17 @@
             <option value="Khordha">Khordha</option>
           </select>
         </div>
+        <!-- Member Custom Password Field -->
+        <div class="form-group">
+          <label for="reg-password">Set Your Login Password</label>
+          <input type="password" id="reg-password" required minlength="6" placeholder="Minimum 6 characters">
+        </div>
         <button type="submit" class="btn"><i class="fas fa-paper-plane"></i> Register Member</button>
       </form>
     </div>
   </div>
 
-  <!-- PORTAL LOGIN MODAL (PHONE + OTP AUTH) -->
+  <!-- PORTAL LOGIN MODAL -->
   <div id="portalLoginModal" class="modal">
     <div class="modal-content">
       <span class="close-btn" onclick="closeModal('portalLoginModal')">&times;</span>
@@ -163,58 +164,61 @@
           </select>
         </div>
 
-        <!-- Member ID Field -->
-        <div class="form-group" id="memberFieldGroup">
-          <label for="memLoginId"><i class="fas fa-id-card"></i> Member ID</label>
-          <input type="text" id="memLoginId" placeholder="e.g., OAVTA-1001">
-        </div>
-
-        <!-- District Admin Select Field -->
-        <div class="form-group" id="districtFieldGroup" style="display: none;">
-          <label for="distId"><i class="fas fa-map-marker-alt"></i> Select District</label>
-          <select id="distId">
-            <option value="">Select District</option>
-            <option value="Angul">Angul</option>
-            <option value="Cuttack">Cuttack</option>
-            <option value="Khordha">Khordha</option>
-          </select>
-        </div>
-
-        <!-- Mobile Number Input -->
-        <div class="form-group">
-          <label for="loginPhone"><i class="fas fa-mobile-alt"></i> Mobile Number</label>
-          <input type="tel" id="loginPhone" placeholder="+919876543210" required>
-        </div>
-
-        <!-- Invisible reCAPTCHA Anchor -->
-        <div id="recaptcha-container"></div>
-
-        <!-- Request OTP Button -->
-        <button type="button" class="btn" id="sendOtpBtn" onclick="sendLoginOTP()" style="margin-top: 10px;">
-          <i class="fas fa-paper-plane"></i> Send OTP
-        </button>
-
-        <!-- 2. OTP Verification Input (Hidden Initially) -->
-        <div id="otpSection" style="display: none; margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 15px;">
+        <!-- MEMBER SPECIFIC FIELDS (ID + Password) -->
+        <div id="memberLoginFields">
           <div class="form-group">
-            <label for="loginOtp"><i class="fas fa-key"></i> Enter 6-Digit OTP</label>
-            <input type="text" id="loginOtp" maxlength="6" placeholder="123456">
+            <label for="memLoginId"><i class="fas fa-id-card"></i> Member ID</label>
+            <input type="text" id="memLoginId" placeholder="e.g., OAVTA-1001">
           </div>
-          
-          <button type="button" class="btn" onclick="verifyLoginOTP()" style="background-color: var(--success-green);">
-            <i class="fas fa-sign-in-alt"></i> Verify & Login
+          <div class="form-group">
+            <label for="memPassword"><i class="fas fa-lock"></i> Password</label>
+            <input type="password" id="memPassword" placeholder="Enter your password">
+          </div>
+          <button type="button" class="btn" onclick="loginMemberWithPassword()">
+            <i class="fas fa-sign-in-alt"></i> Login as Member
           </button>
         </div>
 
-        <!-- Status / Error Notification -->
+        <!-- ADMIN SPECIFIC FIELDS (District Select + Phone OTP) -->
+        <div id="adminLoginFields" style="display: none;">
+          <div class="form-group" id="districtFieldGroup" style="display: none;">
+            <label for="distId"><i class="fas fa-map-marker-alt"></i> Select District</label>
+            <select id="distId">
+              <option value="">Select District</option>
+              <option value="Angul">Angul</option>
+              <option value="Cuttack">Cuttack</option>
+              <option value="Khordha">Khordha</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="loginPhone"><i class="fas fa-mobile-alt"></i> Registered Admin Phone Number</label>
+            <input type="tel" id="loginPhone" placeholder="+919876543210">
+          </div>
+
+          <div id="recaptcha-container"></div>
+
+          <button type="button" class="btn" id="sendOtpBtn" onclick="sendAdminOTP()" style="margin-top: 10px;">
+            <i class="fas fa-paper-plane"></i> Send Admin OTP
+          </button>
+
+          <div id="otpSection" style="display: none; margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 15px;">
+            <div class="form-group">
+              <label for="loginOtp"><i class="fas fa-key"></i> Enter 6-Digit OTP</label>
+              <input type="text" id="loginOtp" maxlength="6" placeholder="123456">
+            </div>
+            <button type="button" class="btn" onclick="verifyAdminOTP()" style="background-color: var(--success-green);">
+              <i class="fas fa-shield-alt"></i> Verify & Access Admin Panel
+            </button>
+          </div>
+        </div>
+
         <div id="loginStatusMsg" style="margin-top: 15px; text-align: center; font-weight: bold; font-size: 0.9rem;"></div>
       </form>
     </div>
   </div>
 
-  <!-- SCRIPT BLOCK: FIREBASE INIT & OTP LOGIC -->
   <script>
-    // 1. YOUR ACTUAL FIREBASE CONFIGURATION
     const firebaseConfig = {
       apiKey: "AIzaSyBgVnOxo6wb6Ahrs2dqhVwgrqCFtZQRlRU",
       authDomain: "oavta-28105.firebaseapp.com",
@@ -226,38 +230,41 @@
       measurementId: "G-6PZQR5J90C"
     };
 
-    // Initialize Firebase
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
     const db = firebase.firestore();
-
     let confirmationResultObj = null;
 
-    // Initialize Invisible reCAPTCHA on Window Load
     window.onload = function() {
       window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
         'size': 'invisible'
       });
     };
 
-    // UI Modal Utility Functions
     function openModal(id) { document.getElementById(id).style.display = 'flex'; }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-    // Dynamic Form Role Switcher
+    // Toggle forms depending on selected Role
     function toggleRoleFields() {
       const role = document.getElementById("userRole").value;
-      document.getElementById("memberFieldGroup").style.display = (role === "member") ? "block" : "none";
-      document.getElementById("districtFieldGroup").style.display = (role === "district") ? "block" : "none";
+      if (role === 'member') {
+        document.getElementById("memberLoginFields").style.display = "block";
+        document.getElementById("adminLoginFields").style.display = "none";
+      } else {
+        document.getElementById("memberLoginFields").style.display = "none";
+        document.getElementById("adminLoginFields").style.display = "block";
+        document.getElementById("districtFieldGroup").style.display = (role === "district") ? "block" : "none";
+      }
     }
 
-    // Member Registration Handler
+    // Member Registration (Saves Member ID + Password)
     async function handleRegistration(e) {
       e.preventDefault();
       const name = document.getElementById('reg-name').value.trim();
       const phone = document.getElementById('reg-phone').value.trim();
       const district = document.getElementById('reg-district').value;
+      const password = document.getElementById('reg-password').value;
       const memberId = "OAVTA-" + Math.floor(1000 + Math.random() * 9000);
 
       try {
@@ -266,35 +273,68 @@
           name: name,
           phone: phone,
           district: district,
+          password: password, // Custom password saved
           createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
-        alert(`Registration Successful!\nYour Member ID is: ${memberId}`);
+        alert(`Registration Successful!\nYour Member ID is: ${memberId}\nPlease use this ID and your password to log in.`);
         document.getElementById('registrationForm').reset();
       } catch (error) {
         alert("Registration Failed: " + error.message);
       }
     }
 
-    // STEP 1: SEND OTP FUNCTION
-    async function sendLoginOTP() {
+    // 1. MEMBER LOGIN (Member ID + Password)
+    async function loginMemberWithPassword() {
+      const statusDiv = document.getElementById("loginStatusMsg");
+      const memId = document.getElementById("memLoginId").value.trim();
+      const password = document.getElementById("memPassword").value;
+
+      if (!memId || !password) {
+        statusDiv.style.color = "var(--danger-red)";
+        statusDiv.innerText = "Please enter Member ID and Password.";
+        return;
+      }
+
+      statusDiv.style.color = "var(--secondary)";
+      statusDiv.innerText = "Authenticating...";
+
+      try {
+        const doc = await db.collection("members").doc(memId).get();
+        if (doc.exists && doc.data().password === password) {
+          sessionStorage.setItem("userRole", "member");
+          sessionStorage.setItem("memberData", JSON.stringify(doc.data()));
+          alert("Welcome " + doc.data().name + "!");
+          closeModal("portalLoginModal");
+          statusDiv.innerText = "";
+        } else {
+          statusDiv.style.color = "var(--danger-red)";
+          statusDiv.innerText = "Invalid Member ID or Password.";
+        }
+      } catch (error) {
+        statusDiv.style.color = "var(--danger-red)";
+        statusDiv.innerText = "Login error: " + error.message;
+      }
+    }
+
+    // 2. ADMIN OTP SENDING (District / State Admins Only)
+    async function sendAdminOTP() {
       const statusDiv = document.getElementById("loginStatusMsg");
       const rawPhone = document.getElementById("loginPhone").value.trim();
 
       if (!rawPhone) {
         statusDiv.style.color = "var(--danger-red)";
-        statusDiv.innerText = "Please enter your mobile number.";
+        statusDiv.innerText = "Please enter mobile number.";
         return;
       }
 
       const formattedPhone = rawPhone.startsWith('+') ? rawPhone : '+91' + rawPhone;
-
       statusDiv.style.color = "var(--secondary)";
-      statusDiv.innerText = "Sending OTP to " + formattedPhone + "...";
+      statusDiv.innerText = "Sending Admin OTP to " + formattedPhone + "...";
 
       try {
         confirmationResultObj = await firebase.auth().signInWithPhoneNumber(formattedPhone, window.recaptchaVerifier);
         statusDiv.style.color = "var(--success-green)";
-        statusDiv.innerText = "OTP sent successfully! Enter code below.";
+        statusDiv.innerText = "OTP sent! Enter 6-digit code below.";
         
         document.getElementById("otpSection").style.display = "block";
         document.getElementById("sendOtpBtn").style.display = "none";
@@ -305,8 +345,8 @@
       }
     }
 
-    // STEP 2: VERIFY OTP AND AUTHENTICATE
-    async function verifyLoginOTP() {
+    // 3. ADMIN OTP VERIFICATION
+    async function verifyAdminOTP() {
       const statusDiv = document.getElementById("loginStatusMsg");
       const otpCode = document.getElementById("loginOtp").value.trim();
       const role = document.getElementById("userRole").value;
@@ -318,25 +358,43 @@
       }
 
       statusDiv.style.color = "var(--secondary)";
-      statusDiv.innerText = "Verifying OTP...";
+      statusDiv.innerText = "Verifying Admin Permissions...";
 
       try {
         const result = await confirmationResultObj.confirm(otpCode);
-        const user = result.user;
-        
-        statusDiv.style.color = "var(--success-green)";
-        statusDiv.innerText = "Authentication Successful! Redirecting...";
+        const authPhone = result.user.phoneNumber;
 
-        if (role === 'member') {
-          closeModal("portalLoginModal");
-          alert("Welcome to the Member Portal!");
-        } else if (role === 'district' || role === 'state') {
-          window.location.href = "admin.html";
+        if (role === 'district') {
+          const selectedDistrict = document.getElementById("distId").value;
+          if (!selectedDistrict) throw new Error("Please select a district.");
+
+          const doc = await db.collection("district_admins").doc(selectedDistrict).get();
+          if (doc.exists && isPhoneMatch(doc.data().phone, authPhone)) {
+            sessionStorage.setItem("userRole", "district");
+            sessionStorage.setItem("adminDistrict", selectedDistrict);
+            window.location.href = "admin.html";
+          } else {
+            throw new Error("Phone number not authorized for " + selectedDistrict + " district.");
+          }
+        } else if (role === 'state') {
+          const doc = await db.collection("state_admins").doc(authPhone).get();
+          if (doc.exists) {
+            sessionStorage.setItem("userRole", "state");
+            window.location.href = "admin.html";
+          } else {
+            throw new Error("Phone number not authorized as State Admin.");
+          }
         }
       } catch (error) {
         statusDiv.style.color = "var(--danger-red)";
-        statusDiv.innerText = "Invalid OTP. Please try again.";
+        statusDiv.innerText = error.message;
       }
+    }
+
+    function isPhoneMatch(dbPhone, authPhone) {
+      const cleanDb = dbPhone.replace(/\D/g, '').slice(-10);
+      const cleanAuth = authPhone.replace(/\D/g, '').slice(-10);
+      return cleanDb === cleanAuth;
     }
   </script>
 </body>
