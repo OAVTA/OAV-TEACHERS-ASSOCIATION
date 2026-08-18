@@ -1,401 +1,907 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OAVTA - Odisha Adarsha Vidyalaya Teachers Association</title>
+  <meta charset='UTF-8'/>
+  <meta content='width=device-width, initial-scale=1.0' name='viewport'/>
+  <title>OAVTA Portal</title>
   
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-  
-  <!-- Firebase App & SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <!-- FontAwesome Icons -->
+  <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' rel='stylesheet'/>
 
-  <style>
+  <b:skin><![CDATA[
     :root {
-      --primary: #1a365d;
-      --secondary: #2b6cb0;
-      --accent: #d69e2e;
-      --light-bg: #f7fafc;
-      --dark-text: #2d3748;
-      --success-green: #38a169;
-      --danger-red: #e53e3e;
+      --primary: #002e6e;      /* SBI YONO Deep Navy */
+      --secondary: #001f4d;    /* Dark Header Navy */
+      --accent: #00a8cc;       /* Vibrant Cyan Accent */
+      --accent-hover: #008ba3;
+      --light-bg: #f3f6f9;
+      --text-dark: #2b2b2b;
+      --card-border: #cbd5e0;
+      --success-green: #28a745;
+      --danger-red: #d9534f;
+      --danger-hover: #c9302c;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Poppins', sans-serif; background: var(--light-bg); color: var(--dark-text); }
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0; padding: 0;
+      background-color: var(--light-bg);
+      color: var(--text-dark);
+      overflow-x: hidden;
+    }
 
-    header {
+    /* HEADER BANNER */
+    .header-banner {
+      background: linear-gradient(135deg, var(--secondary), var(--primary));
+      color: #ffffff;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 4px solid var(--accent);
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      min-width: 180px;
+    }
+    .header-logo img {
+      max-height: 105px;
+      width: auto;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .header-center {
+      text-align: center;
+      flex: 2;
+      min-width: 450px;
+    }
+    .header-center h1 {
+      margin: 0;
+      font-size: 40px;
+      text-transform: uppercase;
+      letter-spacing: 3.5px;
+      font-weight: 900;
+    }
+    .header-center p {
+      margin: 6px 0 0 0;
+      font-size: 14px;
+      color: #80d8ff;
+      font-weight: 600;
+    }
+
+    .header-contact {
+      text-align: right;
+      flex: 1;
+      min-width: 200px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #e0e0e0;
+    }
+    .header-contact a { color: #80d8ff; text-decoration: none; font-weight: 600; }
+
+    @media (max-width: 768px) {
+      .header-banner { flex-direction: column; text-align: center; }
+      .header-contact { text-align: center; }
+      .header-logo { justify-content: center; }
+    }
+
+    /* NAVBAR */
+    .navbar {
+      background-color: var(--primary);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      padding: 0 20px;
+    }
+    .nav-container {
+      max-width: 1250px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0 auto;
+    }
+    .nav-menu-group {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      margin: 0; padding: 0;
+      flex-wrap: wrap;
+    }
+    .nav-link {
+      display: block;
+      color: #ffffff;
+      padding: 15px 18px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      text-transform: uppercase;
+      transition: background 0.3s ease;
+      cursor: pointer;
+    }
+    .nav-link:hover { background-color: rgba(255, 255, 255, 0.1); color: #80d8ff; }
+
+    .nav-actions-group { display: flex; align-items: center; gap: 10px; }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-register { background-color: var(--success-green); color: #ffffff !important; }
+    .btn-register:hover { background-color: #218838; }
+
+    .btn-login { background-color: var(--accent); color: #ffffff !important; }
+    .btn-login:hover { background-color: #008ba3; }
+
+    /* PHOTO SLIDER WITH CROSS-DISSOLVE (FADE) & DOTS */
+    .full-width-slider {
+      width: 100vw;
+      height: 350px;
+      position: relative;
+      overflow: hidden;
+      background: #111;
+      margin-left: calc(-50vw + 50%);
+    }
+    .slider-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100%;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 1.2s ease-in-out, visibility 1.2s ease-in-out;
+      z-index: 1;
+    }
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      z-index: 2;
+    }
+    .slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .slide-overlay {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(0, 31, 77, 0.95));
+      color: #ffffff; padding: 25px 40px;
+    }
+    .slide-overlay h2 { margin: 0 0 6px 0; font-size: 22px; color: #80d8ff; }
+
+    .photo-slider-dots {
+      position: absolute;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      z-index: 10;
+    }
+    .photo-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      border: 2px solid #ffffff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .photo-dot.active {
+      background: var(--accent);
+      width: 28px;
+      border-radius: 10px;
+      border-color: var(--accent);
+      box-shadow: 0 0 8px rgba(0, 168, 204, 0.8);
+    }
+
+    .ticker-bar {
+      background: #1a1a1a;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      height: 42px;
+      overflow: hidden;
+      border-bottom: 2px solid var(--accent);
+    }
+    .ticker-title {
+      background: var(--accent);
+      padding: 0 18px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      font-size: 13px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    marquee { font-size: 14px; font-weight: 600; color: #80d8ff; }
+
+    /* DASHBOARD SECTION */
+    .uni-dashboard {
+      max-width: 1250px;
+      margin: 30px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+    }
+    .dashboard-card {
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 560px;
+    }
+    .dashboard-card-header {
       background: var(--primary);
-      color: white;
-      padding: 1rem 2rem;
+      color: #ffffff;
+      padding: 12px 18px;
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 3px solid var(--accent);
+    }
+    .dashboard-card-body {
+      padding: 18px;
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* 3D ROTATING LEADERSHIP STYLES */
+    .leadership-3d-wrapper {
+      position: relative;
+      width: 100%;
+      flex: 1;
+      min-height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1000px;
+      overflow: hidden;
+      background: radial-gradient(circle at center, rgba(0, 168, 204, 0.05) 0%, rgba(243, 246, 249, 0) 70%);
+      border-radius: 10px;
+    }
+
+    .leadership-stage {
+      position: relative;
+      width: 100%;
+      height: 380px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .leader-card-item {
+      position: absolute;
+      width: 270px;
+      background: #ffffff;
+      border: 1px solid #eef2f5;
+      border-radius: 16px;
+      padding: 22px 18px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.6) translateX(0) translateZ(-100px);
+      z-index: 1;
+      user-select: none;
+    }
+
+    .leader-card-item.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1.08) translateX(0) translateZ(0);
+      z-index: 10;
+      border: 2px solid var(--accent);
+      box-shadow: 0 18px 40px rgba(0, 46, 110, 0.2);
+    }
+
+    .leader-card-item.prev {
+      opacity: 0.72;
+      pointer-events: auto;
+      transform: scale(0.82) translateX(-150px) translateZ(-50px);
+      z-index: 5;
+      cursor: pointer;
+      filter: blur(0.5px);
+    }
+
+    .leader-card-item.next {
+      opacity: 0.72;
+      pointer-events: auto;
+      transform: scale(0.82) translateX(150px) translateZ(-50px);
+      z-index: 5;
+      cursor: pointer;
+      filter: blur(0.5px);
+    }
+
+    .leader-card-item img {
+      width: 140px;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 4px solid var(--accent);
+      margin: 0 auto 12px auto;
+      display: block;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+    }
+
+    .leader-card-name {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin: 6px 0 4px 0;
+    }
+
+    .leader-card-role {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--secondary), var(--primary));
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+
+    .carousel-nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(0, 46, 110, 0.85);
+      color: #ffffff;
+      border: none;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 20;
+    }
+    .carousel-nav-btn.prev-btn { left: 8px; }
+    .carousel-nav-btn.next-btn { right: 8px; }
+
+    /* ANNOUNCEMENT BOARD */
+    .notice-item { 
+      display: flex; 
+      align-items: flex-start; 
+      gap: 12px; 
+      padding: 12px 0; 
+      border-bottom: 1px solid #eee; 
+    }
+    .notice-date-badge { 
+      background: var(--primary); 
+      color: #fff; 
+      min-width: 50px; 
+      text-align: center; 
+      border-radius: 4px; 
+      overflow: hidden; 
+    }
+    .notice-date-badge .month { 
+      background: var(--accent); 
+      font-size: 9px; 
+      font-weight: 800; 
+      padding: 2px 0; 
+      text-transform: uppercase;
+    }
+    .notice-date-badge .day { 
+      font-size: 16px; 
+      font-weight: 800; 
+      padding: 3px 0; 
+    }
+    .notice-content { flex: 1; }
+    .notice-title { 
+      font-size: 13px; 
+      font-weight: 600; 
+      color: #111; 
+      text-decoration: none; 
+      display: block;
+    }
+
+    /* MODALS */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.65);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(4px);
+    }
+    .modal-box {
+      background: #ffffff;
+      width: 90%;
+      max-width: 650px;
+      border-radius: 12px;
+      position: relative;
+      box-shadow: 0 20px 40px rgba(0, 46, 110, 0.25);
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-header-fixed {
+      position: sticky;
+      top: 0;
+      background: linear-gradient(135deg, var(--secondary), var(--primary));
+      color: #ffffff;
+      z-index: 10;
+      padding: 18px 25px;
+      border-bottom: 3px solid var(--accent);
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    header h1 { font-family: 'Cinzel', serif; font-size: 1.5rem; }
-
-    nav button {
-      background: var(--accent);
-      color: white;
-      border: none;
-      padding: 0.5rem 1.2rem;
-      font-weight: 600;
-      border-radius: 4px;
+    
+    .modal-close {
+      font-size: 22px;
       cursor: pointer;
+      color: #80d8ff;
+      font-weight: bold;
     }
 
-    .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
+    .modal-body-content { padding: 25px; background: #fafbfc; }
 
-    .card {
-      background: white;
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      margin-bottom: 2rem;
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
     }
-    .form-group { margin-bottom: 1.2rem; }
-    .form-group label { display: block; margin-bottom: 0.4rem; font-weight: 500; }
-    .form-group input, .form-group select {
-      width: 100%;
-      padding: 0.6rem;
-      border: 1px solid #cbd5e0;
-      border-radius: 4px;
+    @media (max-width: 580px) {
+      .form-grid-2 { grid-template-columns: 1fr; }
     }
 
-    .btn {
-      background: var(--secondary);
-      color: white;
-      padding: 0.75rem;
-      border: none;
-      border-radius: 4px;
-      font-weight: 600;
-      cursor: pointer;
-      width: 100%;
+    .form-group { margin-bottom: 18px; }
+    .form-group label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--primary);
+      text-transform: uppercase;
     }
-
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.6);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-    .modal-content {
-      background: white;
-      padding: 2rem;
-      border-radius: 8px;
-      width: 90%;
-      max-width: 450px;
+    
+    .input-icon-wrapper {
       position: relative;
+      display: flex;
+      align-items: center;
     }
-    .close-btn {
+    .input-icon-wrapper i {
       position: absolute;
-      top: 10px; right: 15px;
-      font-size: 1.5rem;
-      cursor: pointer;
+      left: 14px;
+      color: #94a3b8;
+      font-size: 14px;
     }
-  </style>
+    .input-icon-wrapper input, .input-icon-wrapper select {
+      width: 100%;
+      padding: 12px 14px 12px 42px;
+      border: 1.5px solid #cbd5e0;
+      border-radius: 8px;
+      font-size: 13.5px;
+      color: #1e293b;
+      outline: none;
+    }
+
+    .form-submit-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--secondary), var(--primary));
+      color: #fff;
+      border: none;
+      padding: 13px;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+      font-size: 14px;
+      text-transform: uppercase;
+    }
+
+    .login-tabs {
+      display: flex;
+      gap: 6px;
+      background: #e2e8f0;
+      padding: 5px;
+      border-radius: 10px;
+      margin-bottom: 22px;
+    }
+    .login-tab-btn {
+      flex: 1;
+      padding: 11px 10px;
+      text-align: center;
+      background: transparent;
+      color: #475569;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 12.5px;
+      border: none;
+      border-radius: 7px;
+      text-transform: uppercase;
+    }
+    .login-tab-btn.active {
+      background: #ffffff;
+      color: var(--primary);
+    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .status-msg { margin-top: 10px; font-size: 13px; font-weight: bold; text-align: center; }
+  ]]></b:skin>
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header>
-    <h1>OAVTA Portal</h1>
-    <nav>
-      <button onclick="openModal('portalLoginModal')"><i class="fas fa-sign-in-alt"></i> Login Portal</button>
-    </nav>
+  <!-- HEADER BANNER -->
+  <header class='header-banner'>
+    <div class='header-logo'>
+      <img alt='OAVTA Logo' src='https://pbs.twimg.com/profile_images/1635311679931285505/njqdQqHS_400x400.jpg'/>
+    </div>
+    <div class='header-center'>
+      <h1>Odisha Adarsha Vidyalaya Teachers&#39; Association</h1>
+      <p>Odisha</p>
+    </div>
+    <div class='header-contact'>
+      <div><i class='fa-solid fa-envelope'/> <strong>Email:</strong> <a href='mailto:AVTA@gmail.com'>AVTA@gmail.com</a></div>
+      <div><i class='fa-solid fa-location-dot'/> <strong>Address:</strong> OAV Central Association, Odisha</div>
+    </div>
   </header>
 
-  <!-- MEMBER REGISTRATION FORM -->
-  <div class="container">
-    <div class="card">
-      <h2 style="color: var(--primary); font-family: 'Cinzel', serif; margin-bottom: 1.5rem;">
-        <i class="fas fa-user-plus"></i> Member Registration
-      </h2>
-      <form id="registrationForm" onsubmit="handleRegistration(event)">
-        <div class="form-group">
-          <label for="reg-name">Full Name</label>
-          <input type="text" id="reg-name" required placeholder="Enter Full Name">
-        </div>
-        <div class="form-group">
-          <label for="reg-phone">Mobile Number</label>
-          <input type="tel" id="reg-phone" required placeholder="10-digit Mobile Number">
-        </div>
-        <div class="form-group">
-          <label for="reg-district">District</label>
-          <select id="reg-district" required>
-            <option value="">Select District</option>
-            <option value="Angul">Angul</option>
-            <option value="Cuttack">Cuttack</option>
-            <option value="Khordha">Khordha</option>
-          </select>
-        </div>
-        <!-- Member Custom Password Field -->
-        <div class="form-group">
-          <label for="reg-password">Set Your Login Password</label>
-          <input type="password" id="reg-password" required minlength="6" placeholder="Minimum 6 characters">
-        </div>
-        <button type="submit" class="btn"><i class="fas fa-paper-plane"></i> Register Member</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- PORTAL LOGIN MODAL -->
-  <div id="portalLoginModal" class="modal">
-    <div class="modal-content">
-      <span class="close-btn" onclick="closeModal('portalLoginModal')">&times;</span>
-      <h2 style="color: var(--primary); font-family: 'Cinzel', serif; text-align: center; margin-bottom: 20px;">
-        <i class="fas fa-user-lock"></i> Portal Login
-      </h2>
+  <!-- NAVBAR MENU -->
+  <nav class='navbar'>
+    <div class='nav-container'>
+      <ul class='nav-menu-group'>
+        <li class='nav-item'><a class='nav-link' href='/'>Home</a></li>
+        <li class='nav-item'><a class='nav-link' onclick='openDistrictModal()'><i class='fa-solid fa-map-location-dot'/> District Info</a></li>
+        <li class='nav-item'><a class='nav-link' href='/p/about-us.html'>About Us</a></li>
+        <li class='nav-item'><a class='nav-link' href='/p/organogram.html'>Organogram</a></li>
+      </ul>
       
-      <form id="loginForm" onsubmit="event.preventDefault();">
-        <!-- 1. Role Selection -->
-        <div class="form-group">
-          <label for="userRole"><i class="fas fa-user-tag"></i> Select Role</label>
-          <select id="userRole" required onchange="toggleRoleFields()">
-            <option value="member">Member</option>
-            <option value="district">District Admin</option>
-            <option value="state">State Admin</option>
-          </select>
+      <div class='nav-actions-group'>
+        <button class='nav-btn btn-register' onclick='openModal("registerModal")'>
+          <i class='fa-solid fa-user-plus'/> Member Register
+        </button>
+        <button class='nav-btn btn-login' onclick='openModal("portalLoginModal")'>
+          <i class='fa-solid fa-right-to-bracket'/> Login Portal
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PHOTO SLIDER -->
+  <div class='full-width-slider'>
+    <div class='slider-container' id='photoSliderContainer'>
+      <div class='slide active'>
+        <img alt='Banner 1' src='https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&amp;w=1600'/>
+        <div class='slide-overlay'>
+          <h2>Welcome to OAVTA</h2>
+          <p>Empowering Odisha Adarsha Vidyalayas.</p>
         </div>
+      </div>
+    </div>
+    <div class='photo-slider-dots' id='photoSliderDots'/>
+  </div>
 
-        <!-- MEMBER SPECIFIC FIELDS (ID + Password) -->
-        <div id="memberLoginFields">
-          <div class="form-group">
-            <label for="memLoginId"><i class="fas fa-id-card"></i> Member ID</label>
-            <input type="text" id="memLoginId" placeholder="e.g., OAVTA-1001">
-          </div>
-          <div class="form-group">
-            <label for="memPassword"><i class="fas fa-lock"></i> Password</label>
-            <input type="password" id="memPassword" placeholder="Enter your password">
-          </div>
-          <button type="button" class="btn" onclick="loginMemberWithPassword()">
-            <i class="fas fa-sign-in-alt"></i> Login as Member
-          </button>
-        </div>
+  <!-- TICKER -->
+  <div class='ticker-bar'>
+    <div class='ticker-title'>Latest Updates</div>
+    <marquee behavior='scroll' direction='left'>
+       Welcome to OAVTA Portal | Register as a member and set your password to record your details.
+    </marquee>
+  </div>
 
-        <!-- ADMIN SPECIFIC FIELDS (District Select + Phone OTP) -->
-        <div id="adminLoginFields" style="display: none;">
-          <div class="form-group" id="districtFieldGroup" style="display: none;">
-            <label for="distId"><i class="fas fa-map-marker-alt"></i> Select District</label>
-            <select id="distId">
-              <option value="">Select District</option>
-              <option value="Angul">Angul</option>
-              <option value="Cuttack">Cuttack</option>
-              <option value="Khordha">Khordha</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="loginPhone"><i class="fas fa-mobile-alt"></i> Registered Admin Phone Number</label>
-            <input type="tel" id="loginPhone" placeholder="+919876543210">
-          </div>
-
-          <div id="recaptcha-container"></div>
-
-          <button type="button" class="btn" id="sendOtpBtn" onclick="sendAdminOTP()" style="margin-top: 10px;">
-            <i class="fas fa-paper-plane"></i> Send Admin OTP
-          </button>
-
-          <div id="otpSection" style="display: none; margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 15px;">
-            <div class="form-group">
-              <label for="loginOtp"><i class="fas fa-key"></i> Enter 6-Digit OTP</label>
-              <input type="text" id="loginOtp" maxlength="6" placeholder="123456">
+  <!-- DASHBOARD SECTION -->
+  <section class='uni-dashboard'>
+    <div class='dashboard-card'>
+      <div class='dashboard-card-header'>
+        <span><i class='fa-solid fa-users-gear'/> Leadership Board</span>
+      </div>
+      <div class='dashboard-card-body'>
+        <div class='leadership-3d-wrapper'>
+          <div class='leadership-stage'>
+            <div class='leader-card-item active'>
+              <img alt='President' src='https://picsum.photos/id/1025/300/300'/>
+              <div class='leader-card-name'>Leader Name 1</div>
+              <div class='leader-card-role'>President</div>
             </div>
-            <button type="button" class="btn" onclick="verifyAdminOTP()" style="background-color: var(--success-green);">
-              <i class="fas fa-shield-alt"></i> Verify & Access Admin Panel
-            </button>
           </div>
         </div>
+      </div>
+    </div>
 
-        <div id="loginStatusMsg" style="margin-top: 15px; text-align: center; font-weight: bold; font-size: 0.9rem;"></div>
-      </form>
+    <div class='dashboard-card'>
+      <div class='dashboard-card-header'>
+        <span><i class='fa-solid fa-bullhorn'/> ANNOUNCEMENT</span>
+      </div>
+      <div class='dashboard-card-body'>
+        <div class='notice-item'>
+          <div class='notice-date-badge'>
+            <div class='month'>AUG</div>
+            <div class='day'>14</div>
+          </div>
+          <div class='notice-content'>
+            <a class='notice-title' href='#'>30 District Selection &amp; Member Password Setup Enabled</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. MEMBER REGISTER MODAL (WITH PASSWORD SETUP) -->
+  <div class='modal-overlay' id='registerModal'>
+    <div class='modal-box' style='max-width: 580px;'>
+      <div class='modal-header-fixed'>
+        <h3 class='modal-title'><i class='fa-solid fa-id-card'/> Member Registration</h3>
+        <span class='modal-close' onclick='closeModal("registerModal")'>&#215;</span>
+      </div>
+      <div class='modal-body-content'>
+        <form id='registrationForm' onsubmit='handleRegistration(event)'>
+          <div class='form-grid-2'>
+            <div class='form-group'>
+              <label>Full Name *</label>
+              <div class='input-icon-wrapper'>
+                <input id='regName' placeholder='e.g. Dr. Rajesh Kumar' required='required' type='text'/>
+                <i class='fa-solid fa-user'/>
+              </div>
+            </div>
+            <div class='form-group'>
+              <label>Contact No. *</label>
+              <div class='input-icon-wrapper'>
+                <input id='regPhone' pattern='[0-9]{10}' placeholder='10-digit Mobile Number' required='required' type='tel'/>
+                <i class='fa-solid fa-phone'/>
+              </div>
+            </div>
+          </div>
+
+          <div class='form-grid-2'>
+            <div class='form-group'>
+              <label>Set Password * (No OTP Required)</label>
+              <div class='input-icon-wrapper'>
+                <input id='regPassword' placeholder='Set Password' required='required' type='password'/>
+                <i class='fa-solid fa-key'/>
+              </div>
+            </div>
+            <div class='form-group'>
+              <label>Confirm Password *</label>
+              <div class='input-icon-wrapper'>
+                <input id='regConfirmPassword' placeholder='Re-enter Password' required='required' type='password'/>
+                <i class='fa-solid fa-lock'/>
+              </div>
+            </div>
+          </div>
+
+          <button class='form-submit-btn' type='submit'><i class='fa-solid fa-paper-plane'/> Submit Registration</button>
+        </form>
+        <div class='status-msg' id='regStatus'/>
+      </div>
     </div>
   </div>
 
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBgVnOxo6wb6Ahrs2dqhVwgrqCFtZQRlRU",
-      authDomain: "oavta-28105.firebaseapp.com",
-      databaseURL: "https://oavta-28105-default-rtdb.firebaseio.com",
-      projectId: "oavta-28105",
-      storageBucket: "oavta-28105.firebasestorage.app",
-      messagingSenderId: "123510841027",
-      appId: "1:123510841027:web:ba924a6bd865531cab0c76",
-      measurementId: "G-6PZQR5J90C"
-    };
+  <!-- 2. MULTI-ROLE LOGIN PORTAL MODAL (WITH OTP SIMULATION FOR ADMINS) -->
+  <div class='modal-overlay' id='portalLoginModal'>
+    <div class='modal-box' style='max-width: 500px;'>
+      <div class='modal-header-fixed'>
+        <h3 class='modal-title'><i class='fa-solid fa-shield-halved'/> Login Access</h3>
+        <span class='modal-close' onclick='closeModal("portalLoginModal")'>&#215;</span>
+      </div>
+      
+      <div class='modal-body-content'>
+        <div class='login-tabs'>
+          <button class='login-tab-btn active' onclick='switchTab("memberTab", this)'>Member</button>
+          <button class='login-tab-btn' onclick='switchTab("districtTab", this)'>District Admin</button>
+          <button class='login-tab-btn' onclick='switchTab("stateTab", this)'>State Admin</button>
+        </div>
 
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
-    const db = firebase.firestore();
-    let confirmationResultObj = null;
+        <!-- MEMBER LOGIN (No OTP required) -->
+        <div class='tab-content active' id='memberTab'>
+          <form onsubmit='handleMemberLogin(event)'>
+            <div class='form-group'>
+              <label>Member ID</label>
+              <div class='input-icon-wrapper'>
+                <input id='memLoginId' placeholder='e.g. 20260001' required='required' type='text'/>
+                <i class='fa-solid fa-id-card-clip'/>
+              </div>
+            </div>
+            <div class='form-group'>
+              <label>Password</label>
+              <div class='input-icon-wrapper'>
+                <input id='memLoginPass' placeholder='Enter Password' required='required' type='password'/>
+                <i class='fa-solid fa-lock'/>
+              </div>
+            </div>
+            <button class='form-submit-btn' type='submit'>Member Login</button>
+          </form>
+          <div class='status-msg' id='memberLoginStatus'/>
+        </div>
 
-    window.onload = function() {
-      window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-        'size': 'invisible'
-      });
-    };
+        <!-- DISTRICT ADMIN LOGIN (WITH OTP SIMULATION) -->
+        <div class='tab-content' id='districtTab'>
+          <form id='distLoginForm' onsubmit='handleDistrictLogin(event)'>
+            <div class='form-group'>
+              <label>Select District</label>
+              <div class='input-icon-wrapper'>
+                <select id='distId' required='required'>
+                  <option value=''>Choose District</option>
+                  <option value='Angul'>Angul</option>
+                  <option value='Cuttack'>Cuttack</option>
+                  <option value='Khordha'>Khordha</option>
+                </select>
+                <i class='fa-solid fa-map-location-dot'/>
+              </div>
+            </div>
+            <div class='form-group'>
+              <label>Access Code</label>
+              <div class='input-icon-wrapper'>
+                <input id='distPassword' placeholder='Security Code' required='required' type='password'/>
+                <i class='fa-solid fa-lock'/>
+              </div>
+            </div>
+            
+            <!-- OTP Simulation Section -->
+            <div class='form-group' id='distOtpGroup' style='display:none;'>
+              <label style='color: var(--danger-red);'>Simulated OTP Code (Use: 1234)</label>
+              <div class='input-icon-wrapper'>
+                <input id='distOtpInput' placeholder='Enter OTP 1234' type='text'/>
+                <i class='fa-solid fa-mobile-screen'/>
+              </div>
+            </div>
+
+            <button class='form-submit-btn' id='distSubmitBtn' type='submit'>Request Admin OTP</button>
+          </form>
+          <div class='status-msg' id='districtLoginStatus'/>
+        </div>
+
+        <!-- STATE ADMIN LOGIN (WITH OTP SIMULATION) -->
+        <div class='tab-content' id='stateTab'>
+          <form id='stateLoginForm' onsubmit='handleStateAdminLogin(event)'>
+            <div class='form-group'>
+              <label>State Admin Username</label>
+              <div class='input-icon-wrapper'>
+                <input id='stateUser' placeholder='Username' required='required' type='text'/>
+                <i class='fa-solid fa-user-shield'/>
+              </div>
+            </div>
+            <div class='form-group'>
+              <label>Admin Password</label>
+              <div class='input-icon-wrapper'>
+                <input id='statePass' placeholder='Password' required='required' type='password'/>
+                <i class='fa-solid fa-key'/>
+              </div>
+            </div>
+
+            <!-- OTP Simulation Section -->
+            <div class='form-group' id='stateOtpGroup' style='display:none;'>
+              <label style='color: var(--danger-red);'>Simulated OTP Code (Use: 5678)</label>
+              <div class='input-icon-wrapper'>
+                <input id='stateOtpInput' placeholder='Enter OTP 5678' type='text'/>
+                <i class='fa-solid fa-mobile-screen'/>
+              </div>
+            </div>
+
+            <button class='form-submit-btn' id='stateSubmitBtn' type='submit'>Request Master OTP</button>
+          </form>
+          <div class='status-msg' id='stateLoginStatus'/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type='text/javascript'>
+    //<![CDATA[
+    var distOtpSent = false;
+    var stateOtpSent = false;
 
     function openModal(id) { document.getElementById(id).style.display = 'flex'; }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-    // Toggle forms depending on selected Role
-    function toggleRoleFields() {
-      const role = document.getElementById("userRole").value;
-      if (role === 'member') {
-        document.getElementById("memberLoginFields").style.display = "block";
-        document.getElementById("adminLoginFields").style.display = "none";
-      } else {
-        document.getElementById("memberLoginFields").style.display = "none";
-        document.getElementById("adminLoginFields").style.display = "block";
-        document.getElementById("districtFieldGroup").style.display = (role === "district") ? "block" : "none";
-      }
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.login-tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      btn.classList.add('active');
     }
 
-    // Member Registration (Saves Member ID + Password)
-    async function handleRegistration(e) {
+    /* MEMBER REGISTRATION WITH SELF-SET PASSWORD (NO OTP) */
+    function handleRegistration(e) {
       e.preventDefault();
-      const name = document.getElementById('reg-name').value.trim();
-      const phone = document.getElementById('reg-phone').value.trim();
-      const district = document.getElementById('reg-district').value;
-      const password = document.getElementById('reg-password').value;
-      const memberId = "OAVTA-" + Math.floor(1000 + Math.random() * 9000);
+      var pass = document.getElementById("regPassword").value;
+      var confirmPass = document.getElementById("regConfirmPassword").value;
+      var statusDiv = document.getElementById("regStatus");
 
-      try {
-        await db.collection("members").doc(memberId).set({
-          memberId: memberId,
-          name: name,
-          phone: phone,
-          district: district,
-          password: password, // Custom password saved
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        alert(`Registration Successful!\nYour Member ID is: ${memberId}\nPlease use this ID and your password to log in.`);
-        document.getElementById('registrationForm').reset();
-      } catch (error) {
-        alert("Registration Failed: " + error.message);
-      }
-    }
-
-    // 1. MEMBER LOGIN (Member ID + Password)
-    async function loginMemberWithPassword() {
-      const statusDiv = document.getElementById("loginStatusMsg");
-      const memId = document.getElementById("memLoginId").value.trim();
-      const password = document.getElementById("memPassword").value;
-
-      if (!memId || !password) {
+      if (pass !== confirmPass) {
         statusDiv.style.color = "var(--danger-red)";
-        statusDiv.innerText = "Please enter Member ID and Password.";
+        statusDiv.innerHTML = "Passwords do not match!";
         return;
       }
 
-      statusDiv.style.color = "var(--secondary)";
-      statusDiv.innerText = "Authenticating...";
+      statusDiv.style.color = "var(--success-green)";
+      statusDiv.innerHTML = "Registered successfully! Set password stored.";
+    }
 
-      try {
-        const doc = await db.collection("members").doc(memId).get();
-        if (doc.exists && doc.data().password === password) {
-          sessionStorage.setItem("userRole", "member");
-          sessionStorage.setItem("memberData", JSON.stringify(doc.data()));
-          alert("Welcome " + doc.data().name + "!");
-          closeModal("portalLoginModal");
-          statusDiv.innerText = "";
+    /* MEMBER LOGIN (Password verification, No OTP) */
+    function handleMemberLogin(e) {
+      e.preventDefault();
+      var statusDiv = document.getElementById("memberLoginStatus");
+      statusDiv.style.color = "var(--success-green)";
+      statusDiv.innerHTML = "Member authenticated successfully!";
+    }
+
+    /* DISTRICT ADMIN LOGIN WITH OTP SIMULATION */
+    function handleDistrictLogin(e) {
+      e.preventDefault();
+      var statusDiv = document.getElementById("districtLoginStatus");
+      
+      if (!distOtpSent) {
+        distOtpSent = true;
+        document.getElementById("distOtpGroup").style.display = "block";
+        document.getElementById("distSubmitBtn").innerText = "Verify OTP & Login";
+        statusDiv.style.color = "var(--primary)";
+        statusDiv.innerHTML = "Simulated OTP sent to registered District Admin phone. (Use OTP: 1234)";
+      } else {
+        var otp = document.getElementById("distOtpInput").value;
+        if (otp === "1234") {
+          statusDiv.style.color = "var(--success-green)";
+          statusDiv.innerHTML = "District Admin OTP verified! Access Granted.";
         } else {
           statusDiv.style.color = "var(--danger-red)";
-          statusDiv.innerText = "Invalid Member ID or Password.";
+          statusDiv.innerHTML = "Invalid OTP code!";
         }
-      } catch (error) {
-        statusDiv.style.color = "var(--danger-red)";
-        statusDiv.innerText = "Login error: " + error.message;
       }
     }
 
-    // 2. ADMIN OTP SENDING (District / State Admins Only)
-    async function sendAdminOTP() {
-      const statusDiv = document.getElementById("loginStatusMsg");
-      const rawPhone = document.getElementById("loginPhone").value.trim();
+    /* STATE ADMIN LOGIN WITH OTP SIMULATION */
+    function handleStateAdminLogin(e) {
+      e.preventDefault();
+      var statusDiv = document.getElementById("stateLoginStatus");
 
-      if (!rawPhone) {
-        statusDiv.style.color = "var(--danger-red)";
-        statusDiv.innerText = "Please enter mobile number.";
-        return;
-      }
-
-      const formattedPhone = rawPhone.startsWith('+') ? rawPhone : '+91' + rawPhone;
-      statusDiv.style.color = "var(--secondary)";
-      statusDiv.innerText = "Sending Admin OTP to " + formattedPhone + "...";
-
-      try {
-        confirmationResultObj = await firebase.auth().signInWithPhoneNumber(formattedPhone, window.recaptchaVerifier);
-        statusDiv.style.color = "var(--success-green)";
-        statusDiv.innerText = "OTP sent! Enter 6-digit code below.";
-        
-        document.getElementById("otpSection").style.display = "block";
-        document.getElementById("sendOtpBtn").style.display = "none";
-      } catch (error) {
-        statusDiv.style.color = "var(--danger-red)";
-        statusDiv.innerText = "Error: " + error.message;
-        window.recaptchaVerifier.render().then(widgetId => grecaptcha.reset(widgetId));
-      }
-    }
-
-    // 3. ADMIN OTP VERIFICATION
-    async function verifyAdminOTP() {
-      const statusDiv = document.getElementById("loginStatusMsg");
-      const otpCode = document.getElementById("loginOtp").value.trim();
-      const role = document.getElementById("userRole").value;
-
-      if (!otpCode || otpCode.length !== 6) {
-        statusDiv.style.color = "var(--danger-red)";
-        statusDiv.innerText = "Please enter a valid 6-digit OTP.";
-        return;
-      }
-
-      statusDiv.style.color = "var(--secondary)";
-      statusDiv.innerText = "Verifying Admin Permissions...";
-
-      try {
-        const result = await confirmationResultObj.confirm(otpCode);
-        const authPhone = result.user.phoneNumber;
-
-        if (role === 'district') {
-          const selectedDistrict = document.getElementById("distId").value;
-          if (!selectedDistrict) throw new Error("Please select a district.");
-
-          const doc = await db.collection("district_admins").doc(selectedDistrict).get();
-          if (doc.exists && isPhoneMatch(doc.data().phone, authPhone)) {
-            sessionStorage.setItem("userRole", "district");
-            sessionStorage.setItem("adminDistrict", selectedDistrict);
-            window.location.href = "admin.html";
-          } else {
-            throw new Error("Phone number not authorized for " + selectedDistrict + " district.");
-          }
-        } else if (role === 'state') {
-          const doc = await db.collection("state_admins").doc(authPhone).get();
-          if (doc.exists) {
-            sessionStorage.setItem("userRole", "state");
-            window.location.href = "admin.html";
-          } else {
-            throw new Error("Phone number not authorized as State Admin.");
-          }
+      if (!stateOtpSent) {
+        stateOtpSent = true;
+        document.getElementById("stateOtpGroup").style.display = "block";
+        document.getElementById("stateSubmitBtn").innerText = "Verify OTP & Master Access";
+        statusDiv.style.color = "var(--primary)";
+        statusDiv.innerHTML = "Simulated Master OTP sent to State Admin phone. (Use OTP: 5678)";
+      } else {
+        var otp = document.getElementById("stateOtpInput").value;
+        if (otp === "5678") {
+          statusDiv.style.color = "var(--success-green)";
+          statusDiv.innerHTML = "State Master OTP verified! Access Granted.";
+        } else {
+          statusDiv.style.color = "var(--danger-red)";
+          statusDiv.innerHTML = "Invalid Master OTP code!";
         }
-      } catch (error) {
-        statusDiv.style.color = "var(--danger-red)";
-        statusDiv.innerText = error.message;
       }
     }
-
-    function isPhoneMatch(dbPhone, authPhone) {
-      const cleanDb = dbPhone.replace(/\D/g, '').slice(-10);
-      const cleanAuth = authPhone.replace(/\D/g, '').slice(-10);
-      return cleanDb === cleanAuth;
-    }
+    //]]>
   </script>
 </body>
 </html>
