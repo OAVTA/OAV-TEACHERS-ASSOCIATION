@@ -1,2670 +1,512 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html>
-<html xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+<html lang="en">
 <head>
-  <meta charset='UTF-8'/>
-  <meta content='width=device-width, initial-scale=1.0' name='viewport'/>
-  <title>OAVTA</title>
-  
-  <!-- FontAwesome Icons -->
-  <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' rel='stylesheet'/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OAVTA Member Portal</title>
+  <style>
+    :root { --primary: #1e3a8a; --secondary: #2563eb; --bg: #f8fafc; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #333; }
+    .container { max-width: 950px; margin: auto; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    h1, h2, h3 { color: var(--primary); }
+    .nav-tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; }
+    .tab-btn { padding: 10px 20px; border: none; background: #e2e8f0; cursor: pointer; border-radius: 5px 5px 0 0; font-weight: bold; }
+    .tab-btn.active { background: var(--primary); color: white; }
+    .panel { display: none; }
+    .panel.active { display: block; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; font-weight: 600; }
+    input, select { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 4px; box-sizing: border-box; }
+    button { background: var(--secondary); color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin-top: 10px; }
+    button:hover { opacity: 0.9; }
+    .btn-secondary { background: #475569; }
+    .alert { padding: 10px; border-radius: 4px; margin-bottom: 15px; }
+    .alert-success { background: #dcfce7; color: #166534; }
+    .alert-danger { background: #fee2e2; color: #991b1b; }
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    th, td { border: 1px solid #cbd5e1; padding: 10px; text-align: left; }
+    th { background: #f1f5f9; }
+  </style>
 
-  <b:skin><![CDATA[
-    :root {
-      --primary: #002e6e;      /* SBI YONO Deep Navy */
-      --secondary: #001f4d;    /* Dark Header Navy */
-      --accent: #00a8cc;       /* Vibrant Cyan Accent */
-      --accent-hover: #008ba3;
-      --light-bg: #f3f6f9;
-      --text-dark: #2b2b2b;
-      --card-border: #cbd5e0;
-      --success-green: #28a745;
-      --danger-red: #d9534f;
-      --danger-hover: #c9302c;
-    }
+  <!-- Firebase Modular SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-    * { box-sizing: border-box; }
-    body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      margin: 0; padding: 0;
-      background-color: var(--light-bg);
-      color: var(--text-dark);
-      overflow-x: hidden;
-    }
+    // Your exact Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBgVnOxo6wb6Ahrs2dqhVwgrqCFtZQRlRU",
+      authDomain: "oavta-28105.firebaseapp.com",
+      databaseURL: "https://oavta-28105-default-rtdb.firebaseio.com",
+      projectId: "oavta-28105",
+      storageBucket: "oavta-28105.firebasestorage.app",
+      messagingSenderId: "123510841027",
+      appId: "1:123510841027:web:ba924a6bd865531cab0c76",
+      measurementId: "G-6PZQR5J90C"
+    };
 
-    /* HEADER BANNER */
-    .header-banner {
-      background: linear-gradient(135deg, var(--secondary), var(--primary));
-      color: #ffffff;
-      padding: 15px 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 4px solid var(--accent);
-      flex-wrap: wrap;
-      gap: 15px;
-    }
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
 
-    .header-logo {
-      display: flex;
-      align-items: center;
-      flex: 1;
-      min-width: 180px;
-    }
-    .header-logo img {
-      max-height: 105px;
-      width: auto;
-      object-fit: contain;
-      border-radius: 8px;
-    }
+    // All 30 Districts and Blocks mapping of Odisha
+    const districtBlockData = {
+      "Angul": ["Angul", "Athamallik", "Baniarpal", "Chhendipada", "Kaniha", "Kishorenagar", "Pallahara", "Talcher"],
+      "Balangir": ["Agalpur", "Balangir", "Belpara", "Bhangamunda", "Deogaon", "Gudvella", "Khaprakhol", "Loisingha", "Muribahal", "Patnagarh", "Puintala", "Saintala", "Tituraghar", "Tushura"],
+      "Balasore": ["Bahanaga", "Balasore", "Basta", "Bhanjapur", "Bhograi", "Jaleswar", "Khaira", "Oupada", "Remuna", "Simulia", "Soro", "Soro Rural"],
+      "Bargarh": ["Attabira", "Bargarh", "Barpali", "Bheden", "Bijepur", "Bhatli", "Gaisilet", "Jharbandh", "Padampur", "Paikmal", "Sohela", "Ambabhona"],
+      "Bhadrak": ["Bhadrak", "Bhadrak Rural", "Bhandaripokhari", "B Dhamnagar", "Bonth", "Chandbali", "Dhamnagar", "Tihidi"],
+      "Boudh": ["Boudh", "Harbhanga", "Kantamal"],
+      "Cuttack": ["Athagarh", "Banki", "Banki-Dampada", "Baramba", "Barang", "Cuttack Sadar", "Kalarabhanga", "Kantapada", "Mahanga", "Narasinghpur", "Niali", "Nischintakoili", "Salepur", "Tangi-Choudwar"],
+      "Deogarh": ["Barkote", "Deogarh", "Reamal", "Tileibani"],
+      "Dhenkanal": ["Bhuban", "Dhenkanal", "Gondia", "Hindol", "Kamakhyanagar", "Kankadahad", "Odalanga", "Parjang"],
+      "Gajapati": ["Goszani", "Gumma", "Kashinagara", "Mohana", "Nuagada", "R Udayagiri", "Rayagada"],
+      "Ganjam": ["Aska", "Beguniapada", "Bellaguntha", "Bhanjanagar", "Buguda", "Chhatrapur", "Chikiti", "Dharakote", "Digapahandi", "Ganjam", "Hinjilicut", "Jagannathprasad", "Kabisuryanagar", "Khallikote", "Kukudakhandi", "Patrapur", "Polasara", "Purushottampur", "Sanakhemundi", "Sheragada", "Surada"],
+      "Jagatsinghpur": ["Balikuda", "Biridi", "Erasama", "Jagatsinghpur", "Kujang", "Naugaon", "Raghunathpur", "Tirtol"],
+      "Jajpur": ["Bari", "Binjharpur", "Danagadi", "Dharmasala", "Jajpur", "Korai", "Korei", "Rasulpur", "Sukinda"],
+      "Jharsuguda": ["Jharsuguda", "Kirmira", "Kolabira", "Laikera", "Lakhanpur"],
+      "Kalahandi": ["Bhawanipatna", "Dharamgarh", "Golamunda", "Jaipatna", "Junagarh", "Karlamunda", "Kesinga", "Kokusara", "Lanjigarh", "M. Rampur", "Narla", "Thiamul Rampur"],
+      "Kandhamal": ["Baliguda", "Chakapad", "Daringbadi", "G. Udayagiri", "K. Nuagaon", "Khajuripada", "Kotagarh", "Phiringia", "Phulbani", "Raikia", "Tikabali"],
+      "Kendrapara": ["Aul", "Derabish", "Garadapur", "Kendrapara", "Mahakalapada", "Marshaghai", "Pattamundai", "Rajkanika", "Rajnagar"],
+      "Kendujhar (Keonjhar)": ["Anandapur", "Banspal", "Champua", "Ghatagaon", "Ghashipura", "Harichandanpur", "Jhumpura", "Joda", "Keonjhar", "Patana", "Saharapada", "Telkoi"],
+      "Khordha": ["Balianta", "Balipatna", "Banapur", "Begunia", "Bhubaneswar", "Bolagarh", "Chilika", "Jatni", "Khordha", "Tangi"],
+      "Koraput": ["Bandhugaon", "Boipariguda", "Borigumma", "Dasamantapur", "Damanjodi", "Jeypore", "Kotorapad", "Koraput", "Kundra", "Lamtaput", "Laxmipur", "Nandapur", "Narayapatna", "Pottangi", "Semiliguda"],
+      "Malkangiri": ["Chitrakonda", "Kalimela", "Khairaput", "Kudumulu Guma", "Malkangiri", "Mathili", "Podia"],
+      "Mayurbhanj": ["Badasahi", "Bahalda", "Bangriposi", "Baripada", "Betnoti", "Bijatala", "Bisoi", "Gopabandhunagar", "Jamda", "Joshipur", "Kaptipada", "Karanjia", "Khunta", "Kuliana", "Kusumi", "Morada", "Rairangpur", "Raruan", "Rasgovindpur", "Samakhunta", "Sarangada", "Suliapada", "Thakurmunda", "Tiring", "Udala"],
+      "Nabarangpur": ["Chandahandi", "Dabugam", "Jharigam", "KOSAGUMUDA", "Nabarangpur", "Nandahandi", "Papadahandi", "Raighar", "Tentulikhunti", "Umerkote"],
+      "Nayagarh": ["Bhapur", "Daspalla", "Gania", "Khandapada", "Nayagarh", "Odagaon", "Ranpur", "Tenkalo"],
+      "Nuapada": ["Boden", "Khariar", "Komna", "Nuapada", "Sinapali"],
+      "Puri": ["Astranga", "Brahmagiri", "Delanga", "Gop", "Kanas", "Krushnaprasad", "Nimapara", "Pipili", "Puri Sadar", "Satyabadi"],
+      "Rayagada": ["Bissam Cuttack", "Chandrapur", "Gudari", "Gunupur", "Kalyansinghpur", "Kashipur", "Kolnara", "Muniguda", "Padmapur", "Ramanaguda", "Rayagada"],
+      "Sambalpur": ["Bamra", "Jujomura", "Kuchar", "Maneswar", "Naktideul", "Rairakhol", "Rengali", "Sambalpur Sadar"],
+      "Subarnapur (Sonepur)": ["Biramaharajpur", "Dunguripali", "Sonepur", "Tarbha", "Ullunda"],
+      "Sundargarh": ["Bargaon", "Bisra", "Bonai", "Guraundia", "Hemgir", "Kutra", "Lahunipara", "Lathikata", "Lephripara", "Nuwagaon", "Rajgangpur", "Subdega", "Sundargarh", "Tangarapali"]
+    };
 
-    .header-center {
-      text-align: center;
-      flex: 2;
-      min-width: 450px;
-    }
-    .header-center h1 {
-      margin: 0;
-      font-size: 40px;
-      text-transform: uppercase;
-      letter-spacing: 3.5px;
-      font-weight: 900;
-    }
-    .header-center p {
-      margin: 6px 0 0 0;
-      font-size: 14px;
-      color: #80d8ff;
-      font-weight: 600;
-    }
+    // Helper: Load districts into a dropdown element
+    window.populateDistricts = function(distSelectId, blockSelectId) {
+      const distSelect = document.getElementById(distSelectId);
+      distSelect.innerHTML = '<option value="">-- Select District --</option>';
+      Object.keys(districtBlockData).forEach(dist => {
+        distSelect.innerHTML += `<option value="${dist}">${dist}</option>`;
+      });
 
-    .header-contact {
-      text-align: right;
-      flex: 1;
-      min-width: 200px;
-      font-size: 13px;
-      line-height: 1.5;
-      color: #e0e0e0;
-    }
-    .header-contact a { color: #80d8ff; text-decoration: none; font-weight: 600; }
+      distSelect.addEventListener('change', function() {
+        populateBlocks(this.value, blockSelectId);
+      });
+    };
 
-    @media (max-width: 768px) {
-      .header-banner { flex-direction: column; text-align: center; }
-      .header-contact { text-align: center; }
-      .header-logo { justify-content: center; }
-    }
-
-    /* NAVBAR */
-    .navbar {
-      background-color: var(--primary);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-      padding: 0 20px;
-    }
-    .nav-container {
-      max-width: 1250px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 0 auto;
-    }
-    .nav-menu-group {
-      display: flex;
-      align-items: center;
-      list-style: none;
-      margin: 0; padding: 0;
-      flex-wrap: wrap;
-    }
-    .nav-link {
-      display: block;
-      color: #ffffff;
-      padding: 15px 18px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 14px;
-      text-transform: uppercase;
-      transition: background 0.3s ease;
-      cursor: pointer;
-    }
-    .nav-link:hover { background-color: rgba(255, 255, 255, 0.1); color: #80d8ff; }
-
-    .nav-actions-group { display: flex; align-items: center; gap: 10px; }
-    .nav-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 16px;
-      border-radius: 4px;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 13px;
-      text-transform: uppercase;
-      cursor: pointer;
-      border: none;
-    }
-    .btn-register { background-color: var(--success-green); color: #ffffff !important; }
-    .btn-register:hover { background-color: #218838; }
-
-    .btn-login { background-color: var(--accent); color: #ffffff !important; }
-    .btn-login:hover { background-color: #008ba3; }
-
-    /* PHOTO SLIDER WITH CROSS-DISSOLVE (FADE) & DOTS */
-    .full-width-slider {
-      width: 100vw;
-      height: 350px;
-      position: relative;
-      overflow: hidden;
-      background: #111;
-      margin-left: calc(-50vw + 50%);
-    }
-    .slider-container {
-      position: relative;
-      width: 100%;
-      height: 100%;
-    }
-    .slide {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100%;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 1.2s ease-in-out, visibility 1.2s ease-in-out;
-      z-index: 1;
-    }
-    .slide.active {
-      opacity: 1;
-      visibility: visible;
-      z-index: 2;
-    }
-    .slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-    .slide-overlay {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      background: linear-gradient(transparent, rgba(0, 31, 77, 0.95));
-      color: #ffffff; padding: 25px 40px;
-    }
-    .slide-overlay h2 { margin: 0 0 6px 0; font-size: 22px; color: #80d8ff; }
-
-    /* Photo Slider Nav Dots */
-    .photo-slider-dots {
-      position: absolute;
-      bottom: 15px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 10px;
-      z-index: 10;
-    }
-    .photo-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.4);
-      border: 2px solid #ffffff;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    .photo-dot.active {
-      background: var(--accent);
-      width: 28px;
-      border-radius: 10px;
-      border-color: var(--accent);
-      box-shadow: 0 0 8px rgba(0, 168, 204, 0.8);
-    }
-
-    .ticker-bar {
-      background: #1a1a1a;
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      height: 42px;
-      overflow: hidden;
-      border-bottom: 2px solid var(--accent);
-    }
-    .ticker-title {
-      background: var(--accent);
-      padding: 0 18px;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      font-weight: bold;
-      font-size: 13px;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-    marquee { font-size: 14px; font-weight: 600; color: #80d8ff; }
-
-    /* DASHBOARD SECTION */
-    .uni-dashboard {
-      max-width: 1250px;
-      margin: 30px auto;
-      padding: 0 20px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 25px;
-    }
-    .dashboard-card {
-      background: #ffffff;
-      border: 1px solid var(--card-border);
-      border-radius: 8px;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      height: 560px;
-    }
-    .dashboard-card-header {
-      background: var(--primary);
-      color: #ffffff;
-      padding: 12px 18px;
-      font-size: 16px;
-      font-weight: 700;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 3px solid var(--accent);
-    }
-    .dashboard-card-body {
-      padding: 18px;
-      overflow-y: auto;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* 3D ROTATING LEADERSHIP STYLES */
-    .leadership-3d-wrapper {
-      position: relative;
-      width: 100%;
-      flex: 1;
-      min-height: 400px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      perspective: 1000px;
-      overflow: hidden;
-      background: radial-gradient(circle at center, rgba(0, 168, 204, 0.05) 0%, rgba(243, 246, 249, 0) 70%);
-      border-radius: 10px;
-    }
-
-    .leadership-stage {
-      position: relative;
-      width: 100%;
-      height: 380px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .leader-card-item {
-      position: absolute;
-      width: 270px;
-      background: #ffffff;
-      border: 1px solid #eef2f5;
-      border-radius: 16px;
-      padding: 22px 18px;
-      text-align: center;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-      transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
-      opacity: 0;
-      pointer-events: none;
-      transform: scale(0.6) translateX(0) translateZ(-100px);
-      z-index: 1;
-      user-select: none;
-    }
-
-    .leader-card-item.active {
-      opacity: 1;
-      pointer-events: auto;
-      transform: scale(1.08) translateX(0) translateZ(0);
-      z-index: 10;
-      border: 2px solid var(--accent);
-      box-shadow: 0 18px 40px rgba(0, 46, 110, 0.2);
-    }
-
-    .leader-card-item.prev {
-      opacity: 0.72;
-      pointer-events: auto;
-      transform: scale(0.82) translateX(-150px) translateZ(-50px);
-      z-index: 5;
-      cursor: pointer;
-      filter: blur(0.5px);
-    }
-
-    .leader-card-item.next {
-      opacity: 0.72;
-      pointer-events: auto;
-      transform: scale(0.82) translateX(150px) translateZ(-50px);
-      z-index: 5;
-      cursor: pointer;
-      filter: blur(0.5px);
-    }
-
-    .leader-card-item.active:hover {
-      transform: scale(1.12) translateY(-6px) translateZ(10px);
-      box-shadow: 0 22px 45px rgba(0, 168, 204, 0.3);
-    }
-
-    .leader-card-item.prev:hover, .leader-card-item.next:hover {
-      opacity: 0.92;
-      filter: blur(0);
-    }
-
-    .leader-card-item img {
-      width: 140px;
-      height: 140px;
-      object-fit: cover;
-      border-radius: 50%;
-      border: 4px solid var(--accent);
-      margin: 0 auto 12px auto;
-      display: block;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
-      transition: transform 0.3s ease;
-    }
-
-    .leader-card-item.active img {
-      width: 155px;
-      height: 155px;
-    }
-
-    .leader-card-name {
-      font-size: 16px;
-      font-weight: 800;
-      color: var(--text-dark);
-      margin: 6px 0 4px 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .leader-card-role {
-      display: inline-block;
-      font-size: 12px;
-      font-weight: 700;
-      padding: 5px 12px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, var(--secondary), var(--primary));
-      color: #ffffff;
-      margin-bottom: 12px;
-    }
-
-    .leader-card-contact {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 6px;
-    }
-
-    .leader-contact-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: var(--light-bg);
-      color: var(--primary);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      font-size: 13px;
-      transition: all 0.25s ease;
-    }
-    .leader-contact-icon:hover {
-      background: var(--accent);
-      color: #ffffff;
-      transform: scale(1.15);
-    }
-
-    .carousel-nav-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: rgba(0, 46, 110, 0.85);
-      color: #ffffff;
-      border: none;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 20;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    }
-    .carousel-nav-btn:hover {
-      background: var(--accent);
-      transform: translateY(-50%) scale(1.1);
-    }
-    .carousel-nav-btn.prev-btn { left: 8px; }
-    .carousel-nav-btn.next-btn { right: 8px; }
-
-    /* CONNECTED DOT PROGRESS BAR TRAIL FOR LEADERSHIP BOARD */
-    .carousel-loader-dots {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-top: 14px;
-      height: 20px;
-    }
-    .dots-line-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-    .loader-dot-node {
-      position: relative;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: #cbd5e0;
-      cursor: pointer;
-      z-index: 2;
-      transition: background 0.4s ease, transform 0.3s ease;
-    }
-    .loader-dot-node.active {
-      background: var(--accent);
-      transform: scale(1.25);
-      box-shadow: 0 0 8px var(--accent);
-    }
-    .loader-dot-node.completed {
-      background: var(--primary);
-    }
-    .dot-connecting-line {
-      width: 45px;
-      height: 4px;
-      background: #cbd5e0;
-      position: relative;
-      z-index: 1;
-      overflow: hidden;
-    }
-    .dot-progress-fill {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--primary), var(--accent));
-    }
-    .dot-connecting-line.active-fill .dot-progress-fill {
-      animation: fillLine 3.5s linear forwards;
-    }
-    .dot-connecting-line.completed-fill .dot-progress-fill {
-      width: 100%;
-    }
-
-    @keyframes fillLine {
-      0% { width: 0%; }
-      100% { width: 100%; }
-    }
-
-    /* ANNOUNCEMENT BOARD */
-    .notice-item { 
-      display: flex; 
-      align-items: flex-start; 
-      gap: 12px; 
-      padding: 12px 0; 
-      border-bottom: 1px solid #eee; 
-    }
-    .notice-date-badge { 
-      background: var(--primary); 
-      color: #fff; 
-      min-width: 50px; 
-      text-align: center; 
-      border-radius: 4px; 
-      overflow: hidden; 
-    }
-    .notice-date-badge .month { 
-      background: var(--accent); 
-      font-size: 9px; 
-      font-weight: 800; 
-      padding: 2px 0; 
-      text-transform: uppercase;
-    }
-    .notice-date-badge .day { 
-      font-size: 16px; 
-      font-weight: 800; 
-      padding: 3px 0; 
-    }
-    .notice-content { flex: 1; }
-    .notice-title { 
-      font-size: 13px; 
-      font-weight: 600; 
-      color: #111; 
-      text-decoration: none; 
-      display: block;
-    }
-    .notice-title:hover { color: var(--accent); }
-    .new-badge {
-      background: var(--danger-red);
-      color: #ffffff;
-      font-size: 9px;
-      font-weight: 800;
-      padding: 2px 6px;
-      border-radius: 4px;
-      margin-left: 6px;
-      text-transform: uppercase;
-      animation: badgeBlink 1.2s infinite ease-in-out;
-    }
-
-    @keyframes badgeBlink {
-      0% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.95); }
-      100% { opacity: 1; transform: scale(1); }
-    }
-
-    /* MODALS & PROFESSIONAL UNIVERSITY DESIGN ENHANCEMENTS */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.65);
-      z-index: 2000;
-      justify-content: center;
-      align-items: center;
-      backdrop-filter: blur(4px);
-    }
-    .modal-box {
-      background: #ffffff;
-      width: 90%;
-      max-width: 650px;
-      border-radius: 12px;
-      position: relative;
-      box-shadow: 0 20px 40px rgba(0, 46, 110, 0.25);
-      max-height: 90vh;
-      overflow-y: auto;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      border: 1px solid rgba(0, 168, 204, 0.2);
-    }
-
-    .modal-header-fixed {
-      position: sticky;
-      top: 0;
-      background: linear-gradient(135deg, var(--secondary), var(--primary));
-      color: #ffffff;
-      z-index: 10;
-      padding: 18px 25px;
-      border-bottom: 3px solid var(--accent);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    .modal-header-fixed .modal-title {
-      margin: 0;
-      color: #ffffff;
-      font-size: 18px;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    
-    .modal-close {
-      font-size: 22px;
-      cursor: pointer;
-      color: #80d8ff;
-      font-weight: bold;
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.25s ease;
-      background: rgba(255,255,255,0.1);
-    }
-    .modal-close:hover {
-      background-color: var(--danger-red);
-      color: #ffffff !important;
-      transform: rotate(90deg);
-    }
-
-    .modal-body-content { padding: 25px; background: #fafbfc; }
-
-    /* PROFESSIONAL INPUT WITH FA-ICON WRAPPERS */
-    .form-grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
-    @media (max-width: 580px) {
-      .form-grid-2 { grid-template-columns: 1fr; }
-    }
-
-    .form-group { margin-bottom: 18px; }
-    .form-group label {
-      display: block;
-      font-size: 11px;
-      font-weight: 700;
-      margin-bottom: 6px;
-      color: var(--primary);
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-    }
-    
-    .input-icon-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-    .input-icon-wrapper i {
-      position: absolute;
-      left: 14px;
-      color: #94a3b8;
-      font-size: 14px;
-      transition: color 0.3s ease;
-      pointer-events: none;
-    }
-    .input-icon-wrapper input, .input-icon-wrapper select {
-      width: 100%;
-      padding: 12px 14px 12px 42px;
-      border: 1.5px solid #cbd5e0;
-      border-radius: 8px;
-      font-size: 13.5px;
-      color: #1e293b;
-      outline: none;
-      background-color: #ffffff;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-      transition: all 0.25s ease;
-    }
-    .input-icon-wrapper input:focus, .input-icon-wrapper select:focus {
-      border-color: var(--accent);
-      background-color: #ffffff;
-      box-shadow: 0 0 0 4px rgba(0, 168, 204, 0.15);
-    }
-    .input-icon-wrapper input:focus + i, .input-icon-wrapper select:focus + i {
-      color: var(--accent);
-    }
-
-    .form-submit-btn {
-      width: 100%;
-      background: linear-gradient(135deg, var(--secondary), var(--primary));
-      color: #fff;
-      border: none;
-      padding: 13px;
-      font-weight: 700;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-top: 10px;
-      font-size: 14px;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      transition: all 0.25s ease;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      box-shadow: 0 4px 12px rgba(0, 46, 110, 0.2);
-    }
-    .form-submit-btn:hover {
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      box-shadow: 0 6px 16px rgba(0, 168, 204, 0.3);
-      transform: translateY(-1px);
-    }
-    .form-submit-btn:active { transform: translateY(0); }
-
-    /* PROFESSIONAL LOGIN TAB BUTTONS */
-    .login-tabs {
-      display: flex;
-      gap: 6px;
-      background: #e2e8f0;
-      padding: 5px;
-      border-radius: 10px;
-      margin-bottom: 22px;
-      border: 1px solid #cbd5e0;
-    }
-    .login-tab-btn {
-      flex: 1;
-      padding: 11px 10px;
-      text-align: center;
-      background: transparent;
-      color: #475569;
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 12.5px;
-      border: none;
-      border-radius: 7px;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      text-transform: uppercase;
-    }
-    .login-tab-btn:hover { background: rgba(255,255,255,0.6); color: var(--primary); }
-    .login-tab-btn.active {
-      background: #ffffff;
-      color: var(--primary);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      border: 1px solid #cbd5e0;
-    }
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
-
-    /* STATE ADMIN VIEW CONTROL BAR */
-    .state-ctrl-bar {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 18px;
-      flex-wrap: wrap;
-    }
-    .state-ctrl-btn {
-      flex: 1;
-      min-width: 180px;
-      padding: 11px 16px;
-      font-weight: 700;
-      font-size: 13px;
-      border-radius: 6px;
-      border: 1.5px solid var(--primary);
-      background: #ffffff;
-      color: var(--primary);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: all 0.25s ease;
-    }
-    .state-ctrl-btn:hover { background: #ebf8ff; }
-    .state-ctrl-btn.active {
-      background: var(--primary);
-      color: #ffffff;
-      box-shadow: 0 4px 12px rgba(0,46,110,0.2);
-    }
-
-    .state-action-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .search-input-wrapper {
-      position: relative;
-      flex: 1;
-      min-width: 250px;
-    }
-    .search-input-wrapper input {
-      width: 100%;
-      padding: 9px 12px 9px 36px;
-      border: 1.5px solid var(--card-border);
-      border-radius: 6px;
-      font-size: 13px;
-      outline: none;
-    }
-    .search-input-wrapper i {
-      position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8;
-    }
-
-    .btn-download-excel {
-      background: var(--success-green);
-      color: #fff;
-      border: none;
-      padding: 9px 16px;
-      font-size: 13px;
-      font-weight: 700;
-      border-radius: 6px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .btn-download-excel:hover { background: #218838; }
-
-    /* DATA TABLE STYLING */
-    .admin-table-container {
-      max-height: 380px;
-      overflow-y: auto;
-      overflow-x: auto;
-      border: 1px solid #cbd5e0;
-      border-radius: 6px;
-      background: #ffffff;
-    }
-    .admin-data-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 12px;
-      text-align: left;
-    }
-    .admin-data-table th {
-      background: var(--primary);
-      color: #ffffff;
-      padding: 10px 12px;
-      position: sticky;
-      top: 0;
-      z-index: 2;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-    .admin-data-table td {
-      padding: 9px 12px;
-      border-bottom: 1px solid #e2e8f0;
-      color: #334155;
-      white-space: nowrap;
-    }
-    .admin-data-table tr:hover { background-color: #f8fafc; }
-
-    /* MEMBERSHIP ID CARD DESIGN */
-    .membership-card-box {
-      border: 2px solid var(--primary);
-      border-radius: 12px;
-      background: #ffffff;
-      position: relative;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-      margin-top: 15px;
-      overflow: hidden;
-    }
-    .card-header-inner {
-      background: linear-gradient(135deg, var(--secondary), var(--primary));
-      color: #ffffff;
-      padding: 12px 10px;
-      text-align: center;
-      border-bottom: 3px solid var(--accent);
-      position: relative;
-    }
-    .card-header-inner h4 {
-      margin: 0;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.2px;
-      text-transform: uppercase;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .card-header-inner p {
-      margin: 3px 0 0 0;
-      font-size: 10px;
-      color: #80d8ff;
-      font-weight: 700;
-      letter-spacing: 1px;
-    }
-    .card-body-inner { padding: 16px; background: #ffffff; }
-    .id-top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #f0f7ff;
-      border: 1px dashed var(--accent);
-      padding: 8px 12px;
-      border-radius: 8px;
-      margin-bottom: 12px;
-    }
-    .id-number-container { text-align: right; }
-    .id-label {
-      font-size: 9px;
-      font-weight: 800;
-      color: #666;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .id-value-large {
-      font-size: 20px;
-      font-weight: 900;
-      color: var(--accent);
-      letter-spacing: 1px;
-      line-height: 1.1;
-    }
-    .name-container {
-      margin-bottom: 12px;
-      border-bottom: 2px solid #edf2f7;
-      padding-bottom: 8px;
-    }
-    .name-value-large {
-      font-size: 18px;
-      font-weight: 800;
-      color: var(--primary);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-top: 2px;
-    }
-    .details-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px 16px;
-      font-size: 12px;
-    }
-    .detail-item { display: flex; flex-direction: column; }
-    .detail-item .lbl {
-      font-size: 9px;
-      font-weight: 700;
-      color: #718096;
-      text-transform: uppercase;
-      margin-bottom: 2px;
-    }
-    .detail-item .val {
-      font-size: 12px;
-      font-weight: 600;
-      color: #2d3748;
-      word-break: break-word;
-    }
-    .card-footer-bar {
-      background: #f8fafc;
-      border-top: 1px solid #e2e8f0;
-      padding: 8px 12px;
-      text-align: center;
-      font-size: 9px;
-      color: #718096;
-      font-weight: 600;
-    }
-
-    .status-msg { margin-top: 10px; font-size: 13px; font-weight: bold; text-align: center; }
-
-    .info-note-box {
-      background-color: #ebf8ff;
-      border-left: 4px solid var(--accent);
-      padding: 10px 12px;
-      margin-bottom: 15px;
-      font-size: 12px;
-      color: #2b6cb0;
-      border-radius: 0 4px 4px 0;
-    }
-
-    /* MODERN TABLE / FORM CONTAINER STYLING FOR MEMBER & DISTRICT EDIT SECTIONS */
-    #memberEditForm, #dignitariesInputContainer {
-      background: #ffffff;
-      border-radius: 12px;
-      padding: 22px;
-      border: 1px solid #e2e8f0;
-      box-shadow: 0 8px 24px rgba(0, 46, 110, 0.06);
-    }
-
-    #memberEditForm .form-group input, 
-    #memberEditForm .form-group select,
-    #dignitariesInputContainer .form-group input {
-      width: 100%;
-      padding: 11px 14px;
-      border: 1.5px solid #cbd5e0;
-      border-radius: 8px;
-      font-size: 13.5px;
-      color: #1e293b;
-      outline: none;
-      background-color: #ffffff;
-      box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);
-      transition: all 0.25s ease-in-out;
-    }
-
-    #memberEditForm .form-group input:focus, 
-    #memberEditForm .form-group select:focus,
-    #dignitariesInputContainer .form-group input:focus {
-      border-color: var(--accent);
-      background-color: #ffffff;
-      box-shadow: 0 0 0 4px rgba(0, 168, 204, 0.15);
-    }
-
-    #memberEditForm .form-group input[disabled], 
-    #memberEditForm .form-group input[readonly] {
-      background-color: #f1f5f9;
-      color: #64748b;
-      border-color: #e2e8f0;
-      cursor: not-allowed;
-      font-weight: 600;
-    }
-
-    /* DIGNITARY EXECUTIVE CARDS MODERN STYLING */
-    #dignitariesInputContainer::-webkit-scrollbar {
-      width: 6px;
-    }
-    #dignitariesInputContainer::-webkit-scrollbar-track {
-      background: #f1f5f9;
-      border-radius: 8px;
-    }
-    #dignitariesInputContainer::-webkit-scrollbar-thumb {
-      background: #cbd5e0;
-      border-radius: 8px;
-    }
-    #dignitariesInputContainer::-webkit-scrollbar-thumb:hover {
-      background: var(--accent);
-    }
-
-    .dignitary-entry-box {
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      padding: 18px;
-      border-radius: 10px;
-      margin-bottom: 16px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
-      transition: all 0.3s ease;
-      position: relative;
-    }
-
-    .dignitary-entry-box:hover {
-      border-color: var(--accent);
-      box-shadow: 0 8px 20px rgba(0, 168, 204, 0.12);
-      transform: translateY(-2px);
-    }
-
-    .dignitary-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-      padding: 10px 14px;
-      background: linear-gradient(135deg, var(--secondary), var(--primary));
-      border-radius: 8px;
-      color: #ffffff;
-      box-shadow: 0 3px 8px rgba(0, 46, 110, 0.2);
-    }
-
-    .dignitary-card-header strong {
-      color: #ffffff;
-      font-size: 13px;
-      letter-spacing: 0.4px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .btn-danger-sm {
-      background: var(--danger-red);
-      color: #fff;
-      border: none;
-      padding: 5px 12px;
-      font-size: 11px;
-      font-weight: 700;
-      border-radius: 6px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      transition: all 0.2s ease;
-      box-shadow: 0 2px 6px rgba(217, 83, 79, 0.3);
-    }
-    .btn-danger-sm:hover { 
-      background: var(--danger-hover); 
-      transform: scale(1.03);
-    }
-
-    @media (max-width: 900px) {
-      .uni-dashboard { grid-template-columns: 1fr; }
-    }
-
-    /* PRINT STYLES: DISPLAY ONLY ID CARD ON A SINGLE PAGE */
-    @media print {
-      @page {
-        size: auto;
-        margin: 0;
+    // Helper: Load blocks dynamically based on district selected
+    window.populateBlocks = function(selectedDist, blockSelectId) {
+      const blockSelect = document.getElementById(blockSelectId);
+      blockSelect.innerHTML = '<option value="">-- Select Block --</option>';
+      if (selectedDist && districtBlockData[selectedDist]) {
+        districtBlockData[selectedDist].forEach(block => {
+          blockSelect.innerHTML += `<option value="${block}">${block}</option>`;
+        });
       }
-      body * {
-        visibility: hidden !important;
+    };
+
+    // Initialize all district/block dropdowns on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      populateDistricts('regDist', 'regBlock');
+      populateDistricts('editDist', 'editBlock');
+      populateDistricts('pDist', 'pBlock');
+      populateDistricts('publicDistSelect', null);
+    });
+
+    // Tab Navigation
+    window.showTab = function(tabName, evt) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(tabName).classList.add('active');
+      if (evt) evt.target.classList.add('active');
+    };
+
+    // 1. MEMBER REGISTRATION
+    document.getElementById('regForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const msg = document.getElementById('regMsg');
+      msg.innerHTML = '';
+
+      const name = document.getElementById('regName').value.trim();
+      const mobile = document.getElementById('regMobile').value.trim();
+      
+      const q = query(collection(db, "members"), where("name", "==", name), where("mobile", "==", mobile));
+      const querySnap = await getDocs(q);
+      
+      if (!querySnap.empty) {
+        msg.innerHTML = `<div class="alert alert-danger">Registration Failed: A member with this Name and Mobile number already exists.</div>`;
+        return;
       }
-      html, body {
-        background: #ffffff !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        height: 100vh !important;
-        overflow: hidden !important;
+
+      const year = document.getElementById('regYear').value;
+      const memberId = `OAVTA-${year}-${Math.floor(1000 + Math.random() * 9000)}`;
+
+      const memberData = {
+        memberId: memberId,
+        name: name,
+        designation: document.getElementById('regDesignation').value,
+        district: document.getElementById('regDist').value,
+        block: document.getElementById('regBlock').value,
+        oavName: document.getElementById('regOav').value,
+        joinYear: year,
+        mobile: mobile,
+        createdAt: new Date()
+      };
+
+      try {
+        await addDoc(collection(db, "members"), memberData);
+        msg.innerHTML = `<div class="alert alert-success">Registration Successful! Your Member ID is: <strong>${memberId}</strong></div>`;
+        document.getElementById('regForm').reset();
+        document.getElementById('regBlock').innerHTML = '<option value="">-- Select Block --</option>';
+      } catch (err) {
+        msg.innerHTML = `<div class="alert alert-danger">Error: ${err.message}</div>`;
       }
-      .modal-overlay,
-      #memberDashboardModal,
-      .modal-box,
-      .modal-body-content,
-      #cardPreviewSection {
-        display: block !important;
-        position: static !important;
-        visibility: visible !important;
-        background: transparent !important;
-        box-shadow: none !important;
-        border: none !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        max-width: 100% !important;
-        max-height: 100% !important;
-        width: 100% !important;
-        height: auto !important;
-        overflow: visible !important;
-        backdrop-filter: none !important;
+    });
+
+    // 2. MEMBER LOGIN & EDIT PROFILE
+    document.getElementById('memberLoginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('loginMemberId').value.trim();
+      const mobile = document.getElementById('loginMobile').value.trim();
+      const msg = document.getElementById('memberLoginMsg');
+
+      const q = query(collection(db, "members"), where("memberId", "==", id), where("mobile", "==", mobile));
+      const snap = await getDocs(q);
+
+      if (snap.empty) {
+        msg.innerHTML = `<div class="alert alert-danger">Invalid Member ID or Mobile Number.</div>`;
+        return;
       }
-      .modal-header-fixed,
-      .info-note-box,
-      #memberEditForm,
-      #memberUpdateStatus,
-      #cardPreviewSection > hr,
-      #cardPreviewSection > h4,
-      #cardPreviewSection > div:last-child {
-        display: none !important;
+
+      const docRef = snap.docs[0];
+      const data = docRef.data();
+      
+      document.getElementById('editDocId').value = docRef.id;
+      document.getElementById('editMemberId').value = data.memberId;
+      document.getElementById('editName').value = data.name;
+      document.getElementById('editDesignation').value = data.designation;
+      document.getElementById('editDist').value = data.district;
+      
+      // Load blocks for selected district and set stored block value
+      populateBlocks(data.district, 'editBlock');
+      document.getElementById('editBlock').value = data.block;
+      
+      document.getElementById('editOav').value = data.oavName;
+      document.getElementById('editYear').value = data.joinYear;
+      document.getElementById('editMobile').value = data.mobile;
+
+      document.getElementById('memberLoginForm').style.display = 'none';
+      document.getElementById('memberProfileArea').style.display = 'block';
+    });
+
+    document.getElementById('updateProfileForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const docId = document.getElementById('editDocId').value;
+      const ref = doc(db, "members", docId);
+
+      try {
+        await updateDoc(ref, {
+          designation: document.getElementById('editDesignation').value,
+          district: document.getElementById('editDist').value,
+          block: document.getElementById('editBlock').value,
+          oavName: document.getElementById('editOav').value,
+          joinYear: document.getElementById('editYear').value,
+          mobile: document.getElementById('editMobile').value
+        });
+        alert("Profile updated successfully!");
+      } catch(err) {
+        alert("Error updating profile: " + err.message);
       }
-      #membershipCardPrintable,
-      #membershipCardPrintable * {
-        visibility: visible !important;
+    });
+
+    // 3. DISTRICT ADMIN (MAX 10 PORTFOLIOS PER DISTRICT)
+    document.getElementById('distPortfolioForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const dist = document.getElementById('pDist').value;
+      const msg = document.getElementById('distMsg');
+
+      const q = query(collection(db, "portfolios"), where("district", "==", dist));
+      const snap = await getDocs(q);
+
+      if (snap.size >= 10) {
+        msg.innerHTML = `<div class="alert alert-danger">Limit reached! ${dist} district already has 10 assigned portfolios.</div>`;
+        return;
       }
-      #membershipCardPrintable {
-        position: fixed !important;
-        left: 50% !important;
-        top: 50% !important;
-        transform: translate(-50%, -50%) !important;
-        width: 420px !important;
-        margin: 0 !important;
-        box-shadow: none !important;
-        border: 2px solid var(--primary) !important;
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-        page-break-inside: avoid !important;
+
+      const portfolioData = {
+        name: document.getElementById('pName').value,
+        assocDesignation: document.getElementById('pAssocDesig').value,
+        schoolDesignation: document.getElementById('pSchoolDesig').value,
+        district: dist,
+        block: document.getElementById('pBlock').value,
+        oavName: document.getElementById('pOav').value,
+        joinYear: document.getElementById('pYear').value,
+        mobile: document.getElementById('pMobile').value
+      };
+
+      try {
+        await addDoc(collection(db, "portfolios"), portfolioData);
+        msg.innerHTML = `<div class="alert alert-success">Portfolio added! (${snap.size + 1}/10 for ${dist})</div>`;
+        document.getElementById('distPortfolioForm').reset();
+        document.getElementById('pBlock').innerHTML = '<option value="">-- Select Block --</option>';
+      } catch(err) {
+        msg.innerHTML = `<div class="alert alert-danger">Error: ${err.message}</div>`;
       }
+    });
+
+    // PUBLIC PORTFOLIO VIEW
+    document.getElementById('publicDistSelect').addEventListener('change', async function() {
+      const selectedDist = this.value;
+      const tableBody = document.getElementById('publicPortfolioTable');
+      tableBody.innerHTML = '';
+
+      if (!selectedDist) return;
+
+      const q = query(collection(db, "portfolios"), where("district", "==", selectedDist));
+      const snap = await getDocs(q);
+
+      if (snap.empty) {
+        tableBody.innerHTML = '<tr><td colspan="6">No portfolio members added for this district yet.</td></tr>';
+        return;
+      }
+
+      snap.forEach(doc => {
+        const d = doc.data();
+        tableBody.innerHTML += `<tr>
+          <td>${d.name}</td>
+          <td>${d.assocDesignation}</td>
+          <td>${d.schoolDesignation}</td>
+          <td>${d.block}</td>
+          <td>${d.oavName}</td>
+          <td>${d.mobile}</td>
+        </tr>`;
+      });
+    });
+
+    // 4. STATE ADMIN (PHONE OTP AUTHENTICATION)
+    window.setupRecaptcha = function() {
+      if (!window.recaptchaVerifier) {
+        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { size: 'invisible' });
+      }
+    };
+
+    document.getElementById('sendOtpBtn').addEventListener('click', async () => {
+      const phone = document.getElementById('adminPhone').value.trim();
+      setupRecaptcha();
+      try {
+        window.confirmationResult = await signInWithPhoneNumber(auth, phone, window.recaptchaVerifier);
+        document.getElementById('otpArea').style.display = 'block';
+        alert("OTP sent to " + phone);
+      } catch (err) {
+        alert("Failed to send OTP: " + err.message);
+      }
+    });
+
+    document.getElementById('verifyOtpBtn').addEventListener('click', async () => {
+      const code = document.getElementById('adminOtp').value.trim();
+      try {
+        await window.confirmationResult.confirm(code);
+        document.getElementById('stateAdminLoginArea').style.display = 'none';
+        document.getElementById('stateAdminDashboard').style.display = 'block';
+        loadAdminData();
+      } catch (err) {
+        alert("Invalid OTP: " + err.message);
+      }
+    });
+
+    // Load State Admin Dashboard
+    async function loadAdminData() {
+      const membersSnap = await getDocs(collection(db, "members"));
+      const memberTable = document.getElementById('allMembersTable');
+      memberTable.innerHTML = '';
+      window.allMembersData = [];
+
+      membersSnap.forEach(doc => {
+        const d = doc.data();
+        window.allMembersData.push(d);
+        memberTable.innerHTML += `<tr><td>${d.memberId}</td><td>${d.name}</td><td>${d.designation}</td><td>${d.district}</td><td>${d.block}</td><td>${d.mobile}</td></tr>`;
+      });
+
+      const portSnap = await getDocs(collection(db, "portfolios"));
+      const portTable = document.getElementById('allPortfoliosTable');
+      portTable.innerHTML = '';
+      window.allPortfoliosData = [];
+
+      portSnap.forEach(doc => {
+        const d = doc.data();
+        window.allPortfoliosData.push(d);
+        portTable.innerHTML += `<tr><td>${d.district}</td><td>${d.name}</td><td>${d.assocDesignation}</td><td>${d.schoolDesignation}</td><td>${d.mobile}</td></tr>`;
+      });
     }
-  ]]></b:skin>
+
+    // Export Data as CSV
+    window.downloadCSV = function(type) {
+      const data = type === 'members' ? window.allMembersData : window.allPortfoliosData;
+      if (!data || data.length === 0) return alert("No data available to export.");
+
+      const keys = Object.keys(data[0]);
+      const csvRows = [keys.join(',')];
+
+      for (const row of data) {
+        const values = keys.map(k => `"${row[k] || ''}"`);
+        csvRows.push(values.join(','));
+      }
+
+      const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.setAttribute('href', url);
+      a.setAttribute('download', `OAVTA_${type}_Data.csv`);
+      a.click();
+    };
+  </script>
 </head>
 <body>
 
-  <b:section id='main-body' showaddelement='no'/>
+<div class="container">
+  <h1>OAVTA Portal</h1>
+  
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="showTab('register', event)">Register</button>
+    <button class="tab-btn" onclick="showTab('memberLogin', event)">Member Login</button>
+    <button class="tab-btn" onclick="showTab('publicPortfolios', event)">District Portfolios</button>
+    <button class="tab-btn" onclick="showTab('distAdmin', event)">District Admin</button>
+    <button class="tab-btn" onclick="showTab('stateAdmin', event)">State Admin</button>
+  </div>
 
-  <!-- HEADER BANNER -->
-  <header class='header-banner'>
-    <div class='header-logo'>
-      <img alt='OAVTA Logo' src='https://pbs.twimg.com/profile_images/1635311679931285505/njqdQqHS_400x400.jpg'/>
-    </div>
-    <div class='header-center'>
-      <h1>Odisha Adarsha Vidyalaya Teachers&#39; Association </h1>
-      <p>Odisha </p>
-    </div>
-    <div class='header-contact'>
-      <div><i class='fa-solid fa-envelope'/> <strong>Email:</strong> <a href='mailto:mysstacademy@gmail.com'>AVTA@gmail.com</a></div>
-      <div><i class='fa-solid fa-location-dot'/> <strong>Address:</strong> OAV Central Association, Odisha</div>
-    </div>
-  </header>
+  <!-- 1. MEMBER REGISTRATION -->
+  <div id="register" class="panel active">
+    <h2>Member Registration</h2>
+    <div id="regMsg"></div>
+    <form id="regForm">
+      <div class="form-group"><label>Full Name</label><input type="text" id="regName" required></div>
+      <div class="form-group"><label>Designation</label><input type="text" id="regDesignation" required></div>
+      <div class="form-group">
+        <label>District</label>
+        <select id="regDist" required></select>
+      </div>
+      <div class="form-group">
+        <label>Block</label>
+        <select id="regBlock" required><option value="">-- Select Block --</option></select>
+      </div>
+      <div class="form-group"><label>OAV Name</label><input type="text" id="regOav" required></div>
+      <div class="form-group"><label>Year of Joining Sangathan</label><input type="number" id="regYear" required></div>
+      <div class="form-group"><label>Mobile Number</label><input type="tel" id="regMobile" placeholder="+91..." required></div>
+      <button type="submit">Register Member</button>
+    </form>
+  </div>
 
-  <!-- NAVBAR MENU -->
-  <nav class='navbar'>
-    <div class='nav-container'>
-      <ul class='nav-menu-group'>
-        <li class='nav-item'><a class='nav-link' href='/'>Home</a></li>
-        <li class='nav-item'><a class='nav-link' onclick='openDistrictModal()'><i class='fa-solid fa-map-location-dot'/> District Info</a></li>
-        <li class='nav-item'><a class='nav-link' href='/p/about-us.html'>About Us</a></li>
-        <li class='nav-item'><a class='nav-link' href='/p/organogram.html'>Organogram</a></li>
-        <li class='nav-item'><a class='nav-link' href='/p/organogram.html'>EB Member</a></li>
-      </ul>
+  <!-- 2. MEMBER LOGIN & EDIT PROFILE -->
+  <div id="memberLogin" class="panel">
+    <h2>Member Portal</h2>
+    <div id="memberLoginMsg"></div>
+    <form id="memberLoginForm">
+      <div class="form-group"><label>Member ID</label><input type="text" id="loginMemberId" placeholder="OAVTA-YYYY-XXXX" required></div>
+      <div class="form-group"><label>Registered Mobile Number</label><input type="tel" id="loginMobile" required></div>
+      <button type="submit">Login</button>
+    </form>
+
+    <div id="memberProfileArea" style="display:none;">
+      <h3>Your Profile Details</h3>
+      <form id="updateProfileForm">
+        <input type="hidden" id="editDocId">
+        <div class="form-group"><label>Member ID (Read Only)</label><input type="text" id="editMemberId" disabled></div>
+        <div class="form-group"><label>Full Name (Read Only)</label><input type="text" id="editName" disabled></div>
+        <div class="form-group"><label>Designation</label><input type="text" id="editDesignation" required></div>
+        <div class="form-group">
+          <label>District</label>
+          <select id="editDist" required></select>
+        </div>
+        <div class="form-group">
+          <label>Block</label>
+          <select id="editBlock" required><option value="">-- Select Block --</option></select>
+        </div>
+        <div class="form-group"><label>OAV Name</label><input type="text" id="editOav" required></div>
+        <div class="form-group"><label>Joining Year</label><input type="number" id="editYear" required></div>
+        <div class="form-group"><label>Mobile Number</label><input type="tel" id="editMobile" required></div>
+        <button type="submit">Save Changes</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- PUBLIC PORTFOLIO VIEW -->
+  <div id="publicPortfolios" class="panel">
+    <h2>District Executive Portfolios</h2>
+    <div class="form-group">
+      <label>Select District to View Executive Body</label>
+      <select id="publicDistSelect"></select>
+    </div>
+    <table>
+      <thead>
+        <tr><th>Name</th><th>Assoc. Designation</th><th>School Designation</th><th>Block</th><th>OAV Name</th><th>Mobile</th></tr>
+      </thead>
+      <tbody id="publicPortfolioTable">
+        <tr><td colspan="6">Select a district above to view portfolios.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 3. DISTRICT ADMIN -->
+  <div id="distAdmin" class="panel">
+    <h2>District Admin Panel (Max 10 Portfolios)</h2>
+    <div id="distMsg"></div>
+    <form id="distPortfolioForm">
+      <div class="form-group">
+        <label>District Name</label>
+        <select id="pDist" required></select>
+      </div>
+      <div class="form-group"><label>Executive Name</label><input type="text" id="pName" required></div>
+      <div class="form-group"><label>Designation in Association</label><input type="text" id="pAssocDesig" required></div>
+      <div class="form-group"><label>Designation in School</label><input type="text" id="pSchoolDesig" required></div>
+      <div class="form-group">
+        <label>Block</label>
+        <select id="pBlock" required><option value="">-- Select Block --</option></select>
+      </div>
+      <div class="form-group"><label>OAV Name</label><input type="text" id="pOav" required></div>
+      <div class="form-group"><label>Joining Year</label><input type="number" id="pYear" required></div>
+      <div class="form-group"><label>Mobile Number</label><input type="tel" id="pMobile" required></div>
+      <button type="submit">Add Executive Portfolio</button>
+    </form>
+  </div>
+
+  <!-- 4. STATE ADMIN -->
+  <div id="stateAdmin" class="panel">
+    <h2>State Admin Login</h2>
+    <div id="recaptcha-container"></div>
+    
+    <div id="stateAdminLoginArea">
+      <div class="form-group"><label>State Admin Mobile Number</label><input type="tel" id="adminPhone" placeholder="+91..." required></div>
+      <button type="button" id="sendOtpBtn">Send OTP</button>
       
-      <div class='nav-actions-group'>
-        <button class='nav-btn btn-register' onclick='openModal(&quot;registerModal&quot;)'>
-          <i class='fa-solid fa-user-plus'/> Member Register
-        </button>
-
-        <button class='nav-btn btn-login' onclick='openModal(&quot;portalLoginModal&quot;)'>
-          <i class='fa-solid fa-right-to-bracket'/> Login Portal
-        </button>
-      </div>
-    </div>
-  </nav>
-
-  <!-- AUTO-DISSOLVING PHOTO SLIDER WITH INTERACTIVE DOTS -->
-  <div class='full-width-slider' onmouseenter='pausePhotoSlider()' onmouseleave='resumePhotoSlider()'>
-    <div class='slider-container' id='photoSliderContainer'>
-      <div class='slide active'>
-        <img alt='Banner 1' src='https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&amp;w=1600'/>
-        <div class='slide-overlay'>
-          <h2>Welcome to OAVTA</h2>
-          <p>Empowering Odisha Adarsha Vidyalayas.</p>
-        </div>
-      </div>
-      <div class='slide'>
-        <img alt='Banner 2' src='https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRj1MD_xoTy_M3wa5hq34Q9SlrnLG-9pS5fPyK5x_reINi_tkOj'/>
-        <div class='slide-overlay'>
-          <h2>Member Registration &amp; Station Update Portal</h2>
-          <p>Register online and keep your transfer station and member details updated seamlessly.</p>
-        </div>
-      </div>
-      <div class='slide'>
-        <img alt='Banner 3' src='https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&amp;w=1600'/>
-        <div class='slide-overlay'>
-          <h2>Excellence in Education</h2>
-          <p>Fostering academic distinction across all districts of Odisha.</p>
-        </div>
-      </div>
-    </div>
-    <!-- Interactive dots container for photo slider -->
-    <div class='photo-slider-dots' id='photoSliderDots'/>
-  </div>
-
-  <!-- TICKER -->
-  <div class='ticker-bar'>
-    <div class='ticker-title'>Latest Updates</div>
-    <marquee behavior='scroll' direction='left' onmouseout='this.start()' onmouseover='this.stop()'>
-       Welcome to OAVTA Portal | Register as a member to record your details | Existing members can log in to update transfer posting locations | Select from all 30 Districts of Odisha.
-    </marquee>
-  </div>
-
-  <!-- DASHBOARD SECTION -->
-  <section class='uni-dashboard'>
-    <!-- 3D LEADERSHIP CAROUSEL WITH CONNECTED DOT PROGRESS TRAIL -->
-    <div class='dashboard-card'>
-      <div class='dashboard-card-header'>
-        <span><i class='fa-solid fa-users-gear'/> Leadership Board</span>
-      </div>
-      <div class='dashboard-card-body'>
-        <div class='leadership-3d-wrapper' id='leadership3dWrapper' onmouseenter='pauseLeaderAutoCycle()' onmouseleave='resumeLeaderAutoCycle()'>
-          <button class='carousel-nav-btn prev-btn' onclick='prevLeaderCard()' title='Previous Leader'><i class='fa-solid fa-chevron-left'/></button>
-          
-          <div class='leadership-stage' id='leadershipStage'>
-            <div class='leader-card-item' data-name='Leader Name 1' data-role='President'>
-              <img alt='President' src='https://picsum.photos/id/1025/300/300'/>
-              <div class='leader-card-name'>Leader Name 1</div>
-              <div class='leader-card-role'>President</div>
-              <div class='leader-card-contact'>
-                <a class='leader-contact-icon' href='mailto:leader1@example.com' title='Email Leader'><i class='fa-solid fa-envelope'/></a>
-                <a class='leader-contact-icon' href='PROFILE_LINK_1' target='_blank' title='View Profile'><i class='fa-solid fa-user'/></a>
-              </div>
-            </div>
-
-            <div class='leader-card-item' data-name='Leader Name 2' data-role='Vice President'>
-              <img alt='Vice President' src='https://picsum.photos/id/1015/300/300'/>
-              <div class='leader-card-name'>Leader Name 2</div>
-              <div class='leader-card-role'>Vice President</div>
-              <div class='leader-card-contact'>
-                <a class='leader-contact-icon' href='mailto:leader2@example.com' title='Email Leader'><i class='fa-solid fa-envelope'/></a>
-                <a class='leader-contact-icon' href='PROFILE_LINK_2' target='_blank' title='View Profile'><i class='fa-solid fa-user'/></a>
-              </div>
-            </div>
-
-            <div class='leader-card-item' data-name='Leader Name 3' data-role='General Secretary'>
-              <img alt='General Secretary' src='https://picsum.photos/id/1062/300/300'/>
-              <div class='leader-card-name'>Leader Name 3</div>
-              <div class='leader-card-role'> Secretary</div>
-              <div class='leader-card-contact'>
-                <a class='leader-contact-icon' href='mailto:leader3@example.com' title='Email Leader'><i class='fa-solid fa-envelope'/></a>
-                <a class='leader-contact-icon' href='PROFILE_LINK_3' target='_blank' title='View Profile'><i class='fa-solid fa-user'/></a>
-              </div>
-            </div>
-            
-            <div class='leader-card-item' data-name='Leader Name 4' data-role='PRO'>
-              <img alt='PRO' src='https://picsum.photos/id/1062/300/300'/>
-              <div class='leader-card-name'>Leader Name 4</div>
-              <div class='leader-card-role'> PRO</div>
-              <div class='leader-card-contact'>
-                <a class='leader-contact-icon' href='mailto:leader4@example.com' title='Email Leader'><i class='fa-solid fa-envelope'/></a>
-                <a class='leader-contact-icon' href='PROFILE_LINK_4' target='_blank' title='View Profile'><i class='fa-solid fa-user'/></a>
-              </div>
-            </div>
-          </div>
-
-          <button class='carousel-nav-btn next-btn' onclick='nextLeaderCard()' title='Next Leader'><i class='fa-solid fa-chevron-right'/></button>
-        </div>
-        <!-- Connected Dots Progress Bar Container -->
-        <div class='carousel-loader-dots' id='carouselDotsContainer'/>
+      <div id="otpArea" style="display:none; margin-top: 15px;">
+        <div class="form-group"><label>Enter OTP Code</label><input type="text" id="adminOtp"></div>
+        <button type="button" id="verifyOtpBtn">Verify & Login</button>
       </div>
     </div>
 
-    <!-- ANNOUNCEMENT BOARD -->
-    <div class='dashboard-card'>
-      <div class='dashboard-card-header'>
-        <span><i class='fa-solid fa-bullhorn'/> ANNOUNCEMENT</span>
-      </div>
-      <div class='dashboard-card-body' id='noticeBoardContainer'>
-        <div class='notice-item' data-date='2026-08-14'>
-          <div class='notice-date-badge'>
-            <div class='month'>AUG</div>
-            <div class='day'>14</div>
-          </div>
-          <div class='notice-content'>
-            <a class='notice-title' href='#'>30 District Selection &amp; Member Profile Update System Online</a>
-          </div>
-        </div>
-
-        <div class='notice-item' data-date='2026-08-10'>
-          <div class='notice-date-badge'>
-            <div class='month'>AUG</div>
-            <div class='day'>10</div>
-          </div>
-          <div class='notice-content'>
-            <a class='notice-title' href='#'>Upcoming State Executive Meeting Schedule Announced</a>
-          </div>
-        </div>
-
-        <div class='notice-item' data-date='2026-07-28'>
-          <div class='notice-date-badge'>
-            <div class='month'>JUL</div>
-            <div class='day'>28</div>
-          </div>
-          <div class='notice-content'>
-            <a class='notice-title' href='#'>Annual State Educational Conference &amp; Workshop Guidelines</a>
-          </div>
-        </div>
-
-        <div class='notice-item' data-date='2026-07-15'>
-          <div class='notice-date-badge'>
-            <div class='month'>JUL</div>
-            <div class='day'>15</div>
-          </div>
-          <div class='notice-content'>
-            <a class='notice-title' href='#'>Submission of District Executive Representative Lists Extended</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- MODALS -->
-
-  <!-- 1. MEMBER REGISTER MODAL -->
-  <div class='modal-overlay' id='registerModal'>
-    <div class='modal-box' style='max-width: 580px;'>
-      <div class='modal-header-fixed'>
-        <h3 class='modal-title'><i class='fa-solid fa-id-card'/> Official Member Registration</h3>
-        <span class='modal-close' onclick='closeModal(&quot;registerModal&quot;)'>&#215;</span>
-      </div>
-      <div class='modal-body-content'>
-        <form id='registrationForm' onsubmit='handleRegistration(event)'>
-          <div class='form-grid-2'>
-            <div class='form-group'>
-              <label>Full Name *</label>
-              <div class='input-icon-wrapper'>
-                <input id='regName' placeholder='e.g. Dr. Rajesh Kumar' required='required' type='text'/>
-                <i class='fa-solid fa-user'/>
-              </div>
-            </div>
-            <div class='form-group'>
-              <label>Year of Joining *</label>
-              <div class='input-icon-wrapper'>
-                <input id='regYear' max='2099' min='1990' placeholder='e.g. 2021' required='required' type='number'/>
-                <i class='fa-solid fa-calendar'/>
-              </div>
-            </div>
-          </div>
-
-          <div class='form-grid-2'>
-            <div class='form-group'>
-              <label>Designation *</label>
-              <div class='input-icon-wrapper'>
-                <input id='regDesignation' placeholder='e.g. TGT SST / Principal' required='required' type='text'/>
-                <i class='fa-solid fa-briefcase'/>
-              </div>
-            </div>
-            <div class='form-group'>
-              <label>Highest Qualification *</label>
-              <div class='input-icon-wrapper'>
-                <input id='regQualification' placeholder='e.g. M.A., B.Ed.' required='required' type='text'/>
-                <i class='fa-solid fa-graduation-cap'/>
-              </div>
-            </div>
-          </div>
-
-          <div class='form-grid-2'>
-            <div class='form-group'>
-              <label>District *</label>
-              <div class='input-icon-wrapper'>
-                <select id='regDistrict' required='required'>
-                  <option value=''>Select District</option>
-                  <option value='Angul'>Angul</option>
-                  <option value='Balangir'>Balangir</option>
-                  <option value='Balasore'>Balasore</option>
-                  <option value='Bargarh'>Bargarh</option>
-                  <option value='Bhadrak'>Bhadrak</option>
-                  <option value='Boudh'>Boudh</option>
-                  <option value='Deogarh'>Deogarh</option>
-                  <option value='Dhenkanal'>Dhenkanal</option>
-                  <option value='Gajapati'>Gajapati</option>
-                  <option value='Ganjam'>Ganjam</option>
-                  <option value='Jagatsinghpur'>Jagatsinghpur</option>
-                  <option value='Jajpur'>Jajpur</option>
-                  <option value='Jharsuguda'>Jharsuguda</option>
-                  <option value='Kalahandi'>Kalahandi</option>
-                  <option value='Kandhamal'>Kandhamal</option>
-                  <option value='Cuttack'>Kataka</option>
-                  <option value='Kendrapara'>Kendrapara</option>
-                  <option value='Kendujhar'>Kendujhar</option>
-                  <option value='Khordha'>Khordha</option>
-                  <option value='Koraput'>Koraput</option>
-                  <option value='Malkangiri'>Malkangiri</option>
-                  <option value='Mayurbhanj'>Mayurbhanj</option>
-                  <option value='Nabarangpur'>Nabarangpur</option>
-                  <option value='Nayagarh'>Nayagarh</option>
-                  <option value='Nuapada'>Nuapada</option>
-                  <option value='Puri'>Puri</option>
-                  <option value='Rayagada'>Rayagada</option>
-                  <option value='Sambalpur'>Sambalpur</option>
-                  <option value='Subarnapur'>Subarnapur</option>
-                  <option value='Sundargarh'>Sundargarh</option>
-                </select>
-                <i class='fa-solid fa-map-location-dot'/>
-              </div>
-            </div>
-            <div class='form-group'>
-              <label>Block Name *</label>
-              <div class='input-icon-wrapper'>
-                <input id='regBlock' placeholder='Enter Block Name' required='required' type='text'/>
-                <i class='fa-solid fa-building-flag'/>
-              </div>
-            </div>
-          </div>
-
-          <div class='form-grid-2'>
-            <div class='form-group'>
-              <label>Name of the OAV *</label>
-              <div class='input-icon-wrapper'>
-                <input id='regOAV' placeholder='e.g. OAV Palasagadia' required='required' type='text'/>
-                <i class='fa-solid fa-school'/>
-              </div>
-            </div>
-            <div class='form-group'>
-              <label>Contact No. *</label>
-              <div class='input-icon-wrapper'>
-                <input id='regPhone' pattern='[0-9]{10}' placeholder='10-digit Mobile Number' required='required' type='tel'/>
-                <i class='fa-solid fa-phone'/>
-              </div>
-            </div>
-          </div>
-
-          <button class='form-submit-btn' type='submit'><i class='fa-solid fa-paper-plane'/> Submit Official Registration</button>
-        </form>
-        <div class='status-msg' id='regStatus'/>
-      </div>
-    </div>
-  </div>
-
-  <!-- REGISTRATION SUCCESS MODAL -->
-  <div class='modal-overlay' id='regSuccessModal'>
-    <div class='modal-box' style='max-width: 420px; text-align: center;'>
-      <div class='modal-header-fixed'>
-        <h3 class='modal-title'><i class='fa-solid fa-circle-check' style='color:#80d8ff;'/> Registered!</h3>
-        <span class='modal-close' onclick='closeModal(&quot;regSuccessModal&quot;)'>&#215;</span>
-      </div>
-      <div class='modal-body-content'>
-        <p style='font-size: 14px; color: #555; margin-top:0;'>Your membership details have been saved.</p>
-        <div style='background: #f1f8ff; border: 2px dashed var(--primary); padding: 15px; border-radius: 8px; margin: 15px 0;'>
-          <div style='font-size: 12px; color: #666; font-weight: bold;'>YOUR UNIQUE MEMBER ID</div>
-          <div id='displayMemberId' style='font-size: 26px; font-weight: 900; color: var(--accent); margin-top: 5px; letter-spacing: 1px;'/>
-        </div>
-        <p style='font-size: 12px; color: #888;'>Save this Member ID to log into your portal and update any details.</p>
-        <button class='form-submit-btn' onclick='closeModal(&quot;regSuccessModal&quot;)'>Close</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- 2. LOGIN PORTAL MODAL -->
-  <div class='modal-overlay' id='portalLoginModal'>
-    <div class='modal-box' style='max-width: 500px;'>
-      <div class='modal-header-fixed'>
-        <h3 class='modal-title'><i class='fa-solid fa-shield-halved'/> Institutional Access Control</h3>
-        <span class='modal-close' onclick='closeModal(&quot;portalLoginModal&quot;)'>&#215;</span>
-      </div>
+    <div id="stateAdminDashboard" style="display:none;">
+      <h3>State Admin Dashboard</h3>
       
-      <div class='modal-body-content'>
-        <div class='login-tabs'>
-          <button class='login-tab-btn active' onclick='switchTab(&quot;memberTab&quot;, this)'>
-            <i class='fa-solid fa-user-gear'/> Member Portal
-          </button>
-          <button class='login-tab-btn' onclick='switchTab(&quot;districtTab&quot;, this)'>
-            <i class='fa-solid fa-building-user'/> District Admin
-          </button>
-          <button class='login-tab-btn' onclick='switchTab(&quot;stateTab&quot;, this)'>
-            <i class='fa-solid fa-user-shield'/> State Admin
-          </button>
-        </div>
+      <button onclick="downloadCSV('members')">Download All Members (CSV)</button>
+      <button onclick="downloadCSV('portfolios')">Download District Portfolios (CSV)</button>
 
-        <!-- PANEL 1: MEMBER LOGIN -->
-        <div class='tab-content active' id='memberTab'>
-          <form onsubmit='handleMemberLogin(event)'>
-            <div class='form-group'>
-              <label>Member ID</label>
-              <div class='input-icon-wrapper'>
-                <input id='memLoginId' placeholder='e.g. 20260001' required='required' type='text'/>
-                <i class='fa-solid fa-id-card-clip'/>
-              </div>
-            </div>
-            <div class='form-group'>
-              <label>Registered Mobile No.</label>
-              <div class='input-icon-wrapper'>
-                <input id='memLoginPhone' placeholder='Enter 10-digit registered phone' required='required' type='tel'/>
-                <i class='fa-solid fa-mobile-screen'/>
-              </div>
-            </div>
-            <button class='form-submit-btn' type='submit'><i class='fa-solid fa-right-to-bracket'/> Authenticate Member Access</button>
-          </form>
-          <div class='status-msg' id='memberLoginStatus'/>
-        </div>
+      <h4>All Registered Members</h4>
+      <table>
+        <thead><tr><th>Member ID</th><th>Name</th><th>Designation</th><th>District</th><th>Block</th><th>Mobile</th></tr></thead>
+        <tbody id="allMembersTable"></tbody>
+      </table>
 
-        <!-- PANEL 2: DISTRICT ADMIN LOGIN -->
-        <div class='tab-content' id='districtTab'>
-          <form onsubmit='handleDistrictLogin(event)'>
-            <div class='form-group'>
-              <label>Select District Jurisdiction</label>
-              <div class='input-icon-wrapper'>
-                <select id='distId' required='required'>
-                  <option value=''>Choose District</option>
-                  <option value='Angul'>Angul</option>
-                  <option value='Balangir'>Balangir</option>
-                  <option value='Balasore'>Balasore</option>
-                  <option value='Bargarh'>Bargarh</option>
-                  <option value='Bhadrak'>Bhadrak</option>
-                  <option value='Boudh'>Boudh</option>
-                  <option value='Deogarh'>Deogarh</option>
-                  <option value='Dhenkanal'>Dhenkanal</option>
-                  <option value='Gajapati'>Gajapati</option>
-                  <option value='Ganjam'>Ganjam</option>
-                  <option value='Jagatsinghpur'>Jagatsinghpur</option>
-                  <option value='Jajpur'>Jajpur</option>
-                  <option value='Jharsuguda'>Jharsuguda</option>
-                  <option value='Kalahandi'>Kalahandi</option>
-                  <option value='Kandhamal'>Kandhamal</option>
-                  <option value='Cuttack'>Kataka</option>
-                  <option value='Kendrapara'>Kendrapara</option>
-                  <option value='Kendujhar'>Kendujhar</option>
-                  <option value='Khordha'>Khordha</option>
-                  <option value='Koraput'>Koraput</option>
-                  <option value='Malkangiri'>Malkangiri</option>
-                  <option value='Mayurbhanj'>Mayurbhanj</option>
-                  <option value='Nabarangpur'>Nabarangpur</option>
-                  <option value='Nayagarh'>Nayagarh</option>
-                  <option value='Nuapada'>Nuapada</option>
-                  <option value='Puri'>Puri</option>
-                  <option value='Rayagada'>Rayagada</option>
-                  <option value='Sambalpur'>Sambalpur</option>
-                  <option value='Subarnapur'>Subarnapur</option>
-                  <option value='Sundargarh'>Sundargarh</option>
-                </select>
-                <i class='fa-solid fa-map-location-dot'/>
-              </div>
-            </div>
-            <div class='form-group'>
-              <label>District Access Code</label>
-              <div class='input-icon-wrapper'>
-                <input id='distPassword' placeholder='Enter district security key' required='required' type='password'/>
-                <i class='fa-solid fa-lock'/>
-              </div>
-            </div>
-            <button class='form-submit-btn' type='submit'><i class='fa-solid fa-key'/> Authenticate District Admin</button>
-          </form>
-          <div class='status-msg' id='districtLoginStatus'/>
-        </div>
-
-        <!-- PANEL 3: STATE ADMIN LOGIN -->
-        <div class='tab-content' id='stateTab'>
-          <form onsubmit='handleStateAdminLogin(event)'>
-            <div class='form-group'>
-              <label>State Admin Username</label>
-              <div class='input-icon-wrapper'>
-                <input id='stateUser' placeholder='Enter authorized username' required='required' type='text'/>
-                <i class='fa-solid fa-user-shield'/>
-              </div>
-            </div>
-            <div class='form-group'>
-              <label>Admin Password</label>
-              <div class='input-icon-wrapper'>
-                <input id='statePass' placeholder='Enter state master password' required='required' type='password'/>
-                <i class='fa-solid fa-key'/>
-              </div>
-            </div>
-            <button class='form-submit-btn' type='submit'><i class='fa-solid fa-unlock-keyhole'/> Authenticate State Master</button>
-          </form>
-          <div class='status-msg' id='stateLoginStatus'/>
-        </div>
-      </div>
+      <h4>District Portfolios</h4>
+      <table>
+        <thead><tr><th>District</th><th>Name</th><th>Assoc. Designation</th><th>School Designation</th><th>Mobile</th></tr></thead>
+        <tbody id="allPortfoliosTable"></tbody>
+      </table>
     </div>
   </div>
+</div>
 
-  <!-- 3. MEMBER DETAILS EDIT MODAL -->
-  <div class='modal-overlay' id='memberDashboardModal'>
-    <div class='modal-box' style='max-width: 600px;'>
-      <div class='modal-header-fixed'>
-        <h3 class='modal-title'><i class='fa-solid fa-user-pen'/> Edit Member Details</h3>
-        <span class='modal-close' onclick='closeModal(&quot;memberDashboardModal&quot;)'>&#215;</span>
-      </div>
-      
-      <div class='modal-body-content'>
-        <div class='info-note-box'>
-          <i class='fa-solid fa-lock'/> <strong>Notice:</strong> Name and Member ID are locked for integrity. Update your Designation, Block, District, and Contact below.
-        </div>
-
-        <form id='memberEditForm' onsubmit='handleMemberUpdate(event)'>
-          <div style='display: grid; grid-template-columns: 1fr 1fr; gap: 12px;'>
-            <div class='form-group'>
-              <label>Member ID (Locked)</label>
-              <input disabled='disabled' id='editMemId' readonly='readonly' type='text'/>
-            </div>
-            <div class='form-group'>
-              <label>Full Name (Locked)</label>
-              <input disabled='disabled' id='editName' readonly='readonly' type='text'/>
-            </div>
-          </div>
-
-          <div style='display: grid; grid-template-columns: 1fr 1fr; gap: 12px;'>
-            <div class='form-group'>
-              <label>Designation</label>
-              <input id='editDesignation' required='required' type='text'/>
-            </div>
-            <div class='form-group'>
-              <label>Highest Qualification</label>
-              <input id='editQualification' required='required' type='text'/>
-            </div>
-          </div>
-
-          <div class='form-group'>
-            <label>Current Posting OAV</label>
-            <input id='editOav' required='required' type='text'/>
-          </div>
-
-          <div style='display: grid; grid-template-columns: 1fr 1fr; gap: 12px;'>
-            <div class='form-group'>
-              <label>Block Name</label>
-              <input id='editBlock' required='required' type='text'/>
-            </div>
-            
-            <div class='form-group'>
-              <label>District *</label>
-              <select id='editDistrict' required='required'>
-                <option value=''>Select District</option>
-                <option value='Angul'>Angul</option>
-                <option value='Balangir'>Balangir</option>
-                <option value='Balasore'>Balasore</option>
-                <option value='Bargarh'>Bargarh</option>
-                <option value='Bhadrak'>Bhadrak</option>
-                <option value='Boudh'>Boudh</option>
-                <option value='Deogarh'>Deogarh</option>
-                <option value='Dhenkanal'>Dhenkanal</option>
-                <option value='Gajapati'>Gajapati</option>
-                <option value='Ganjam'>Ganjam</option>
-                <option value='Jagatsinghpur'>Jagatsinghpur</option>
-                <option value='Jajpur'>Jajpur</option>
-                <option value='Jharsuguda'>Jharsuguda</option>
-                <option value='Kalahandi'>Kalahandi</option>
-                <option value='Kandhamal'>Kandhamal</option>
-                <option value='Cuttack'>Kataka</option>
-                <option value='Kendrapara'>Kendrapara</option>
-                <option value='Kendujhar'>Kendujhar</option>
-                <option value='Khordha'>Khordha</option>
-                <option value='Koraput'>Koraput</option>
-                <option value='Malkangiri'>Malkangiri</option>
-                <option value='Mayurbhanj'>Mayurbhanj</option>
-                <option value='Nabarangpur'>Nabarangpur</option>
-                <option value='Nayagarh'>Nayagarh</option>
-                <option value='Nuapada'>Nuapada</option>
-                <option value='Puri'>Puri</option>
-                <option value='Rayagada'>Rayagada</option>
-                <option value='Sambalpur'>Sambalpur</option>
-                <option value='Subarnapur'>Subarnapur</option>
-                <option value='Sundargarh'>Sundargarh</option>
-              </select>
-            </div>
-          </div>
-
-          <div class='form-group'>
-            <label>Mobile Number</label>
-            <input id='editPhone' pattern='[0-9]{10}' required='required' type='tel'/>
-          </div>
-
-          <div style='display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;'>
-            <button class='form-submit-btn' style='background-color: var(--primary); margin:0;' type='submit'>
-              <i class='fa-solid fa-floppy-disk'/> Save Changes
-            </button>
-            <button class='form-submit-btn' onclick='toggleCardPreview(event)' style='background-color: var(--accent); margin:0;' type='button'>
-              <i class='fa-solid fa-eye'/> Preview ID Card
-            </button>
-          </div>
-        </form>
-        <div class='status-msg' id='memberUpdateStatus'/>
-
-        <!-- ID CARD PREVIEW -->
-        <div id='cardPreviewSection' style='display: none; margin-top: 25px;'>
-          <hr style='margin: 15px 0; border: 0; border-top: 1px dashed #cbd5e0;'/>
-          <h4 style='margin: 0 0 10px 0; color: var(--primary); text-align: center;'>ID Card Live Preview</h4>
-          
-          <div class='membership-card-box' id='membershipCardPrintable'>
-            <div class='card-header-inner'>
-              <h4>ODISHA ADARSHA VIDYALAYA TEACHERS ASSOCIATION</h4>
-              <p>OFFICIAL MEMBERSHIP IDENTITY CARD</p>
-            </div>
-            
-            <div class='card-body-inner'>
-              <div class='id-top-bar'>
-                <div>
-                  <i class='fa-solid fa-id-badge' style='font-size: 26px; color: var(--primary);'/>
-                </div>
-                <div class='id-number-container'>
-                  <div class='id-label'>MEMBER ID</div>
-                  <div class='id-value-large' id='cardMemId'>----</div>
-                </div>
-              </div>
-
-              <div class='name-container'>
-                <div class='id-label'>MEMBER FULL NAME</div>
-                <div class='name-value-large' id='cardName'>----</div>
-              </div>
-
-              <div class='details-grid'>
-                <div class='detail-item'>
-                  <span class='lbl'><i class='fa-solid fa-briefcase'/> Designation</span>
-                  <span class='val' id='cardDesignation'>----</span>
-                </div>
-                <div class='detail-item'>
-                  <span class='lbl'><i class='fa-solid fa-graduation-cap'/> Qualification</span>
-                  <span class='val' id='cardQual'>----</span>
-                </div>
-                <div class='detail-item'>
-                  <span class='lbl'><i class='fa-solid fa-school'/> OAV Name</span>
-                  <span class='val' id='cardOav'>----</span>
-                </div>
-                <div class='detail-item'>
-                  <span class='lbl'><i class='fa-solid fa-map-location-dot'/> Block &amp; District</span>
-                  <span class='val' id='cardBlockDist'>----</span>
-                </div>
-                <div class='detail-item'>
-                  <span class='lbl'><i class='fa-solid fa-phone'/> Contact No.</span>
-                  <span class='val' id='cardPhone'>----</span>
-                </div>
-              </div>
-            </div>
-
-            <div class='card-footer-bar'>
-              Valid for official identification across OAVTA State &amp; District chapters.
-            </div>
-          </div>
-
-          <div style='display: flex; gap: 10px; margin-top: 15px;'>
-            <button class='form-submit-btn' onclick='downloadMembershipCardHTML()' style='background: #28a745; margin: 0;'>
-              <i class='fa-solid fa-file-code'/> Download HTML Card
-            </button>
-            <button class='form-submit-btn' onclick='quickPrintCard()' style='background: var(--secondary); margin: 0;'>
-              <i class='fa-solid fa-print'/> Quick Print
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 4. DISTRICT ADMIN DIGNITARIES ENTRY MODAL -->
-  <div class='modal-overlay' id='dignitariesAdminModal'>
-    <div class='modal-box' style='max-width: 650px;'>
-      <div class='modal-header-fixed'>
-        <h3 class='modal-title' id='adminModalTitle'><i class='fa-solid fa-user-gear'/> Manage District Executive Cards</h3>
-        <span class='modal-close' onclick='closeModal(&quot;dignitariesAdminModal&quot;)'>&#215;</span>
-      </div>
-      <div class='modal-body-content'>
-        <form id='dignitariesForm' onsubmit='handleSaveDignitaries(event)'>
-          <div id='dignitariesInputContainer' style='max-height: 420px; overflow-y: auto; padding-right: 5px;'/>
-          
-          <div style='display:flex; justify-content:space-between; align-items:center; margin-top:15px;'>
-            <button class='form-submit-btn' onclick='addDignitaryCard()' style='background: var(--primary); margin:0; width:auto;' type='button'>
-              <i class='fa-solid fa-plus'/> Add Dignitary
-            </button>
-            <button class='form-submit-btn' style='background: var(--accent); margin:0; width:auto;' type='submit'>
-              <i class='fa-solid fa-cloud-arrow-up'/> Save &amp; Publish
-            </button>
-          </div>
-          <div class='status-msg' id='dignitarySaveStatus'/>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- 5. STATE ADMIN DASHBOARD MODAL -->
-  <div class='modal-overlay' id='stateAdminDashboardModal'>
-    <div class='modal-box' style='max-width: 950px;'>
-      <div class='modal-header-fixed'>
-        <h3 class='modal-title'><i class='fa-solid fa-sliders'/> State Control Dashboard</h3>
-        <span class='modal-close' onclick='closeModal(&quot;stateAdminDashboardModal&quot;)'>&#215;</span>
-      </div>
-      <div class='modal-body-content'>
-        
-        <div class='state-ctrl-bar'>
-          <button class='state-ctrl-btn active' id='btnViewMembers' onclick='switchStateAdminView(&quot;members&quot;)'>
-            <i class='fa-solid fa-users'/> All Registered Members
-          </button>
-          <button class='state-ctrl-btn' id='btnViewDistricts' onclick='switchStateAdminView(&quot;districts&quot;)'>
-            <i class='fa-solid fa-sitemap'/> District-wise Info
-          </button>
-        </div>
-
-        <div class='state-action-bar'>
-          <div class='search-input-wrapper'>
-            <i class='fa-solid fa-magnifying-glass'/>
-            <input id='stateAdminSearchInput' onkeyup='filterStateAdminTable()' placeholder='Search records by name, district, ID...' type='text'/>
-          </div>
-          <button class='btn-download-excel' id='btnDownloadStateData' onclick='handleStateDownload()'>
-            <i class='fa-solid fa-file-excel'/> Download CSV / Excel
-          </button>
-        </div>
-
-        <div class='admin-table-container'>
-          <div id='stateAdminTableDisplay'>Select a dataset view above to preview data...</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 6. PUBLIC DISTRICT INFO MODAL -->
-  <div class='modal-overlay' id='districtModal'>
-    <div class='modal-box' style='max-width: 700px; border-radius: 12px;'>
-      <div class='modal-header-fixed'>
-        <h3 class='modal-title'><i class='fa-solid fa-map-location-dot'/> District Leadership Portfolios</h3>
-        <span class='modal-close' onclick='closeModal(&quot;districtModal&quot;)'>&#215;</span>
-      </div>
-      <div class='modal-body-content'>
-        <div style='text-align: center; margin-bottom: 20px;'>
-          <p style='margin: 0; color: #666; font-size: 13px;'>Select a district below to view executive members and committee leads.</p>
-        </div>
-
-        <div class='form-group' style='max-width: 400px; margin: 0 auto 25px auto;'>
-          <label style='text-align: center; font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: #555;'>Choose District</label>
-          <select class='district-select-box' id='modalDistrictSelect' onchange='loadModalDignitaries()' style='width: 100%; padding: 10px 14px; border-radius: 6px; border: 2px solid var(--primary); font-weight: 600; font-size: 14px; outline: none;'>
-            <option value=''>-- Select a District --</option>
-            <option value='Angul'>Angul</option>
-            <option value='Balangir'>Balangir</option>
-            <option value='Balasore'>Balasore</option>
-            <option value='Bargarh'>Bargarh</option>
-            <option value='Bhadrak'>Bhadrak</option>
-            <option value='Boudh'>Boudh</option>
-            <option value='Deogarh'>Deogarh</option>
-            <option value='Dhenkanal'>Dhenkanal</option>
-            <option value='Gajapati'>Gajapati</option>
-            <option value='Ganjam'>Ganjam</option>
-            <option value='Jagatsinghpur'>Jagatsinghpur</option>
-            <option value='Jajpur'>Jajpur</option>
-            <option value='Jharsuguda'>Jharsuguda</option>
-            <option value='Kalahandi'>Kalahandi</option>
-            <option value='Kandhamal'>Kandhamal</option>
-            <option value='Cuttack'>Kataka</option>
-            <option value='Kendrapara'>Kendrapara</option>
-            <option value='Kendujhar'>Kendujhar</option>
-            <option value='Khordha'>Khordha</option>
-            <option value='Koraput'>Koraput</option>
-            <option value='Malkangiri'>Malkangiri</option>
-            <option value='Mayurbhanj'>Mayurbhanj</option>
-            <option value='Nabarangpur'>Nabarangpur</option>
-            <option value='Nayagarh'>Nayagarh</option>
-            <option value='Nuapada'>Nuapada</option>
-            <option value='Puri'>Puri</option>
-            <option value='Rayagada'>Rayagada</option>
-            <option value='Sambalpur'>Sambalpur</option>
-            <option value='Subarnapur'>Subarnapur</option>
-            <option value='Sundargarh'>Sundargarh</option>
-          </select>
-        </div>
-
-        <div id='modalDignitariesList'>
-          <div style='text-align: center; padding: 40px 20px; background: #f8f9fa; border: 2px dashed #e0e0e0; border-radius: 10px;'>
-            <i class='fa-solid fa-hand-pointer' style='font-size: 32px; color: var(--accent); margin-bottom: 12px;'/>
-            <h4 style='margin: 0; color: #444; font-size: 15px;'>No District Selected</h4>
-            <p style='margin: 5px 0 0 0; color: #777; font-size: 13px;'>Please choose a district from the dropdown list above to display leadership details.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- JAVASCRIPT LOGIC -->
-  <script type='text/javascript'>
-    //<![CDATA[
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxV-OFUaP1n8VIM5Ah3O-mvfH1CnmBfHt6jjYmYHP2MuRX8AC12bFLhvyszsAxp7pDcqA/exec";
-    var activeAdminDistrict = "";
-    var currentMemberData = null;
-
-    /* PHOTO SLIDER AUTO-DISSOLVE LOGIC */
-    var photoSlides = [];
-    var photoCurrentIdx = 0;
-    var photoTimer = null;
-
-    function initPhotoSlider() {
-      photoSlides = Array.from(document.querySelectorAll("#photoSliderContainer .slide"));
-      var dotsContainer = document.getElementById("photoSliderDots");
-      if (!dotsContainer) return;
-      dotsContainer.innerHTML = "";
-
-      photoSlides.forEach((slide, idx) => {
-        var dot = document.createElement("span");
-        dot.className = "photo-dot" + (idx === photoCurrentIdx ? " active" : "");
-        dot.onclick = function() { goToPhotoSlide(idx); };
-        dotsContainer.appendChild(dot);
-      });
-
-      startPhotoSlider();
-    }
-
-    function showPhotoSlide(idx) {
-      photoSlides.forEach((slide, i) => {
-        if (i === idx) slide.classList.add("active");
-        else slide.classList.remove("active");
-      });
-
-      var dots = document.querySelectorAll("#photoSliderDots .photo-dot");
-      dots.forEach((dot, i) => {
-        if (i === idx) dot.classList.add("active");
-        else dot.classList.remove("active");
-      });
-    }
-
-    function goToPhotoSlide(idx) {
-      photoCurrentIdx = idx;
-      showPhotoSlide(photoCurrentIdx);
-      startPhotoSlider();
-    }
-
-    function startPhotoSlider() {
-      stopPhotoSlider();
-      photoTimer = setInterval(function() {
-        photoCurrentIdx = (photoCurrentIdx + 1) % photoSlides.length;
-        showPhotoSlide(photoCurrentIdx);
-      }, 4500);
-    }
-
-    function stopPhotoSlider() {
-      if (photoTimer) {
-        clearInterval(photoTimer);
-        photoTimer = null;
-      }
-    }
-
-    function pausePhotoSlider() { stopPhotoSlider(); }
-    function resumePhotoSlider() { startPhotoSlider(); }
-
-    /* Dynamic Rotational Carousel */
-    var visibleLeaderIndices = [];
-    var currentLeaderIndex = 0;
-    var leaderAutoTimer = null;
-
-    var rawStateMembersData = [];
-    var rawStateDistrictsData = [];
-    var currentStateView = "members";
-
-    function initLeaderCarousel() {
-      var allCards = Array.from(document.querySelectorAll("#leadershipStage .leader-card-item"));
-      visibleLeaderIndices = [];
-      allCards.forEach((card, index) => visibleLeaderIndices.push(index));
-
-      if (currentLeaderIndex >= visibleLeaderIndices.length) currentLeaderIndex = 0;
-
-      renderLeaderCarousel();
-      renderLeaderDots();
-    }
-
-    function renderLeaderCarousel() {
-      var allCards = document.querySelectorAll("#leadershipStage .leader-card-item");
-      allCards.forEach(card => card.className = "leader-card-item");
-
-      var totalVisible = visibleLeaderIndices.length;
-      if (totalVisible === 0) return;
-
-      var centerIdx = visibleLeaderIndices[currentLeaderIndex];
-      var prevIdx = visibleLeaderIndices[(currentLeaderIndex - 1 + totalVisible) % totalVisible];
-      var nextIdx = visibleLeaderIndices[(currentLeaderIndex + 1) % totalVisible];
-
-      if (totalVisible === 1) {
-        allCards[centerIdx].classList.add("active");
-      } else if (totalVisible === 2) {
-        allCards[centerIdx].classList.add("active");
-        allCards[nextIdx].classList.add("next");
-      } else {
-        allCards[centerIdx].classList.add("active");
-        allCards[prevIdx].classList.add("prev");
-        allCards[nextIdx].classList.add("next");
-      }
-
-      updateLeaderDotsState();
-    }
-
-    function renderLeaderDots() {
-      var container = document.getElementById("carouselDotsContainer");
-      if (!container) return;
-      container.innerHTML = "";
-
-      var wrapper = document.createElement("div");
-      wrapper.className = "dots-line-wrapper";
-
-      visibleLeaderIndices.forEach((_, idx) => {
-        var dot = document.createElement("div");
-        dot.className = "loader-dot-node" + (idx === currentLeaderIndex ? " active" : "");
-        dot.onclick = function() {
-          currentLeaderIndex = idx;
-          renderLeaderCarousel();
-          startLeaderAutoCycle();
-        };
-        wrapper.appendChild(dot);
-
-        if (idx < visibleLeaderIndices.length - 1) {
-          var line = document.createElement("div");
-          line.className = "dot-connecting-line";
-          var fill = document.createElement("div");
-          fill.className = "dot-progress-fill";
-          line.appendChild(fill);
-          wrapper.appendChild(line);
-        }
-      });
-
-      container.appendChild(wrapper);
-      updateLeaderDotsState();
-    }
-
-    function updateLeaderDotsState() {
-      var nodes = document.querySelectorAll(".loader-dot-node");
-      var lines = document.querySelectorAll(".dot-connecting-line");
-
-      nodes.forEach((node, idx) => {
-        node.classList.remove("active", "completed");
-        if (idx === currentLeaderIndex) node.classList.add("active");
-        else if (idx < currentLeaderIndex) node.classList.add("completed");
-      });
-
-      lines.forEach((line, idx) => {
-        line.classList.remove("active-fill", "completed-fill");
-        void line.offsetWidth;
-
-        if (idx < currentLeaderIndex) line.classList.add("completed-fill");
-        else if (idx === currentLeaderIndex) line.classList.add("active-fill");
-      });
-    }
-
-    function nextLeaderCard() {
-      if (visibleLeaderIndices.length <= 1) return;
-      currentLeaderIndex = (currentLeaderIndex + 1) % visibleLeaderIndices.length;
-      renderLeaderCarousel();
-    }
-
-    function prevLeaderCard() {
-      if (visibleLeaderIndices.length <= 1) return;
-      currentLeaderIndex = (currentLeaderIndex - 1 + visibleLeaderIndices.length) % visibleLeaderIndices.length;
-      renderLeaderCarousel();
-    }
-
-    function startLeaderAutoCycle() {
-      stopLeaderAutoCycle();
-      renderLeaderCarousel();
-      leaderAutoTimer = setInterval(function() { nextLeaderCard(); }, 3500);
-    }
-
-    function stopLeaderAutoCycle() {
-      if (leaderAutoTimer) {
-        clearInterval(leaderAutoTimer);
-        leaderAutoTimer = null;
-      }
-      document.querySelectorAll(".dot-connecting-line").forEach(l => l.classList.remove("active-fill"));
-    }
-
-    function pauseLeaderAutoCycle() { stopLeaderAutoCycle(); }
-    function resumeLeaderAutoCycle() { startLeaderAutoCycle(); }
-
-    function filterNoticeBoard7Days() {
-      var noticeItems = document.querySelectorAll("#noticeBoardContainer .notice-item");
-      var today = new Date();
-
-      noticeItems.forEach(function(item) {
-        var dateStr = item.getAttribute("data-date");
-        if (dateStr) {
-          var postDate = new Date(dateStr);
-          var diffDays = (today - postDate) / (1000 * 60 * 60 * 24);
-
-          item.style.display = "flex";
-          var existingBadge = item.querySelector(".new-badge");
-
-          if (diffDays <= 7 && diffDays >= 0) {
-            if (!existingBadge) {
-              var titleLink = item.querySelector(".notice-title");
-              var badge = document.createElement("span");
-              badge.className = "new-badge";
-              badge.textContent = "NEW";
-              titleLink.appendChild(badge);
-            }
-          } else if (existingBadge) {
-            existingBadge.remove();
-          }
-        }
-      });
-    }
-
-    document.addEventListener("DOMContentLoaded", function() {
-      filterNoticeBoard7Days();
-      initPhotoSlider();
-      initLeaderCarousel();
-      startLeaderAutoCycle();
-    });
-
-    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
-    function switchTab(tabId, btn) {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.login-tab-btn').forEach(el => el.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-      btn.classList.add('active');
-    }
-
-    function openDistrictModal() {
-      var selector = document.getElementById("modalDistrictSelect");
-      if (selector) selector.value = "";
-      document.getElementById("modalDignitariesList").innerHTML = 
-        "<div style='text-align: center; padding: 40px 20px; background: #f8f9fa; border: 2px dashed #e0e0e0; border-radius: 10px;'>" +
-          "<i class='fa-solid fa-hand-pointer' style='font-size: 32px; color: var(--accent); margin-bottom: 12px;'></i>" +
-          "<h4 style='margin: 0; color: #444; font-size: 15px;'>No District Selected</h4>" +
-          "<p style='margin: 5px 0 0 0; color: #777; font-size: 13px;'>Please choose a district from the dropdown list above to display leadership details.</p>" +
-        "</div>";
-      openModal("districtModal");
-    }
-
-    function loadModalDignitaries() {
-      var selectedDistrict = document.getElementById("modalDistrictSelect").value;
-      var container = document.getElementById("modalDignitariesList");
-
-      if (!selectedDistrict) {
-        container.innerHTML = 
-          "<div style='text-align: center; padding: 40px 20px; background: #f8f9fa; border: 2px dashed #e0e0e0; border-radius: 10px;'>" +
-            "<i class='fa-solid fa-hand-pointer' style='font-size: 32px; color: var(--accent); margin-bottom: 12px;'></i>" +
-            "<h4 style='margin: 0; color: #444; font-size: 15px;'>No District Selected</h4>" +
-            "<p style='margin: 5px 0 0 0; color: #777; font-size: 13px;'>Please choose a district from the dropdown list above to display leadership details.</p>" +
-          "</div>";
-        return;
-      }
-
-      container.innerHTML = "<p style='text-align:center; padding: 30px; color: var(--primary);'><i class='fa-solid fa-spinner fa-spin'></i> Fetching leadership details for " + selectedDistrict + "...</p>";
-
-      fetch(SCRIPT_URL + "?action=getDignitaries&district=" + encodeURIComponent(selectedDistrict))
-      .then(res => res.json())
-      .then(res => {
-        if (res.status === "success" && res.data && res.data.length > 0) {
-          var html = "<div style='display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 15px;'>";
-          res.data.forEach(function(item) {
-            if (item.name) {
-              html += "<div style='background:#ffffff; border:1px solid #e2e8f0; border-radius:8px; padding:15px; box-shadow:0 4px 12px rgba(0,0,0,0.05);'>" +
-                "<div style='font-size:15px; font-weight:800; color:var(--primary); margin-bottom:4px;'><i class='fa-solid fa-user-tie'></i> " + item.name + "</div>" +
-                (item.assocDesignation ? "<div style='display:inline-block; font-size:10px; font-weight:800; background:var(--accent); color:#fff; padding:2px 8px; border-radius:10px; margin-bottom:8px;'>" + item.assocDesignation + "</div>" : "") +
-                "<div style='font-size:12px; color:#4a5568; line-height:1.5;'>" +
-                  (item.schoolDesignation ? "<div><strong>Designation:</strong> " + item.schoolDesignation + "</div>" : "") +
-                  (item.schoolName ? "<div><strong>School:</strong> " + item.schoolName + "</div>" : "") +
-                  (item.contact ? "<div><strong>Contact:</strong> <a href='tel:" + item.contact + "' style='color:var(--primary); text-decoration:none; font-weight:700;'><i class='fa-solid fa-phone'></i> " + item.contact + "</a></div>" : "") +
-                "</div>" +
-              "</div>";
-            }
-          });
-          html += "</div>";
-          container.innerHTML = html;
-        } else {
-          container.innerHTML = 
-            "<div style='text-align: center; padding: 30px 20px; background: #fff5f5; border: 1px dashed var(--danger-red); border-radius: 8px; color: var(--danger-red);'>" +
-              "<i class='fa-solid fa-circle-exclamation' style='font-size: 24px; margin-bottom: 8px;'></i>" +
-              "<p style='margin:0; font-size:13px; font-weight:600;'>No published executive details found for " + selectedDistrict + ".</p>" +
-            "</div>";
-        }
-      })
-      .catch(() => {
-        container.innerHTML = "<p style='text-align:center; color: var(--danger-red); padding:20px;'>Failed to load district data. Please try again later.</p>";
-      });
-    }
-
-    function handleRegistration(e) {
-      e.preventDefault();
-      var statusDiv = document.getElementById("regStatus");
-      statusDiv.style.color = "var(--primary)";
-      statusDiv.innerHTML = "Submitting registration data...";
-
-      var payload = {
-        action: "register",
-        name: document.getElementById("regName").value,
-        year: document.getElementById("regYear").value,
-        designation: document.getElementById("regDesignation").value,
-        qualification: document.getElementById("regQualification").value,
-        district: document.getElementById("regDistrict").value,
-        block: document.getElementById("regBlock").value,
-        oavName: document.getElementById("regOAV").value,
-        phone: document.getElementById("regPhone").value
-      };
-
-      fetch(SCRIPT_URL, {
-        method: "POST",
-        mode: "cors",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify(payload)
-      })
-      .then(res => res.json())
-      .then(res => {
-        if(res.status === "success") {
-          statusDiv.innerHTML = "";
-          document.getElementById("registrationForm").reset();
-          closeModal("registerModal");
-          document.getElementById("displayMemberId").innerText = res.memberId;
-          openModal("regSuccessModal");
-        } else {
-          statusDiv.style.color = "var(--danger-red)";
-          statusDiv.innerHTML = "Error: " + res.message;
-        }
-      })
-      .catch(() => {
-        statusDiv.style.color = "var(--danger-red)";
-        statusDiv.innerHTML = "Submission failed. Check network connection.";
-      });
-    }
-
-    function handleMemberLogin(e) {
-      e.preventDefault();
-      var statusDiv = document.getElementById("memberLoginStatus");
-      statusDiv.style.color = "var(--primary)";
-      statusDiv.innerHTML = "Verifying credentials...";
-
-      var payload = {
-        action: "memberLogin",
-        memberId: document.getElementById("memLoginId").value,
-        phone: document.getElementById("memLoginPhone").value
-      };
-
-      fetch(SCRIPT_URL, {
-        method: "POST",
-        mode: "cors",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify(payload)
-      })
-      .then(res => res.json())
-      .then(res => {
-        if (res.status === "success") {
-          statusDiv.innerHTML = "";
-          closeModal("portalLoginModal");
-          currentMemberData = res.member;
-          populateMemberDashboard(currentMemberData);
-          document.getElementById("cardPreviewSection").style.display = "none";
-          openModal("memberDashboardModal");
-        } else {
-          statusDiv.style.color = "var(--danger-red)";
-          statusDiv.innerHTML = res.message;
-        }
-      })
-      .catch(() => {
-        statusDiv.style.color = "var(--danger-red)";
-        statusDiv.innerHTML = "Login failed. Check your network connection.";
-      });
-    }
-
-    function populateMemberDashboard(m) {
-      document.getElementById("editMemId").value = m.memberId || "";
-      document.getElementById("editName").value = m.name || "";
-      document.getElementById("editDesignation").value = m.designation || "";
-      document.getElementById("editQualification").value = m.qualification || "";
-      document.getElementById("editOav").value = m.oavName || "";
-      document.getElementById("editBlock").value = m.block || "";
-      if (m.district) document.getElementById("editDistrict").value = m.district;
-      document.getElementById("editPhone").value = m.phone || "";
-      syncCardView(m);
-    }
-
-    function syncCardView(m) {
-      document.getElementById("cardMemId").innerText = m.memberId || "----";
-      document.getElementById("cardName").innerText = m.name || "----";
-      document.getElementById("cardDesignation").innerText = m.designation || "----";
-      document.getElementById("cardQual").innerText = m.qualification || "----";
-      document.getElementById("cardOav").innerText = m.oavName || "----";
-      document.getElementById("cardBlockDist").innerText = (m.block || "----") + ", " + (m.district || "----");
-      document.getElementById("cardPhone").innerText = m.phone || "----";
-    }
-
-    function toggleCardPreview(e) {
-      if(e) e.preventDefault();
-      var tempObj = {
-        memberId: document.getElementById("editMemId").value,
-        name: document.getElementById("editName").value,
-        designation: document.getElementById("editDesignation").value,
-        qualification: document.getElementById("editQualification").value,
-        oavName: document.getElementById("editOav").value,
-        block: document.getElementById("editBlock").value,
-        district: document.getElementById("editDistrict").value,
-        phone: document.getElementById("editPhone").value
-      };
-      syncCardView(tempObj);
-
-      var previewSec = document.getElementById("cardPreviewSection");
-      if (previewSec.style.display === "none" || previewSec.style.display === "") {
-        previewSec.style.display = "block";
-        previewSec.scrollIntoView({ behavior: 'smooth' });
-      } else {
-        previewSec.style.display = "none";
-      }
-    }
-
-    function handleMemberUpdate(e) {
-      e.preventDefault();
-      var statusDiv = document.getElementById("memberUpdateStatus");
-      statusDiv.style.color = "var(--primary)";
-      statusDiv.innerHTML = "Saving changes to database...";
-
-      var payload = {
-        action: "updateMember",
-        memberId: document.getElementById("editMemId").value,
-        designation: document.getElementById("editDesignation").value,
-        qualification: document.getElementById("editQualification").value,
-        oavName: document.getElementById("editOav").value,
-        block: document.getElementById("editBlock").value,
-        district: document.getElementById("editDistrict").value,
-        phone: document.getElementById("editPhone").value
-      };
-
-      fetch(SCRIPT_URL, {
-        method: "POST",
-        mode: "cors",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify(payload)
-      })
-      .then(res => res.json())
-      .then(res => {
-        if (res.status === "success") {
-          statusDiv.style.color = "var(--success-green)";
-          statusDiv.innerHTML = "Member details updated successfully!";
-          if(currentMemberData) {
-            Object.assign(currentMemberData, payload);
-            syncCardView(currentMemberData);
-          }
-        } else {
-          statusDiv.style.color = "var(--danger-red)";
-          statusDiv.innerHTML = "Error: " + res.message;
-        }
-      })
-      .catch(() => {
-        statusDiv.style.color = "var(--danger-red)";
-        statusDiv.innerHTML = "Update failed. Please check network connection.";
-      });
-    }
-
-    function downloadMembershipCardHTML() {
-      var cardElement = document.getElementById('membershipCardPrintable');
-      var memberId = document.getElementById('cardMemId').innerText || 'Card';
-      
-      var htmlContent = "<!DOCTYPE html>\n<html>\n<head>\n" +
-        "<meta charset='UTF-8'/>\n" +
-        "<title>OAVTA Membership Card - " + memberId + "</title>\n" +
-        "<link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' rel='stylesheet'/>\n" +
-        "<style>\n" +
-          "body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f3f6f9; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; }\n" +
-          ".membership-card-box { width: 420px; border: 2px solid #002e6e; border-radius: 12px; background: #ffffff; box-shadow: 0 8px 20px rgba(0,0,0,0.12); overflow: hidden; }\n" +
-          ".card-header-inner { background: linear-gradient(135deg, #001f4d, #002e6e); color: #ffffff; padding: 12px 10px; text-align: center; border-bottom: 3px solid #00a8cc; }\n" +
-          ".card-header-inner h4 { margin: 0; font-size: 11px; font-weight: 800; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }\n" +
-          ".card-header-inner p { margin: 3px 0 0 0; font-size: 10px; color: #80d8ff; font-weight: 700; letter-spacing: 1px; }\n" +
-          ".card-body-inner { padding: 16px; background: #ffffff; }\n" +
-          ".id-top-bar { display: flex; justify-content: space-between; align-items: center; background: #f0f7ff; border: 1px dashed #00a8cc; padding: 8px 12px; border-radius: 8px; margin-bottom: 12px; }\n" +
-          ".id-label { font-size: 9px; font-weight: 800; color: #666; text-transform: uppercase; letter-spacing: 0.5px; }\n" +
-          ".id-value-large { font-size: 20px; font-weight: 900; color: #00a8cc; letter-spacing: 1px; }\n" +
-          ".name-container { margin-bottom: 12px; border-bottom: 2px solid #edf2f7; padding-bottom: 8px; }\n" +
-          ".name-value-large { font-size: 18px; font-weight: 800; color: #002e6e; text-transform: uppercase; margin-top: 2px; }\n" +
-          ".details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; font-size: 12px; }\n" +
-          ".detail-item { display: flex; flex-direction: column; }\n" +
-          ".detail-item .lbl { font-size: 9px; font-weight: 700; color: #718096; text-transform: uppercase; margin-bottom: 2px; }\n" +
-          ".detail-item .val { font-size: 12px; font-weight: 600; color: #2d3748; word-break: break-word; }\n" +
-          ".card-footer-bar { background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 8px 12px; text-align: center; font-size: 9px; color: #718096; font-weight: 600; }\n" +
-        "</style>\n" +
-        "</head>\n<body>\n" +
-        cardElement.outerHTML +
-        "\n</body>\n</html>";
-
-      var blob = new Blob([htmlContent], { type: "text/html;charset=utf-8" });
-      var url = URL.createObjectURL(blob);
-      var link = document.createElement("a");
-      link.href = url;
-      link.download = "OAVTA_Membership_Card_" + memberId + ".html";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-    }
-
-    function quickPrintCard() { window.print(); }
-
-    function handleDistrictLogin(e) {
-      e.preventDefault();
-      var statusDiv = document.getElementById("districtLoginStatus");
-      var dist = document.getElementById("distId").value;
-      var pass = document.getElementById("distPassword").value;
-
-      statusDiv.style.color = "var(--primary)";
-      statusDiv.innerHTML = "Verifying credentials...";
-
-      fetch(SCRIPT_URL, {
-        method: "POST",
-        mode: "cors",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify({ action: "districtLogin", district: dist, password: pass })
-      })
-      .then(res => res.json())
-      .then(res => {
-        if (res.status === "success") {
-          activeAdminDistrict = res.district;
-          statusDiv.innerHTML = "";
-          closeModal("portalLoginModal");
-          document.getElementById("adminModalTitle").innerHTML = "<i class='fa-solid fa-user-gear'/> Manage " + activeAdminDistrict + " Executive Cards";
-          fetchDignitariesForAdmin(activeAdminDistrict);
-          openModal("dignitariesAdminModal");
-        } else {
-          statusDiv.style.color = "var(--danger-red)";
-          statusDiv.innerHTML = res.message;
-        }
-      })
-      .catch(() => {
-        statusDiv.style.color = "var(--danger-red)";
-        statusDiv.innerHTML = "Login failed. Check your network connection.";
-      });
-    }
-
-    function fetchDignitariesForAdmin(districtName) {
-      var container = document.getElementById("dignitariesInputContainer");
-      container.innerHTML = "<p style='text-align:center; padding: 20px; color: var(--primary);'><i class='fa-solid fa-spinner fa-spin'></i> Loading district data...</p>";
-
-      fetch(SCRIPT_URL + "?action=getDignitaries&district=" + encodeURIComponent(districtName))
-      .then(res => res.json())
-      .then(res => {
-        var existingList = (res.status === "success" && res.data) ? res.data : [];
-        buildDignitaryInputs(existingList);
-      })
-      .catch(() => {
-        buildDignitaryInputs([]);
-      });
-    }
-
-    function buildDignitaryInputs(list) {
-      var container = document.getElementById("dignitariesInputContainer");
-      container.innerHTML = "";
-      if (!list || list.length === 0) {
-        addDignitaryCard();
-        return;
-      }
-      list.forEach(item => addDignitaryCard(item));
-    }
-
-    function addDignitaryCard(data = {}) {
-      var container = document.getElementById("dignitariesInputContainer");
-      var cardId = "dignitary_" + Date.now() + "_" + Math.floor(Math.random() * 1000);
-      var div = document.createElement("div");
-      div.className = "dignitary-entry-box";
-      div.id = cardId;
-
-      div.innerHTML = 
-        "<div class='dignitary-card-header'>" +
-          "<strong><i class='fa-solid fa-user-tie'></i> Executive Portfolio</strong>" +
-          "<button type='button' class='btn-danger-sm' onclick='removeDignitaryCard(\"" + cardId + "\")'><i class='fa-solid fa-trash'></i> Remove</button>" +
-        "</div>" +
-        "<div class='form-grid-2'>" +
-          "<div class='form-group'><label>Full Name</label><input type='text' class='dig-name' value='" + (data.name || "") + "' required/></div>" +
-          "<div class='form-group'><label>Association Designation</label><input type='text' class='dig-assoc' value='" + (data.assocDesignation || "") + "' placeholder='e.g. District President' required/></div>" +
-        "</div>" +
-        "<div class='form-grid-2'>" +
-          "<div class='form-group'><label>School Designation</label><input type='text' class='dig-school-desig' value='" + (data.schoolDesignation || "") + "' placeholder='e.g. PGT Physics'/></div>" +
-          "<div class='form-group'><label>School Name</label><input type='text' class='dig-school-name' value='" + (data.schoolName || "") + "' placeholder='e.g. OAV School'/></div>" +
-        "</div>" +
-        "<div class='form-group'><label>Contact Phone</label><input type='tel' class='dig-contact' value='" + (data.contact || "") + "' placeholder='Mobile Number'/></div>";
-
-      container.appendChild(div);
-    }
-
-    function removeDignitaryCard(id) {
-      var el = document.getElementById(id);
-      if (el) el.remove();
-    }
-
-    function handleSaveDignitaries(e) {
-      e.preventDefault();
-      var statusDiv = document.getElementById("dignitarySaveStatus");
-      statusDiv.style.color = "var(--primary)";
-      statusDiv.innerHTML = "Saving district executive entries...";
-
-      var cards = document.querySelectorAll(".dignitary-entry-box");
-      var dignitaries = [];
-
-      cards.forEach(card => {
-        dignitaries.push({
-          name: card.querySelector(".dig-name").value,
-          assocDesignation: card.querySelector(".dig-assoc").value,
-          schoolDesignation: card.querySelector(".dig-school-desig").value,
-          schoolName: card.querySelector(".dig-school-name").value,
-          contact: card.querySelector(".dig-contact").value
-        });
-      });
-
-      var payload = {
-        action: "saveDignitaries",
-        district: activeAdminDistrict,
-        dignitaries: dignitaries
-      };
-
-      fetch(SCRIPT_URL, {
-        method: "POST",
-        mode: "cors",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify(payload)
-      })
-      .then(res => res.json())
-      .then(res => {
-        if (res.status === "success") {
-          statusDiv.style.color = "var(--success-green)";
-          statusDiv.innerHTML = "District executive list updated and published!";
-        } else {
-          statusDiv.style.color = "var(--danger-red)";
-          statusDiv.innerHTML = "Error: " + res.message;
-        }
-      })
-      .catch(() => {
-        statusDiv.style.color = "var(--danger-red)";
-        statusDiv.innerHTML = "Failed to save details. Check network connection.";
-      });
-    }
-
-    function handleStateAdminLogin(e) {
-      e.preventDefault();
-      var statusDiv = document.getElementById("stateLoginStatus");
-      var user = document.getElementById("stateUser").value;
-      var pass = document.getElementById("statePass").value;
-
-      statusDiv.style.color = "var(--primary)";
-      statusDiv.innerHTML = "Loading Administrative Portal...";
-
-      fetch(SCRIPT_URL, {
-        method: "POST",
-        mode: "cors",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify({ action: "stateAdminLogin", username: user, password: pass })
-      })
-      .then(res => res.json())
-      .then(res => {
-        if (res.status === "success") {
-          statusDiv.innerHTML = "";
-          closeModal("portalLoginModal");
-          rawStateMembersData = res.members || [];
-          rawStateDistrictsData = res.districts || [];
-          switchStateAdminView("members");
-          openModal("stateAdminDashboardModal");
-        } else {
-          statusDiv.style.color = "var(--danger-red)";
-          statusDiv.innerHTML = res.message;
-        }
-      })
-      .catch(() => {
-        statusDiv.style.color = "var(--danger-red)";
-        statusDiv.innerHTML = "Server connection failed.";
-      });
-    }
-
-    function switchStateAdminView(viewType) {
-      currentStateView = viewType;
-      document.getElementById("btnViewMembers").classList.toggle("active", viewType === "members");
-      document.getElementById("btnViewDistricts").classList.toggle("active", viewType === "districts");
-
-      document.getElementById("stateAdminSearchInput").value = "";
-
-      if (viewType === "members") {
-        if (rawStateMembersData.length > 0) renderStateTable(rawStateMembersData);
-        else fetchStateData("exportMembers");
-      } else {
-        if (rawStateDistrictsData.length > 0) renderStateTable(rawStateDistrictsData);
-        else fetchStateData("exportDistricts");
-      }
-    }
-
-    function fetchStateData(actionName) {
-      var display = document.getElementById("stateAdminTableDisplay");
-      display.innerHTML = "<p style='text-align:center; padding: 25px;'><i class='fa-solid fa-spinner fa-spin'></i> Fetching records from server...</p>";
-
-      fetch(SCRIPT_URL + "?action=" + actionName)
-      .then(res => res.json())
-      .then(res => {
-        if (res.status === "success" && res.data) {
-          if (actionName === "exportMembers") {
-            rawStateMembersData = res.data;
-            renderStateTable(rawStateMembersData);
-          } else {
-            rawStateDistrictsData = res.data;
-            renderStateTable(rawStateDistrictsData);
-          }
-        } else {
-          display.innerHTML = "<p style='text-align:center; padding:20px; color:#d9534f;'>No records found.</p>";
-        }
-      });
-    }
-
-    function renderStateTable(rows) {
-      var container = document.getElementById("stateAdminTableDisplay");
-      if (!rows || rows.length === 0) {
-        container.innerHTML = "<p style='text-align:center; padding: 20px;'>No dataset records available.</p>";
-        return;
-      }
-
-      var html = "<table class='admin-data-table' id='stateDataTable'><thead><tr>";
-      var headers = rows[0];
-      headers.forEach(col => { html += "<th>" + col + "</th>"; });
-      html += "</tr></thead><tbody>";
-
-      for (var i = 1; i < rows.length; i++) {
-        html += "<tr>";
-        rows[i].forEach(cell => { html += "<td>" + cell + "</td>"; });
-        html += "</tr>";
-      }
-      html += "</tbody></table>";
-      container.innerHTML = html;
-    }
-
-    function filterStateAdminTable() {
-      var input = document.getElementById("stateAdminSearchInput");
-      var filter = input.value.toLowerCase();
-      var table = document.getElementById("stateDataTable");
-      if (!table) return;
-
-      var tr = table.getElementsByTagName("tr");
-      for (var i = 1; i < tr.length; i++) {
-        var rowText = tr[i].textContent || tr[i].innerText;
-        tr[i].style.display = rowText.toLowerCase().indexOf(filter) > -1 ? "" : "none";
-      }
-    }
-
-    function handleStateDownload() {
-      var data = currentStateView === "members" ? rawStateMembersData : rawStateDistrictsData;
-      if (!data || data.length === 0) {
-        alert("No data available to download.");
-        return;
-      }
-
-      var csvContent = "data:text/csv;charset=utf-8,";
-      data.forEach(row => {
-        var rowData = row.map(cell => '"' + (cell || '').toString().replace(/"/g, '""') + '"').join(",");
-        csvContent += rowData + "\r\n";
-      });
-
-      var encodedUri = encodeURI(csvContent);
-      var link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", "OAVTA_" + currentStateView + "_Export.csv");
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-    //]]>
-  </script>
 </body>
 </html>
