@@ -599,7 +599,6 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-    import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBgVnOxo6wb6Ahrs2dqhVwgrqCFtZQRlRU",
@@ -613,7 +612,9 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const auth = getAuth(app);
+
+    // STATE ADMIN PASSWORD
+    const stateAdminPassword = "stateadmin123";
 
     // EDITABLE DISTRICT PASSWORDS FOR ALL 30 DISTRICTS
     const districtPasswords = {
@@ -1202,36 +1203,19 @@
       });
     });
 
-    // State Admin Auth
-    window.initRecaptcha = function() {
-      if (!window.recaptchaVerifier) {
-        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-box', { size: 'invisible' });
-      }
-    };
+    // State Admin Password Auth
+    window.verifyStateAdminPassword = function() {
+      const inputPass = document.getElementById('stateAdminPassInput').value.trim();
+      const msg = document.getElementById('stateAdminPassMsg');
 
-    document.getElementById('sendOtpBtn').addEventListener('click', async () => {
-      const phone = document.getElementById('adminPhone').value.trim();
-      initRecaptcha();
-      try {
-        window.confirmationResult = await signInWithPhoneNumber(auth, phone, window.recaptchaVerifier);
-        document.getElementById('otpArea').style.display = 'block';
-        alert("Security OTP issued to phone number " + phone);
-      } catch (err) {
-        alert("Authentication Dispatch Failed: " + err.message);
-      }
-    });
-
-    document.getElementById('verifyOtpBtn').addEventListener('click', async () => {
-      const otp = document.getElementById('adminOtp').value.trim();
-      try {
-        await window.confirmationResult.confirm(otp);
+      if (inputPass === stateAdminPassword) {
         document.getElementById('stateAdminLoginArea').style.display = 'none';
         document.getElementById('stateAdminDashboard').style.display = 'block';
         fetchStateMasterData();
-      } catch (err) {
-        alert("Security Failure: Invalid OTP Security Token.");
+      } else {
+        msg.innerHTML = `<div class="alert alert-danger" style="margin-top:10px;"><i class="fa-solid fa-lock"></i> Invalid State Admin Password!</div>`;
       }
-    });
+    };
 
     async function fetchStateMasterData() {
       const mSnap = await getDocs(collection(db, "members"));
@@ -1520,20 +1504,17 @@
         <div class="section-header">
           <div class="section-title"><i class="fa-solid fa-vault"></i> State Level Administration Dashboard</div>
         </div>
-        <div id="recaptcha-box"></div>
 
+        <!-- PASSWORD AUTHENTICATION AREA -->
         <div id="stateAdminLoginArea" class="selection-banner">
           <label><i class="fa-solid fa-shield"></i> State Security Authentication Required</label>
           <div style="max-width:350px; margin:0 auto;">
             <div class="form-group">
-              <input type="tel" id="adminPhone" placeholder="+91..." required>
+              <label><i class="fa-solid fa-lock"></i> Enter Password for State Admin</label>
+              <input type="password" id="stateAdminPassInput" placeholder="State Admin Password">
             </div>
-            <button type="button" id="sendOtpBtn" class="btn" style="margin-top:12px; width:100%;"><i class="fa-solid fa-paper-plane"></i> Send Verification SMS</button>
-
-            <div id="otpArea" style="display:none; margin-top:20px;">
-              <div class="form-group"><label>Enter Security Code</label><input type="text" id="adminOtp" placeholder="6-Digit OTP"></div>
-              <button type="button" id="verifyOtpBtn" class="btn btn-gold" style="margin-top:12px; width:100%;"><i class="fa-solid fa-lock-open"></i> Unlock State Dashboard</button>
-            </div>
+            <button type="button" onclick="verifyStateAdminPassword()" class="btn btn-gold" style="margin-top:12px; width:100%;"><i class="fa-solid fa-lock-open"></i> Unlock State Dashboard</button>
+            <div id="stateAdminPassMsg"></div>
           </div>
         </div>
 
