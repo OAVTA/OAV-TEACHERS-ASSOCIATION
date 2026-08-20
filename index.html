@@ -34,7 +34,6 @@
       padding-bottom: 50px;
     }
 
-    /* Header Portal Banner */
     .gov-topbar {
       background: #020617;
       color: #94a3b8;
@@ -103,7 +102,6 @@
       font-weight: 700;
     }
 
-    /* Floating Navigation Hub */
     .main-container {
       max-width: 1100px;
       margin: -40px auto 0;
@@ -148,7 +146,6 @@
       box-shadow: 0 4px 15px rgba(30, 58, 138, 0.35);
     }
 
-    /* Content Layouts */
     .panel { display: none; margin-top: 25px; animation: fadeIn 0.4s ease-out; }
     .panel.active { display: block; }
 
@@ -276,8 +273,8 @@
       gap: 10px;
     }
     .alert-danger { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+    .alert-success { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
 
-    /* POPUP MODAL STYLES */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0;
@@ -448,7 +445,6 @@
       box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
     }
 
-    /* ID CARD STYLING */
     .id-display-container {
       display: flex;
       flex-direction: column;
@@ -613,10 +609,8 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // STATE ADMIN PASSWORD
     const stateAdminPassword = "stateadmin123";
 
-    // EDITABLE DISTRICT PASSWORDS FOR ALL 30 DISTRICTS
     const districtPasswords = {
       "Angul": "angul123",
       "Balangir": "balangir123",
@@ -727,7 +721,6 @@
       document.getElementById('successModal').style.display = 'none';
     };
 
-    // Registration Handler with YYYYXXXX Sequential ID Logic
     document.getElementById('regForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const msg = document.getElementById('regMsg');
@@ -737,7 +730,6 @@
       const mobile = document.getElementById('regMobile').value.trim();
       const year = document.getElementById('regYear').value.trim();
 
-      // Check duplicate
       const qDup = query(collection(db, "members"), where("name", "==", name), where("mobile", "==", mobile));
       const snapDup = await getDocs(qDup);
 
@@ -746,7 +738,6 @@
         return;
       }
 
-      // Query existing members for this joinYear to calculate sequence
       const qYear = query(collection(db, "members"), where("joinYear", "==", year));
       const snapYear = await getDocs(qYear);
 
@@ -763,7 +754,7 @@
 
       const nextSeq = maxSeq + 1;
       const formattedSeq = String(nextSeq).padStart(4, '0');
-      const idCode = `${year}${formattedSeq}`; // e.g. 20150001
+      const idCode = `${year}${formattedSeq}`;
 
       const data = {
         memberId: idCode,
@@ -779,18 +770,14 @@
 
       try {
         await addDoc(collection(db, "members"), data);
-        
-        // Populate Popup Modal Exactly
         document.getElementById('modalUniqueId').innerText = idCode;
         document.getElementById('successModal').style.display = 'flex';
-
         document.getElementById('regForm').reset();
       } catch (err) {
         msg.innerHTML = `<div class="alert alert-danger">Error: ${err.message}</div>`;
       }
     });
 
-    // Member Login & Display
     document.getElementById('memberLoginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const id = document.getElementById('loginMemberId').value.trim();
@@ -819,7 +806,6 @@
       document.getElementById('editYear').value = d.joinYear;
       document.getElementById('editMobile').value = d.mobile;
 
-      // Render ID Card
       document.getElementById('cardName').innerText = d.name;
       document.getElementById('cardId').innerText = d.memberId;
       document.getElementById('cardDesig').innerText = d.designation;
@@ -861,7 +847,6 @@
       }
     });
 
-    // HTML DOWNLOADER
     window.downloadIDCardHTML = function() {
       const name = document.getElementById('cardName').innerText || "Member";
       const sanitizedName = name.replace(/[^a-zA-Z0-9]/g, "_");
@@ -883,142 +868,28 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      background: #f1f5f9;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-    .id-card-frame {
-      width: 340px;
-      height: 540px;
-      background: #ffffff;
-      border-radius: 18px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-      border: 1px solid #cbd5e1;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      background-image: radial-gradient(#e2e8f0 0.75px, transparent 0.75px);
-      background-size: 12px 12px;
-    }
-    .id-card-header {
-      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0284c7 100%);
-      color: #ffffff;
-      padding: 20px 15px 15px;
-      text-align: center;
-      position: relative;
-      border-bottom: 4px solid #d97706;
-    }
-    .id-card-header img {
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      background: #fff;
-      padding: 1px;
-      margin-bottom: 4px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      object-fit: cover;
-    }
-    .id-card-header h3 {
-      font-family: 'Cinzel', serif;
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-    }
-    .id-card-header p {
-      font-size: 8px;
-      letter-spacing: 1.5px;
-      color: #fbbf24;
-      text-transform: uppercase;
-      font-weight: 700;
-    }
-    .id-card-body {
-      padding: 25px 20px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-    }
-    .id-member-name {
-      font-family: 'Cinzel', serif;
-      font-size: 24px;
-      font-weight: 800;
-      color: #0a192f;
-      text-align: center;
-      margin-top: 5px;
-      line-height: 1.2;
-    }
-    .id-code-large {
-      font-size: 13px;
-      font-weight: 700;
-      color: #475569;
-      letter-spacing: 1.5px;
-      margin-top: 6px;
-      text-align: center;
-      text-transform: uppercase;
-    }
-    .id-member-tag {
-      background: #fef3c7;
-      color: #b45309;
-      font-size: 11px;
-      font-weight: 800;
-      padding: 4px 14px;
-      border-radius: 20px;
-      margin-top: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      border: 1px solid #fde68a;
-    }
-    .id-info-grid {
-      width: 100%;
-      margin-top: 18px;
-      font-size: 12px;
-    }
-    .id-info-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 6px 0;
-      border-bottom: 1px dashed #e2e8f0;
-    }
+    body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #f1f5f9; font-family: 'Plus Jakarta Sans', sans-serif; }
+    .id-card-frame { width: 340px; height: 540px; background: #ffffff; border-radius: 18px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); border: 1px solid #cbd5e1; position: relative; overflow: hidden; display: flex; flex-direction: column; background-image: radial-gradient(#e2e8f0 0.75px, transparent 0.75px); background-size: 12px 12px; }
+    .id-card-header { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0284c7 100%); color: #ffffff; padding: 20px 15px 15px; text-align: center; position: relative; border-bottom: 4px solid #d97706; }
+    .id-card-header h3 { font-family: 'Cinzel', serif; font-size: 13px; font-weight: 800; letter-spacing: 0.5px; }
+    .id-card-header p { font-size: 8px; letter-spacing: 1.5px; color: #fbbf24; text-transform: uppercase; font-weight: 700; }
+    .id-card-body { padding: 25px 20px; flex: 1; display: flex; flex-direction: column; align-items: center; position: relative; }
+    .id-member-name { font-family: 'Cinzel', serif; font-size: 24px; font-weight: 800; color: #0a192f; text-align: center; margin-top: 5px; line-height: 1.2; }
+    .id-code-large { font-size: 13px; font-weight: 700; color: #475569; letter-spacing: 1.5px; margin-top: 6px; text-align: center; text-transform: uppercase; }
+    .id-member-tag { background: #fef3c7; color: #b45309; font-size: 11px; font-weight: 800; padding: 4px 14px; border-radius: 20px; margin-top: 10px; text-transform: uppercase; letter-spacing: 0.5px; border: 1px solid #fde68a; }
+    .id-info-grid { width: 100%; margin-top: 18px; font-size: 12px; }
+    .id-info-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #e2e8f0; }
     .id-info-row span:first-child { color: #64748b; font-weight: 600; }
     .id-info-row span:last-child { color: #0a192f; font-weight: 700; text-align: right; }
-    .id-card-footer {
-      background: #f8fafc;
-      padding: 12px 20px;
-      border-top: 1px solid #e2e8f0;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-    }
-    .barcode-stub {
-      font-family: 'Courier New', monospace;
-      font-weight: bold;
-      font-size: 11px;
-      letter-spacing: 3px;
-      color: #334155;
-    }
-    .signature-stub {
-      text-align: center;
-      font-size: 8px;
-      color: #64748b;
-      font-weight: 600;
-    }
-    .signature-line {
-      width: 70px;
-      border-bottom: 1px solid #0f172a;
-      margin-bottom: 2px;
-    }
+    .id-card-footer { background: #f8fafc; padding: 12px 20px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: flex-end; }
+    .barcode-stub { font-family: 'Courier New', monospace; font-weight: bold; font-size: 11px; letter-spacing: 3px; color: #334155; }
+    .signature-stub { text-align: center; font-size: 8px; color: #64748b; font-weight: 600; }
+    .signature-line { width: 70px; border-bottom: 1px solid #0f172a; margin-bottom: 2px; }
   </style>
 </head>
 <body>
   <div class="id-card-frame">
     <div class="id-card-header">
-      <img src="ChatGPT Image Aug 16, 2026, 12_28_14 PM.png" alt="Crest">
       <h3>OAVTA ODISHA</h3>
       <p>Official Membership Card</p>
     </div>
@@ -1026,7 +897,6 @@
       <div class="id-member-name">${name}</div>
       <div class="id-code-large">${id}</div>
       <div class="id-member-tag">${desig}</div>
-
       <div class="id-info-grid">
         <div class="id-info-row"><span>District</span><span>${dist}</span></div>
         <div class="id-info-row"><span>Block</span><span>${block}</span></div>
@@ -1037,10 +907,7 @@
     </div>
     <div class="id-card-footer">
       <div class="barcode-stub">|||| ||| |||||||</div>
-      <div class="signature-stub">
-        <div class="signature-line"></div>
-        Authorized Signatory
-      </div>
+      <div class="signature-stub"><div class="signature-line"></div>Authorized Signatory</div>
     </div>
   </div>
 </body>
@@ -1054,7 +921,6 @@
       URL.revokeObjectURL(link.href);
     };
 
-    // Load Existing Portfolios in Dist Admin
     async function loadDistPortfolios(distVal) {
       const container = document.getElementById('distAdminPortfoliosList');
       container.innerHTML = '';
@@ -1101,7 +967,6 @@
       }
     };
 
-    // DISTRICT ADMIN PASSWORD AUTHENTICATION & SELECTION
     document.getElementById('pDist').addEventListener('change', function() {
       const distVal = this.value;
       const editSection = document.getElementById('distAdminEditPane');
@@ -1137,7 +1002,6 @@
       }
     };
 
-    // Save District Portfolio
     document.getElementById('distPortfolioForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const dist = document.getElementById('pDist').value;
@@ -1164,15 +1028,15 @@
 
       try {
         await addDoc(collection(db, "portfolios"), pData);
-        msg.innerHTML = `<div class="alert alert-success"><i class="fa-solid fa-check"></i> Portfolio saved! Registered (${snap.size + 1}/10) positions for ${dist}.</div>`;
+        msg.innerHTML = `<div class="alert alert-success"><i class="fa-solid fa-check"></i> Portfolio saved successfully for ${dist}!</div>`;
         document.getElementById('distPortfolioForm').reset();
-        loadDistPortfolios(dist);
+        populateBlocks(dist, 'pBlock');
+        await loadDistPortfolios(dist);
       } catch(err) {
         msg.innerHTML = `<div class="alert alert-danger">Error: ${err.message}</div>`;
       }
     });
 
-    // Public District Search
     document.getElementById('publicDistSelect').addEventListener('change', async function() {
       const selected = this.value;
       const cardContainer = document.getElementById('publicPortfolioGrid');
@@ -1203,7 +1067,6 @@
       });
     });
 
-    // State Admin Password Auth
     window.verifyStateAdminPassword = function() {
       const inputPass = document.getElementById('stateAdminPassInput').value.trim();
       const msg = document.getElementById('stateAdminPassMsg');
@@ -1263,7 +1126,6 @@
 </head>
 <body>
 
-  <!-- SUCCESS POPUP MODAL WITH GREEN TICK -->
   <div id="successModal" class="modal-overlay">
     <div class="modal-card">
       <div class="tick-circle">
@@ -1278,16 +1140,13 @@
     </div>
   </div>
 
-  <!-- Top Portal Notice -->
   <div class="gov-topbar">
     <span><i class="fa-solid fa-building-columns"></i> State Cadre Portal - Government of Odisha Association</span>
     <span><i class="fa-solid fa-shield-halved"></i> Official Portal</span>
   </div>
 
-  <!-- Header Hero Banner -->
   <div class="header-hero">
     <div class="brand-container">
-      <img src="ChatGPT Image Aug 16, 2026, 12_28_14 PM.png" alt="OAVTA Crest" class="logo-badge">
       <div class="brand-titles">
         <h1>OAVTA ODISHA</h1>
         <p>Odisha Adarsha Vidyalaya Teachers Association</p>
@@ -1295,10 +1154,8 @@
     </div>
   </div>
 
-  <!-- Main Interaction Area -->
   <div class="main-container">
     
-    <!-- Navigation Tabs Hub -->
     <div class="nav-tabs">
       <button class="tab-btn active" onclick="switchTab('register', event)"><i class="fa-solid fa-id-card"></i> Registration</button>
       <button class="tab-btn" onclick="switchTab('memberLogin', event)"><i class="fa-solid fa-user-check"></i> Member Portal</button>
@@ -1307,7 +1164,6 @@
       <button class="tab-btn" onclick="switchTab('stateAdmin', event)"><i class="fa-solid fa-building-shield"></i> State Admin</button>
     </div>
 
-    <!-- 1. MEMBER REGISTRATION PANEL -->
     <div id="register" class="panel active">
       <div class="glass-card">
         <div class="section-header">
@@ -1338,7 +1194,6 @@
       </div>
     </div>
 
-    <!-- 2. MEMBER PORTAL & EDIT -->
     <div id="memberLogin" class="panel">
       <div class="glass-card">
         <div class="section-header">
@@ -1360,11 +1215,9 @@
         <div id="memberDashboard" class="dynamic-edit-pane">
           <div style="display:flex; flex-wrap:wrap; gap:35px; justify-content:center;">
             
-            <!-- DIGITAL ID CARD -->
             <div class="id-display-container">
               <div class="id-card-frame" id="printableCard">
                 <div class="id-card-header">
-                  <img src="ChatGPT Image Aug 16, 2026, 12_28_14 PM.png" alt="Crest">
                   <h3>OAVTA ODISHA</h3>
                   <p>Official Membership Card</p>
                 </div>
@@ -1393,7 +1246,6 @@
               <button onclick="downloadIDCardHTML()" class="btn btn-gold"><i class="fa-solid fa-file-code"></i> Download ID Card (.HTML)</button>
             </div>
 
-            <!-- Profile Modification Form -->
             <div style="flex:1; min-width:320px;">
               <h3 style="font-family:'Cinzel'; margin-bottom:15px; color:var(--primary); font-size:18px;"><i class="fa-solid fa-user-pen"></i> Edit Profile Details</h3>
               <form id="updateProfileForm">
@@ -1423,7 +1275,6 @@
       </div>
     </div>
 
-    <!-- 3. PUBLIC DISTRICT BODIES DIRECTORY -->
     <div id="publicPortfolios" class="panel">
       <div class="glass-card">
         <div class="section-header">
@@ -1441,7 +1292,6 @@
       </div>
     </div>
 
-    <!-- 4. DISTRICT ADMIN PORTAL -->
     <div id="distAdmin" class="panel">
       <div class="glass-card">
         <div class="section-header">
@@ -1455,7 +1305,6 @@
           </div>
         </div>
 
-        <!-- PASSWORD ENTRY AREA -->
         <div id="distPassAuthArea" style="display:none; max-width:400px; margin: 0 auto 20px; background:#f8fafc; padding:20px; border-radius:12px; border:1px solid var(--border-color); text-align:center;">
           <div class="form-group">
             <label><i class="fa-solid fa-lock"></i> Enter Password for District Admin</label>
@@ -1498,14 +1347,12 @@
       </div>
     </div>
 
-    <!-- 5. STATE ADMIN PORTAL -->
     <div id="stateAdmin" class="panel">
       <div class="glass-card">
         <div class="section-header">
           <div class="section-title"><i class="fa-solid fa-vault"></i> State Level Administration Dashboard</div>
         </div>
 
-        <!-- PASSWORD AUTHENTICATION AREA -->
         <div id="stateAdminLoginArea" class="selection-banner">
           <label><i class="fa-solid fa-shield"></i> State Security Authentication Required</label>
           <div style="max-width:350px; margin:0 auto;">
