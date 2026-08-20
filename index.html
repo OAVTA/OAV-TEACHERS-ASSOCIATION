@@ -74,11 +74,11 @@
     }
 
     .logo-badge {
-      width: 70px;
-      height: 70px;
+      width: 75px;
+      height: 75px;
       background: #ffffff;
       border-radius: 50%;
-      padding: 3px;
+      padding: 2px;
       box-shadow: 0 0 20px rgba(217, 119, 6, 0.4);
       border: 2px solid var(--accent-gold);
       object-fit: cover;
@@ -213,7 +213,6 @@
     }
 
     .form-group { display: flex; flex-direction: column; }
-    .form-group.full { grid-column: 1 / -1; }
 
     label {
       font-size: 12px;
@@ -265,7 +264,6 @@
     .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(15, 23, 42, 0.25); }
     .btn-gold { background: var(--gold-gradient); color: #ffffff; }
     .btn-danger { background: #dc2626; color: #ffffff; padding: 6px 12px; font-size: 12px; }
-    .btn-danger:hover { background: #b91c1c; }
 
     .alert {
       padding: 14px 18px;
@@ -277,8 +275,73 @@
       align-items: center;
       gap: 10px;
     }
-    .alert-success { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
     .alert-danger { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+
+    /* POPUP MODAL STYLES */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      width: 90%;
+      max-width: 450px;
+      border-radius: 20px;
+      padding: 35px 25px;
+      text-align: center;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      position: relative;
+      animation: scaleUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes scaleUp {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .tick-circle {
+      width: 80px;
+      height: 80px;
+      background: #dcfce7;
+      color: #16a34a;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      margin: 0 auto 20px;
+      border: 3px solid #bbf7d0;
+      box-shadow: 0 10px 15px -3px rgba(22, 163, 74, 0.2);
+    }
+
+    .modal-title {
+      font-family: 'Cinzel', serif;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .modal-text {
+      font-size: 15px;
+      color: #334155;
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+
+    .modal-text strong {
+      color: var(--accent-gold);
+      font-size: 16px;
+    }
 
     .portfolio-grid {
       display: grid;
@@ -305,7 +368,6 @@
       box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
     }
 
-    /* EXECUTIVE NAME LARGE & DESIGNATION SMALLER BELOW */
     .portfolio-card .exec-name {
       font-family: 'Cinzel', serif;
       font-size: 22px;
@@ -419,13 +481,14 @@
     }
 
     .id-card-header img {
-      width: 48px;
-      height: 48px;
+      width: 52px;
+      height: 52px;
       border-radius: 50%;
       background: #fff;
-      padding: 2px;
+      padding: 1px;
       margin-bottom: 4px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      object-fit: cover;
     }
 
     .id-card-header h3 {
@@ -552,10 +615,7 @@
     const db = getFirestore(app);
     const auth = getAuth(app);
 
-    // ==========================================
     // EDITABLE DISTRICT PASSWORDS FOR ALL 30 DISTRICTS
-    // EDIT THE PASSWORDS BELOW TO YOUR PREFERENCE
-    // ==========================================
     const districtPasswords = {
       "Angul": "angul123",
       "Balangir": "balangir123",
@@ -662,7 +722,11 @@
       if (evt) evt.currentTarget.classList.add('active');
     };
 
-    // Registration Handler
+    window.closeSuccessModal = function() {
+      document.getElementById('successModal').style.display = 'none';
+    };
+
+    // Registration Handler with YYYYXXXX Sequential ID Logic
     document.getElementById('regForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const msg = document.getElementById('regMsg');
@@ -670,17 +734,35 @@
 
       const name = document.getElementById('regName').value.trim();
       const mobile = document.getElementById('regMobile').value.trim();
+      const year = document.getElementById('regYear').value.trim();
 
-      const q = query(collection(db, "members"), where("name", "==", name), where("mobile", "==", mobile));
-      const snap = await getDocs(q);
+      // Check duplicate
+      const qDup = query(collection(db, "members"), where("name", "==", name), where("mobile", "==", mobile));
+      const snapDup = await getDocs(qDup);
 
-      if (!snap.empty) {
+      if (!snapDup.empty) {
         msg.innerHTML = `<div class="alert alert-danger"><i class="fa-solid fa-triangle-exclamation"></i> Duplicate Alert: User registered with matching Name & Mobile.</div>`;
         return;
       }
 
-      const year = document.getElementById('regYear').value;
-      const idCode = `OAVTA-${year}-${Math.floor(1000 + Math.random() * 9000)}`;
+      // Query existing members for this joinYear to calculate sequence
+      const qYear = query(collection(db, "members"), where("joinYear", "==", year));
+      const snapYear = await getDocs(qYear);
+
+      let maxSeq = 0;
+      snapYear.forEach(docSnap => {
+        const mData = docSnap.data();
+        if (mData.memberId && mData.memberId.length === 8) {
+          const seqPart = parseInt(mData.memberId.substring(4), 10);
+          if (!isNaN(seqPart) && seqPart > maxSeq) {
+            maxSeq = seqPart;
+          }
+        }
+      });
+
+      const nextSeq = maxSeq + 1;
+      const formattedSeq = String(nextSeq).padStart(4, '0');
+      const idCode = `${year}${formattedSeq}`; // e.g. 20150001
 
       const data = {
         memberId: idCode,
@@ -696,7 +778,11 @@
 
       try {
         await addDoc(collection(db, "members"), data);
-        msg.innerHTML = `<div class="alert alert-success"><i class="fa-solid fa-circle-check"></i> Registration Successful! Your Unique ID: <strong>${idCode}</strong>. Switch to Member Portal to view your digital card.</div>`;
+        
+        // Populate Popup Modal Exactly
+        document.getElementById('modalUniqueId').innerText = idCode;
+        document.getElementById('successModal').style.display = 'flex';
+
         document.getElementById('regForm').reset();
       } catch (err) {
         msg.innerHTML = `<div class="alert alert-danger">Error: ${err.message}</div>`;
@@ -732,7 +818,7 @@
       document.getElementById('editYear').value = d.joinYear;
       document.getElementById('editMobile').value = d.mobile;
 
-      // Render ID Card (Name Large, ID Smaller Below)
+      // Render ID Card
       document.getElementById('cardName').innerText = d.name;
       document.getElementById('cardId').innerText = d.memberId;
       document.getElementById('cardDesig').innerText = d.designation;
@@ -774,7 +860,7 @@
       }
     });
 
-    // HTML DOWNLOADER NAMED AFTER MEMBER
+    // HTML DOWNLOADER
     window.downloadIDCardHTML = function() {
       const name = document.getElementById('cardName').innerText || "Member";
       const sanitizedName = name.replace(/[^a-zA-Z0-9]/g, "_");
@@ -827,13 +913,14 @@
       border-bottom: 4px solid #d97706;
     }
     .id-card-header img {
-      width: 48px;
-      height: 48px;
+      width: 52px;
+      height: 52px;
       border-radius: 50%;
       background: #fff;
-      padding: 2px;
+      padding: 1px;
       margin-bottom: 4px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      object-fit: cover;
     }
     .id-card-header h3 {
       font-family: 'Cinzel', serif;
@@ -930,7 +1017,7 @@
 <body>
   <div class="id-card-frame">
     <div class="id-card-header">
-      <img src="https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcT1w9V3pe2V7GHSZpm9b8u15gYE6XFyDB2BkJEciPlDtnB9DfeBZTPuxvTTniUrFEGmGoHisnXkWkNRZN4" alt="Crest">
+      <img src="ChatGPT Image Aug 16, 2026, 12_28_14 PM.png" alt="Crest">
       <h3>OAVTA ODISHA</h3>
       <p>Official Membership Card</p>
     </div>
@@ -1018,7 +1105,6 @@
       const distVal = this.value;
       const editSection = document.getElementById('distAdminEditPane');
       const passAuthSection = document.getElementById('distPassAuthArea');
-      const liveBadge = document.getElementById('liveDistName');
 
       document.getElementById('distAdminPassInput').value = '';
       document.getElementById('distPassMsg').innerHTML = '';
@@ -1085,7 +1171,7 @@
       }
     });
 
-    // Public District Search (EXECUTIVE NAME LARGE, DESIGNATION SMALLER)
+    // Public District Search
     document.getElementById('publicDistSelect').addEventListener('change', async function() {
       const selected = this.value;
       const cardContainer = document.getElementById('publicPortfolioGrid');
@@ -1193,6 +1279,21 @@
 </head>
 <body>
 
+  <!-- SUCCESS POPUP MODAL WITH GREEN TICK -->
+  <div id="successModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="tick-circle">
+        <i class="fa-solid fa-check"></i>
+      </div>
+      <div class="modal-title">Registration Successful!</div>
+      <div class="modal-text">
+        Your Unique ID:<br><strong id="modalUniqueId">20150001</strong><br><br>
+        Switch to Member Portal to view your digital card.
+      </div>
+      <button class="btn btn-gold" onclick="closeSuccessModal()" style="width: 100%;"><i class="fa-solid fa-thumbs-up"></i> Continue</button>
+    </div>
+  </div>
+
   <!-- Top Portal Notice -->
   <div class="gov-topbar">
     <span><i class="fa-solid fa-building-columns"></i> State Cadre Portal - Government of Odisha Association</span>
@@ -1202,7 +1303,7 @@
   <!-- Header Hero Banner -->
   <div class="header-hero">
     <div class="brand-container">
-      <img src="https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcT1w9V3pe2V7GHSZpm9b8u15gYE6XFyDB2BkJEciPlDtnB9DfeBZTPuxvTTniUrFEGmGoHisnXkWkNRZN4" alt="OAVTA Crest" class="logo-badge">
+      <img src="ChatGPT Image Aug 16, 2026, 12_28_14 PM.png" alt="OAVTA Crest" class="logo-badge">
       <div class="brand-titles">
         <h1>OAVTA ODISHA</h1>
         <p>Odisha Adarsha Vidyalaya Teachers Association</p>
@@ -1243,7 +1344,7 @@
               <select id="regBlock" required><option value="">-- Select Block --</option></select>
             </div>
             <div class="form-group"><label><i class="fa-solid fa-school"></i> OAV School Name</label><input type="text" id="regOav" required placeholder="e.g. OAV Todanga"></div>
-            <div class="form-group"><label><i class="fa-solid fa-calendar"></i> Year of Joining</label><input type="number" id="regYear" required placeholder="YYYY"></div>
+            <div class="form-group"><label><i class="fa-solid fa-calendar"></i> Year of Joining</label><input type="number" id="regYear" required placeholder="YYYY (e.g. 2015)"></div>
             <div class="form-group"><label><i class="fa-solid fa-phone"></i> Mobile Number</label><input type="tel" id="regMobile" required placeholder="+91..."></div>
           </div>
           <div style="margin-top:25px;">
@@ -1265,7 +1366,7 @@
           <div id="memberLoginMsg"></div>
           <form id="memberLoginForm" style="max-width:500px; margin:0 auto;">
             <div class="form-grid">
-              <div class="form-group"><label>Member Unique ID</label><input type="text" id="loginMemberId" placeholder="OAVTA-YYYY-XXXX" required></div>
+              <div class="form-group"><label>Member Unique ID</label><input type="text" id="loginMemberId" placeholder="YYYYXXXX (e.g. 20150001)" required></div>
               <div class="form-group"><label>Registered Mobile</label><input type="tel" id="loginMobile" placeholder="+91..." required></div>
             </div>
             <button type="submit" class="btn" style="margin-top:15px; width:100%;"><i class="fa-solid fa-lock-open"></i> Authenticate & Load Profile</button>
@@ -1279,20 +1380,20 @@
             <div class="id-display-container">
               <div class="id-card-frame" id="printableCard">
                 <div class="id-card-header">
-                  <img src="https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcT1w9V3pe2V7GHSZpm9b8u15gYE6XFyDB2BkJEciPlDtnB9DfeBZTPuxvTTniUrFEGmGoHisnXkWkNRZN4" alt="Crest">
+                  <img src="ChatGPT Image Aug 16, 2026, 12_28_14 PM.png" alt="Crest">
                   <h3>OAVTA ODISHA</h3>
                   <p>Official Membership Card</p>
                 </div>
                 <div class="id-card-body">
                   <div class="id-member-name" id="cardName">Member Name</div>
-                  <div class="id-code-large" id="cardId">OAVTA-0000</div>
+                  <div class="id-code-large" id="cardId">20150001</div>
                   <div class="id-member-tag" id="cardDesig">Designation</div>
 
                   <div class="id-info-grid">
                     <div class="id-info-row"><span>District</span><span id="cardDist">District</span></div>
                     <div class="id-info-row"><span>Block</span><span id="cardBlock">Block</span></div>
                     <div class="id-info-row"><span>OAV School</span><span id="cardOav">OAV Name</span></div>
-                    <div class="id-info-row"><span>Joined Year</span><span id="cardYear">2020</span></div>
+                    <div class="id-info-row"><span>Joined Year</span><span id="cardYear">2015</span></div>
                     <div class="id-info-row"><span>Mobile</span><span id="cardMobile">+91...</span></div>
                   </div>
                 </div>
@@ -1356,7 +1457,7 @@
       </div>
     </div>
 
-    <!-- 4. DISTRICT ADMIN PORTAL (PROTECTED WITH PASSWORDS) -->
+    <!-- 4. DISTRICT ADMIN PORTAL -->
     <div id="distAdmin" class="panel">
       <div class="glass-card">
         <div class="section-header">
@@ -1388,13 +1489,11 @@
             <span style="font-size:12px; font-weight:600; opacity:0.9;">Quota Limit: (<span id="distCount">0</span>/10)</span>
           </div>
 
-          <!-- CURRENT ENTERED PORTFOLIOS SECTION -->
           <div style="margin-bottom: 30px; background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid var(--border-color);">
             <h4 style="font-family:'Cinzel'; color: var(--primary); margin-bottom: 15px;"><i class="fa-solid fa-list-check"></i> Currently Entered Portfolios for District</h4>
             <div id="distAdminPortfoliosList" class="portfolio-grid"></div>
           </div>
 
-          <!-- ADD NEW PORTFOLIO FORM -->
           <h4 style="font-family:'Cinzel'; color: var(--primary); margin-bottom: 15px;"><i class="fa-solid fa-user-plus"></i> Add New Executive Portfolio</h4>
           <form id="distPortfolioForm">
             <div class="form-grid">
