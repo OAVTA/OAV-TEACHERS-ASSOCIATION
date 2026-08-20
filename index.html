@@ -64,17 +64,6 @@
       margin-bottom: 10px;
     }
 
-    .logo-badge {
-      width: 70px;
-      height: 70px;
-      background: #ffffff;
-      border-radius: 50%;
-      padding: 2px;
-      box-shadow: 0 0 20px rgba(217, 119, 6, 0.4);
-      border: 2px solid var(--accent-gold);
-      object-fit: cover;
-    }
-
     .brand-titles h1 {
       font-family: 'Cinzel', serif;
       font-size: 26px;
@@ -92,7 +81,7 @@
       font-weight: 700;
     }
 
-    /* Floating Main Navigation */
+    /* Navigation */
     .main-container {
       max-width: 1150px;
       margin: -35px auto 0;
@@ -172,7 +161,7 @@
 
     .section-title i { color: var(--accent-gold); }
 
-    /* Form Layouts */
+    /* Forms */
     .form-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -243,8 +232,9 @@
     }
     .alert-danger { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
     .alert-success { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+    .alert-info { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
 
-    /* Sub Navigation Pills inside Sections */
+    /* Sub Navigation */
     .sub-nav {
       display: flex;
       gap: 10px;
@@ -264,12 +254,9 @@
       cursor: pointer;
     }
 
-    .sub-nav-btn.active {
-      background: var(--primary);
-      color: #ffffff;
-    }
+    .sub-nav-btn.active { background: var(--primary); color: #ffffff; }
 
-    /* DIRECTORY CARDS */
+    /* Directory Cards */
     .portfolio-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -321,7 +308,7 @@
 
     .portfolio-card .info-item strong { color: var(--text-dark); }
 
-    /* TABLES */
+    /* Tables */
     .table-wrapper {
       overflow-x: auto;
       border-radius: 10px;
@@ -349,7 +336,7 @@
     td { padding: 12px 14px; border-bottom: 1px solid var(--border-color); color: #334155; }
     tr:nth-child(even) { background: #fafafa; }
 
-    /* MODERN GOVT STYLE ID CARD */
+    /* ID Card */
     .id-card-frame {
       width: 320px;
       height: 500px;
@@ -364,7 +351,6 @@
       margin: 0 auto;
     }
 
-    /* Tricolor Top Strip */
     .id-tricolor-bar {
       height: 5px;
       background: linear-gradient(to right, #ff9933 33.33%, #ffffff 33.33%, #ffffff 66.66%, #138808 66.66%);
@@ -405,20 +391,6 @@
       background-size: 10px 10px;
     }
 
-    /* Government Style Watermark Seal */
-    .id-card-body::before {
-      content: '\f4fe';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-      position: absolute;
-      font-size: 120px;
-      color: rgba(15, 23, 42, 0.03);
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-    }
-
     .id-photo-frame {
       width: 85px;
       height: 85px;
@@ -454,11 +426,7 @@
       letter-spacing: 1px;
     }
 
-    .id-info-grid {
-      width: 100%;
-      margin-top: 12px;
-      font-size: 11px;
-    }
+    .id-info-grid { width: 100%; margin-top: 12px; font-size: 11px; }
 
     .id-info-row {
       display: flex;
@@ -491,20 +459,10 @@
       border-radius: 4px;
     }
 
-    .signature-stub {
-      text-align: center;
-      font-size: 8px;
-      color: #64748b;
-      font-weight: 700;
-    }
+    .signature-stub { text-align: center; font-size: 8px; color: #64748b; font-weight: 700; }
+    .signature-line { width: 70px; border-bottom: 1px solid #0f172a; margin-bottom: 2px; }
 
-    .signature-line {
-      width: 70px;
-      border-bottom: 1px solid #0f172a;
-      margin-bottom: 2px;
-    }
-
-    /* MODAL */
+    /* Modal */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
@@ -541,11 +499,13 @@
     }
   </style>
 
-  <!-- Firebase Architecture -->
+  <!-- Firebase Integration Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
     import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+    // Provided Firebase Web App Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyBgVnOxo6wb6Ahrs2dqhVwgrqCFtZQRlRU",
       authDomain: "oavta-28105.firebaseapp.com",
@@ -553,10 +513,13 @@
       projectId: "oavta-28105",
       storageBucket: "oavta-28105.firebasestorage.app",
       messagingSenderId: "123510841027",
-      appId: "1:123510841027:web:ba924a6bd865531cab0c76"
+      appId: "1:123510841027:web:ba924a6bd865531cab0c76",
+      measurementId: "G-6PZQR5J90C"
     };
 
+    // Initialize Firebase Services
     const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
     const db = getFirestore(app);
 
     // Passwords Configuration
@@ -668,59 +631,61 @@
       document.getElementById('successModal').style.display = 'none';
     };
 
-    // 1. MEMBER REGISTRATION
+    // 1. MEMBER REGISTRATION SUBMISSION (WITH TRY-CATCH)
     document.getElementById('regForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const msg = document.getElementById('regMsg');
-      msg.innerHTML = '';
+      msg.innerHTML = '<div class="alert alert-info"><i class="fa-solid fa-spinner fa-spin"></i> Processing registration...</div>';
 
       const name = document.getElementById('regName').value.trim();
       const mobile = document.getElementById('regMobile').value.trim();
       const year = document.getElementById('regYear').value.trim();
 
-      const qDup = query(collection(db, "members"), where("name", "==", name), where("mobile", "==", mobile));
-      const snapDup = await getDocs(qDup);
-
-      if (!snapDup.empty) {
-        msg.innerHTML = `<div class="alert alert-danger"><i class="fa-solid fa-triangle-exclamation"></i> Member already registered with this name and mobile.</div>`;
-        return;
-      }
-
-      const qYear = query(collection(db, "members"), where("joinYear", "==", year));
-      const snapYear = await getDocs(qYear);
-
-      let maxSeq = 0;
-      snapYear.forEach(docSnap => {
-        const mData = docSnap.data();
-        if (mData.memberId && mData.memberId.length === 8) {
-          const seqPart = parseInt(mData.memberId.substring(4), 10);
-          if (!isNaN(seqPart) && seqPart > maxSeq) maxSeq = seqPart;
-        }
-      });
-
-      const nextSeq = maxSeq + 1;
-      const formattedSeq = String(nextSeq).padStart(4, '0');
-      const idCode = `${year}${formattedSeq}`;
-
-      const data = {
-        memberId: idCode,
-        name: name,
-        designation: document.getElementById('regDesignation').value,
-        district: document.getElementById('regDist').value,
-        block: document.getElementById('regBlock').value,
-        oavName: document.getElementById('regOav').value,
-        joinYear: year,
-        mobile: mobile,
-        timestamp: new Date()
-      };
-
       try {
+        const qDup = query(collection(db, "members"), where("name", "==", name), where("mobile", "==", mobile));
+        const snapDup = await getDocs(qDup);
+
+        if (!snapDup.empty) {
+          msg.innerHTML = `<div class="alert alert-danger"><i class="fa-solid fa-triangle-exclamation"></i> Member already registered with this name and mobile.</div>`;
+          return;
+        }
+
+        const qYear = query(collection(db, "members"), where("joinYear", "==", year));
+        const snapYear = await getDocs(qYear);
+
+        let maxSeq = 0;
+        snapYear.forEach(docSnap => {
+          const mData = docSnap.data();
+          if (mData.memberId && mData.memberId.length === 8) {
+            const seqPart = parseInt(mData.memberId.substring(4), 10);
+            if (!isNaN(seqPart) && seqPart > maxSeq) maxSeq = seqPart;
+          }
+        });
+
+        const nextSeq = maxSeq + 1;
+        const formattedSeq = String(nextSeq).padStart(4, '0');
+        const idCode = `${year}${formattedSeq}`;
+
+        const data = {
+          memberId: idCode,
+          name: name,
+          designation: document.getElementById('regDesignation').value,
+          district: document.getElementById('regDist').value,
+          block: document.getElementById('regBlock').value,
+          oavName: document.getElementById('regOav').value,
+          joinYear: year,
+          mobile: mobile,
+          timestamp: new Date()
+        };
+
         await addDoc(collection(db, "members"), data);
         document.getElementById('modalUniqueId').innerText = idCode;
         document.getElementById('successModal').style.display = 'flex';
         document.getElementById('regForm').reset();
+        msg.innerHTML = '';
       } catch (err) {
-        msg.innerHTML = `<div class="alert alert-danger">Error: ${err.message}</div>`;
+        console.error("Firestore submit error:", err);
+        msg.innerHTML = `<div class="alert alert-danger"><i class="fa-solid fa-circle-xmark"></i> Submission Failed: ${err.message}. Please check your database connection or rules.</div>`;
       }
     });
 
@@ -731,40 +696,44 @@
       const mobile = document.getElementById('loginMobile').value.trim();
       const msg = document.getElementById('memberLoginMsg');
 
-      const q = query(collection(db, "members"), where("memberId", "==", id), where("mobile", "==", mobile));
-      const snap = await getDocs(q);
+      try {
+        const q = query(collection(db, "members"), where("memberId", "==", id), where("mobile", "==", mobile));
+        const snap = await getDocs(q);
 
-      if (snap.empty) {
-        msg.innerHTML = `<div class="alert alert-danger"><i class="fa-solid fa-circle-xmark"></i> Credentials not found. Please verify and retry.</div>`;
-        return;
+        if (snap.empty) {
+          msg.innerHTML = `<div class="alert alert-danger"><i class="fa-solid fa-circle-xmark"></i> Credentials not found. Please verify and retry.</div>`;
+          return;
+        }
+
+        msg.innerHTML = '';
+        const d = snap.docs[0].data();
+        const docId = snap.docs[0].id;
+
+        document.getElementById('editDocId').value = docId;
+        document.getElementById('editMemberId').value = d.memberId;
+        document.getElementById('editName').value = d.name;
+        document.getElementById('editDesignation').value = d.designation;
+        document.getElementById('editDist').value = d.district;
+        populateBlocks(d.district, 'editBlock');
+        document.getElementById('editBlock').value = d.block;
+        document.getElementById('editOav').value = d.oavName;
+        document.getElementById('editYear').value = d.joinYear;
+        document.getElementById('editMobile').value = d.mobile;
+
+        // Update ID Card View
+        document.getElementById('cardName').innerText = d.name;
+        document.getElementById('cardId').innerText = d.memberId;
+        document.getElementById('cardDesig').innerText = d.designation;
+        document.getElementById('cardDist').innerText = d.district;
+        document.getElementById('cardBlock').innerText = d.block;
+        document.getElementById('cardOav').innerText = d.oavName;
+        document.getElementById('cardYear').innerText = d.joinYear;
+        document.getElementById('cardMobile').innerText = d.mobile;
+
+        document.getElementById('memberDashboard').style.display = 'block';
+      } catch(err) {
+        msg.innerHTML = `<div class="alert alert-danger"><i class="fa-solid fa-circle-xmark"></i> Login Error: ${err.message}</div>`;
       }
-
-      msg.innerHTML = '';
-      const d = snap.docs[0].data();
-      const docId = snap.docs[0].id;
-
-      document.getElementById('editDocId').value = docId;
-      document.getElementById('editMemberId').value = d.memberId;
-      document.getElementById('editName').value = d.name;
-      document.getElementById('editDesignation').value = d.designation;
-      document.getElementById('editDist').value = d.district;
-      populateBlocks(d.district, 'editBlock');
-      document.getElementById('editBlock').value = d.block;
-      document.getElementById('editOav').value = d.oavName;
-      document.getElementById('editYear').value = d.joinYear;
-      document.getElementById('editMobile').value = d.mobile;
-
-      // Update ID Card View
-      document.getElementById('cardName').innerText = d.name;
-      document.getElementById('cardId').innerText = d.memberId;
-      document.getElementById('cardDesig').innerText = d.designation;
-      document.getElementById('cardDist').innerText = d.district;
-      document.getElementById('cardBlock').innerText = d.block;
-      document.getElementById('cardOav').innerText = d.oavName;
-      document.getElementById('cardYear').innerText = d.joinYear;
-      document.getElementById('cardMobile').innerText = d.mobile;
-
-      document.getElementById('memberDashboard').style.display = 'block';
     });
 
     document.getElementById('updateProfileForm').addEventListener('submit', async (e) => {
@@ -796,7 +765,7 @@
       }
     });
 
-    // HTML Card Downloader
+    // ID Card Download Function
     window.downloadIDCardHTML = function() {
       const name = document.getElementById('cardName').innerText || "Member";
       const sanitizedName = name.replace(/[^a-zA-Z0-9]/g, "_");
@@ -887,27 +856,31 @@
 
       if (!selected) return;
 
-      const q = query(collection(db, "portfolios"), where("district", "==", selected));
-      const snap = await getDocs(q);
+      try {
+        const q = query(collection(db, "portfolios"), where("district", "==", selected));
+        const snap = await getDocs(q);
 
-      if (snap.empty) {
-        cardContainer.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:20px; background:#f8fafc; border-radius:8px; color:#64748b;">No Executive Body records found for this district.</div>';
-        return;
+        if (snap.empty) {
+          cardContainer.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:20px; background:#f8fafc; border-radius:8px; color:#64748b;">No Executive Body records found for this district.</div>';
+          return;
+        }
+
+        snap.forEach(docSnap => {
+          const d = docSnap.data();
+          cardContainer.innerHTML += `
+            <div class="portfolio-card">
+              <div class="exec-name">${d.name}</div>
+              <div class="assoc-desig-small">${d.assocDesignation}</div>
+              <div class="info-item"><i class="fa-solid fa-graduation-cap"></i> <span>School Post: <strong>${d.schoolDesignation}</strong></span></div>
+              <div class="info-item"><i class="fa-solid fa-location-dot"></i> <span>Block: <strong>${d.block}</strong></span></div>
+              <div class="info-item"><i class="fa-solid fa-school"></i> <span>OAV: <strong>${d.oavName}</strong></span></div>
+              <div class="info-item"><i class="fa-solid fa-phone"></i> <span>Mobile: <strong>${d.mobile}</strong></span></div>
+            </div>
+          `;
+        });
+      } catch(err) {
+        cardContainer.innerHTML = `<div style="color:red; grid-column:1/-1;">Error loading data: ${err.message}</div>`;
       }
-
-      snap.forEach(docSnap => {
-        const d = docSnap.data();
-        cardContainer.innerHTML += `
-          <div class="portfolio-card">
-            <div class="exec-name">${d.name}</div>
-            <div class="assoc-desig-small">${d.assocDesignation}</div>
-            <div class="info-item"><i class="fa-solid fa-graduation-cap"></i> <span>School Post: <strong>${d.schoolDesignation}</strong></span></div>
-            <div class="info-item"><i class="fa-solid fa-location-dot"></i> <span>Block: <strong>${d.block}</strong></span></div>
-            <div class="info-item"><i class="fa-solid fa-school"></i> <span>OAV: <strong>${d.oavName}</strong></span></div>
-            <div class="info-item"><i class="fa-solid fa-phone"></i> <span>Mobile: <strong>${d.mobile}</strong></span></div>
-          </div>
-        `;
-      });
     });
 
     // 4. DISTRICT ADMIN LOGIC
@@ -942,33 +915,37 @@
       const container = document.getElementById('distAdminPortfoliosList');
       container.innerHTML = '';
       
-      const q = query(collection(db, "portfolios"), where("district", "==", distVal));
-      const snap = await getDocs(q);
+      try {
+        const q = query(collection(db, "portfolios"), where("district", "==", distVal));
+        const snap = await getDocs(q);
 
-      document.getElementById('distCount').innerText = snap.size;
+        document.getElementById('distCount').innerText = snap.size;
 
-      if (snap.empty) {
-        container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:15px; color:#64748b;">No Portfolios Entered Yet for ${distVal}.</div>`;
-        return;
-      }
+        if (snap.empty) {
+          container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:15px; color:#64748b;">No Portfolios Entered Yet for ${distVal}.</div>`;
+          return;
+        }
 
-      snap.forEach(docSnap => {
-        const d = docSnap.data();
-        const pId = docSnap.id;
-        
-        container.innerHTML += `
-          <div class="portfolio-card">
-            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-              <div class="exec-name">${d.name}</div>
-              <button class="btn btn-danger" onclick="removePortfolio('${pId}', '${distVal}')"><i class="fa-solid fa-user-minus"></i></button>
+        snap.forEach(docSnap => {
+          const d = docSnap.data();
+          const pId = docSnap.id;
+          
+          container.innerHTML += `
+            <div class="portfolio-card">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div class="exec-name">${d.name}</div>
+                <button class="btn btn-danger" onclick="removePortfolio('${pId}', '${distVal}')"><i class="fa-solid fa-user-minus"></i></button>
+              </div>
+              <div class="assoc-desig-small">${d.assocDesignation}</div>
+              <div class="info-item"><i class="fa-solid fa-graduation-cap"></i> <span>School Post: <strong>${d.schoolDesignation}</strong></span></div>
+              <div class="info-item"><i class="fa-solid fa-location-dot"></i> <span>Block: <strong>${d.block}</strong></span></div>
+              <div class="info-item"><i class="fa-solid fa-phone"></i> <span>Mobile: <strong>${d.mobile}</strong></span></div>
             </div>
-            <div class="assoc-desig-small">${d.assocDesignation}</div>
-            <div class="info-item"><i class="fa-solid fa-graduation-cap"></i> <span>School Post: <strong>${d.schoolDesignation}</strong></span></div>
-            <div class="info-item"><i class="fa-solid fa-location-dot"></i> <span>Block: <strong>${d.block}</strong></span></div>
-            <div class="info-item"><i class="fa-solid fa-phone"></i> <span>Mobile: <strong>${d.mobile}</strong></span></div>
-          </div>
-        `;
-      });
+          `;
+        });
+      } catch(err) {
+        container.innerHTML = `<div style="color:red; grid-column:1/-1;">Error loading portfolios: ${err.message}</div>`;
+      }
     }
 
     window.removePortfolio = async function(pId, distVal) {
@@ -987,26 +964,26 @@
       const dist = document.getElementById('pDist').value;
       const msg = document.getElementById('distMsg');
 
-      const q = query(collection(db, "portfolios"), where("district", "==", dist));
-      const snap = await getDocs(q);
-
-      if (snap.size >= 10) {
-        msg.innerHTML = `<div class="alert alert-danger"><i class="fa-solid fa-lock"></i> Limit Reached: District Executive list for ${dist} has hit maximum 10 positions.</div>`;
-        return;
-      }
-
-      const pData = {
-        name: document.getElementById('pName').value,
-        assocDesignation: document.getElementById('pAssocDesig').value,
-        schoolDesignation: document.getElementById('pSchoolDesig').value,
-        district: dist,
-        block: document.getElementById('pBlock').value,
-        oavName: document.getElementById('pOav').value,
-        joinYear: document.getElementById('pYear').value,
-        mobile: document.getElementById('pMobile').value
-      };
-
       try {
+        const q = query(collection(db, "portfolios"), where("district", "==", dist));
+        const snap = await getDocs(q);
+
+        if (snap.size >= 10) {
+          msg.innerHTML = `<div class="alert alert-danger"><i class="fa-solid fa-lock"></i> Limit Reached: District Executive list for ${dist} has hit maximum 10 positions.</div>`;
+          return;
+        }
+
+        const pData = {
+          name: document.getElementById('pName').value,
+          assocDesignation: document.getElementById('pAssocDesig').value,
+          schoolDesignation: document.getElementById('pSchoolDesig').value,
+          district: dist,
+          block: document.getElementById('pBlock').value,
+          oavName: document.getElementById('pOav').value,
+          joinYear: document.getElementById('pYear').value,
+          mobile: document.getElementById('pMobile').value
+        };
+
         await addDoc(collection(db, "portfolios"), pData);
         msg.innerHTML = `<div class="alert alert-success"><i class="fa-solid fa-check"></i> Executive portfolio added successfully!</div>`;
         document.getElementById('distPortfolioForm').reset();
@@ -1016,7 +993,7 @@
       }
     });
 
-    // 5. STATE ADMIN LOGIC (PASSWORD BASED)
+    // 5. STATE ADMIN LOGIC
     window.verifyStatePassword = function() {
       const inputPass = document.getElementById('stateAdminPassInput').value.trim();
       const msg = document.getElementById('statePassMsg');
@@ -1031,27 +1008,31 @@
     };
 
     async function fetchStateMasterData() {
-      const mSnap = await getDocs(collection(db, "members"));
-      const mTable = document.getElementById('allMembersTable');
-      mTable.innerHTML = '';
-      window.masterMembers = [];
+      try {
+        const mSnap = await getDocs(collection(db, "members"));
+        const mTable = document.getElementById('allMembersTable');
+        mTable.innerHTML = '';
+        window.masterMembers = [];
 
-      mSnap.forEach(docSnap => {
-        const d = docSnap.data();
-        window.masterMembers.push(d);
-        mTable.innerHTML += `<tr><td>${d.memberId}</td><td>${d.name}</td><td>${d.designation}</td><td>${d.district}</td><td>${d.block}</td><td>${d.mobile}</td></tr>`;
-      });
+        mSnap.forEach(docSnap => {
+          const d = docSnap.data();
+          window.masterMembers.push(d);
+          mTable.innerHTML += `<tr><td>${d.memberId}</td><td>${d.name}</td><td>${d.designation}</td><td>${d.district}</td><td>${d.block}</td><td>${d.mobile}</td></tr>`;
+        });
 
-      const pSnap = await getDocs(collection(db, "portfolios"));
-      const pTable = document.getElementById('allPortfoliosTable');
-      pTable.innerHTML = '';
-      window.masterPortfolios = [];
+        const pSnap = await getDocs(collection(db, "portfolios"));
+        const pTable = document.getElementById('allPortfoliosTable');
+        pTable.innerHTML = '';
+        window.masterPortfolios = [];
 
-      pSnap.forEach(docSnap => {
-        const d = docSnap.data();
-        window.masterPortfolios.push(d);
-        pTable.innerHTML += `<tr><td>${d.district}</td><td>${d.name}</td><td>${d.assocDesignation}</td><td>${d.schoolDesignation}</td><td>${d.mobile}</td></tr>`;
-      });
+        pSnap.forEach(docSnap => {
+          const d = docSnap.data();
+          window.masterPortfolios.push(d);
+          pTable.innerHTML += `<tr><td>${d.district}</td><td>${d.name}</td><td>${d.assocDesignation}</td><td>${d.schoolDesignation}</td><td>${d.mobile}</td></tr>`;
+        });
+      } catch(err) {
+        alert("Database Fetch Error: " + err.message);
+      }
     }
 
     window.exportCSV = function(type) {
@@ -1114,7 +1095,7 @@
       <button class="tab-btn" onclick="switchTab('adminHub', event)"><i class="fa-solid fa-user-shield"></i> Administration</button>
     </div>
 
-    <!-- SECTION 1: MEMBER SECTION (REGISTRATION & LOGIN COMBINED) -->
+    <!-- SECTION 1: MEMBER SECTION -->
     <div id="memberHub" class="panel active">
       <div class="glass-card">
         <div class="sub-nav">
@@ -1122,7 +1103,7 @@
           <button class="sub-nav-btn" onclick="switchSubTab('memberLoginSub', event)"><i class="fa-solid fa-right-to-bracket"></i> Member Login & ID Card</button>
         </div>
 
-        <!-- Sub 1: Registration -->
+        <!-- Registration -->
         <div id="memberRegSub">
           <div class="section-header">
             <div class="section-title"><i class="fa-solid fa-address-card"></i> Member Registration Form</div>
@@ -1142,7 +1123,7 @@
           </form>
         </div>
 
-        <!-- Sub 2: Login & Dashboard -->
+        <!-- Login & Dashboard -->
         <div id="memberLoginSub" style="display:none;">
           <div class="section-header">
             <div class="section-title"><i class="fa-solid fa-key"></i> Member Access</div>
@@ -1160,7 +1141,7 @@
           <div id="memberDashboard" style="display:none; border-top: 2px dashed #e2e8f0; padding-top: 25px;">
             <div style="display:flex; flex-wrap:wrap; gap:30px; justify-content:center;">
               
-              <!-- MODERN GOVT STYLE ID CARD -->
+              <!-- ID Card -->
               <div style="text-align:center;">
                 <div class="id-card-frame" id="printableCard">
                   <div class="id-tricolor-bar"></div>
@@ -1193,7 +1174,7 @@
                 <button onclick="downloadIDCardHTML()" class="btn btn-gold" style="margin-top:15px;"><i class="fa-solid fa-download"></i> Download Official Card (.HTML)</button>
               </div>
 
-              <!-- Profile Edit Form -->
+              <!-- Profile Edit -->
               <div style="flex:1; min-width:280px;">
                 <h4 style="font-family:'Cinzel'; margin-bottom:15px; color:var(--primary);"><i class="fa-solid fa-user-pen"></i> Edit Profile Information</h4>
                 <form id="updateProfileForm">
@@ -1235,7 +1216,7 @@
       </div>
     </div>
 
-    <!-- SECTION 3: ADMINISTRATION (DISTRICT ADMIN & STATE ADMIN) -->
+    <!-- SECTION 3: ADMINISTRATION -->
     <div id="adminHub" class="panel">
       <div class="glass-card">
         <div class="sub-nav">
@@ -1243,7 +1224,7 @@
           <button class="sub-nav-btn" onclick="switchAdminTab('stateAdminSub', event)"><i class="fa-solid fa-vault"></i> State Admin</button>
         </div>
 
-        <!-- Sub 1: District Admin -->
+        <!-- District Admin -->
         <div id="distAdminSub">
           <div class="section-header">
             <div class="section-title"><i class="fa-solid fa-building-flag"></i> District Executive Management</div>
@@ -1291,7 +1272,7 @@
           </div>
         </div>
 
-        <!-- Sub 2: State Admin -->
+        <!-- State Admin -->
         <div id="stateAdminSub" style="display:none;">
           <div class="section-header">
             <div class="section-title"><i class="fa-solid fa-shield-halved"></i> State Central Dashboard</div>
