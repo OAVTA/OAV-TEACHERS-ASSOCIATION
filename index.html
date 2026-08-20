@@ -305,22 +305,29 @@
       box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
     }
 
-    .portfolio-card .badge {
-      align-self: flex-start;
-      background: #e0f2fe;
-      color: #0369a1;
-      padding: 4px 12px;
-      border-radius: 20px;
+    /* EXECUTIVE NAME LARGE & DESIGNATION SMALLER BELOW */
+    .portfolio-card .exec-name {
+      font-family: 'Cinzel', serif;
+      font-size: 22px;
       font-weight: 800;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      color: var(--primary);
+      line-height: 1.2;
+      margin-bottom: 2px;
     }
 
-    .portfolio-card h4 {
-      font-family: 'Cinzel', serif;
-      font-size: 18px;
-      color: var(--primary);
+    .portfolio-card .assoc-desig-small {
+      display: inline-block;
+      align-self: flex-start;
+      background: #fef3c7;
+      color: #b45309;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border: 1px solid #fde68a;
+      margin-bottom: 8px;
     }
 
     .portfolio-card .info-item {
@@ -379,7 +386,7 @@
       box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
     }
 
-    /* ID CARD DESIGN WITH LARGE MEMBER NAME & SMALLER ID BELOW IT */
+    /* ID CARD STYLING */
     .id-display-container {
       display: flex;
       flex-direction: column;
@@ -445,19 +452,6 @@
       position: relative;
     }
 
-    .id-card-body::before {
-      content: '';
-      position: absolute;
-      width: 180px;
-      height: 180px;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      background: url('https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcT1w9V3pe2V7GHSZpm9b8u15gYE6XFyDB2BkJEciPlDtnB9DfeBZTPuxvTTniUrFEGmGoHisnXkWkNRZN4') no-repeat center/contain;
-      opacity: 0.05;
-      pointer-events: none;
-    }
-
-    /* LARGE MEMBER NAME */
     .id-member-name {
       font-family: 'Cinzel', serif;
       font-size: 24px;
@@ -468,7 +462,6 @@
       line-height: 1.2;
     }
 
-    /* SMALLER ID BELOW MEMBER NAME */
     .id-code-large {
       font-size: 13px;
       font-weight: 700;
@@ -558,6 +551,43 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
+
+    // ==========================================
+    // EDITABLE DISTRICT PASSWORDS FOR ALL 30 DISTRICTS
+    // EDIT THE PASSWORDS BELOW TO YOUR PREFERENCE
+    // ==========================================
+    const districtPasswords = {
+      "Angul": "angul123",
+      "Balangir": "balangir123",
+      "Balasore": "balasore123",
+      "Bargarh": "bargarh123",
+      "Bhadrak": "bhadrak123",
+      "Boudh": "boudh123",
+      "Cuttack": "cuttack123",
+      "Deogarh": "deogarh123",
+      "Dhenkanal": "dhenkanal123",
+      "Gajapati": "gajapati123",
+      "Ganjam": "ganjam123",
+      "Jagatsinghpur": "jagatsinghpur123",
+      "Jajpur": "jajpur123",
+      "Jharsuguda": "jharsuguda123",
+      "Kalahandi": "kalahandi123",
+      "Kandhamal": "kandhamal123",
+      "Kendrapara": "kendrapara123",
+      "Keonjhar": "keonjhar123",
+      "Khordha": "khordha123",
+      "Koraput": "koraput123",
+      "Malkangiri": "malkangiri123",
+      "Mayurbhanj": "mayurbhanj123",
+      "Nabarangpur": "nabarangpur123",
+      "Nayagarh": "nayagarh123",
+      "Nuapada": "nuapada123",
+      "Puri": "puri123",
+      "Rayagada": "rayagada123",
+      "Sambalpur": "sambalpur123",
+      "Subarnapur": "subarnapur123",
+      "Sundargarh": "sundargarh123"
+    };
 
     const districtBlockData = {
       "Angul": ["Angul", "Athamallik", "Baniarpal", "Chhendipada", "Kaniha", "Kishorenagar", "Pallahara", "Talcher"],
@@ -936,7 +966,7 @@
       URL.revokeObjectURL(link.href);
     };
 
-    // Load Existing Portfolios in Dist Admin so Admin can see entered & removed/left members
+    // Load Existing Portfolios in Dist Admin
     async function loadDistPortfolios(distVal) {
       const container = document.getElementById('distAdminPortfoliosList');
       container.innerHTML = '';
@@ -956,13 +986,13 @@
         const pId = docSnap.id;
         
         container.innerHTML += `
-          <div class="portfolio-card" style="padding:15px; position:relative;">
+          <div class="portfolio-card" style="padding:20px; position:relative;">
             <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-              <span class="badge">${d.assocDesignation}</span>
-              <button class="btn btn-danger" onclick="removePortfolio('${pId}', '${distVal}')"><i class="fa-solid fa-user-minus"></i> Member Left / Remove</button>
+              <div class="exec-name">${d.name}</div>
+              <button class="btn btn-danger" onclick="removePortfolio('${pId}', '${distVal}')"><i class="fa-solid fa-user-minus"></i> Remove</button>
             </div>
-            <h4 style="margin-top:5px;">${d.name}</h4>
-            <div class="info-item"><i class="fa-solid fa-graduation-cap"></i> <span>School: <strong>${d.schoolDesignation}</strong></span></div>
+            <div class="assoc-desig-small">${d.assocDesignation}</div>
+            <div class="info-item"><i class="fa-solid fa-graduation-cap"></i> <span>School Post: <strong>${d.schoolDesignation}</strong></span></div>
             <div class="info-item"><i class="fa-solid fa-location-dot"></i> <span>Block: <strong>${d.block}</strong></span></div>
             <div class="info-item"><i class="fa-solid fa-school"></i> <span>OAV: <strong>${d.oavName}</strong></span></div>
             <div class="info-item"><i class="fa-solid fa-phone"></i> <span>Mobile: <strong>${d.mobile}</strong></span></div>
@@ -983,21 +1013,42 @@
       }
     };
 
-    // District Admin Selection Listener
+    // DISTRICT ADMIN PASSWORD AUTHENTICATION & SELECTION
     document.getElementById('pDist').addEventListener('change', function() {
       const distVal = this.value;
       const editSection = document.getElementById('distAdminEditPane');
+      const passAuthSection = document.getElementById('distPassAuthArea');
       const liveBadge = document.getElementById('liveDistName');
 
+      document.getElementById('distAdminPassInput').value = '';
+      document.getElementById('distPassMsg').innerHTML = '';
+
       if (distVal) {
-        liveBadge.innerText = distVal;
-        populateBlocks(distVal, 'pBlock');
-        editSection.style.display = 'block';
-        loadDistPortfolios(distVal);
+        passAuthSection.style.display = 'block';
+        editSection.style.display = 'none';
       } else {
+        passAuthSection.style.display = 'none';
         editSection.style.display = 'none';
       }
     });
+
+    window.verifyDistPassword = function() {
+      const distVal = document.getElementById('pDist').value;
+      const inputPass = document.getElementById('distAdminPassInput').value.trim();
+      const msg = document.getElementById('distPassMsg');
+
+      const correctPass = districtPasswords[distVal];
+
+      if (inputPass === correctPass) {
+        document.getElementById('distPassAuthArea').style.display = 'none';
+        document.getElementById('liveDistName').innerText = distVal;
+        populateBlocks(distVal, 'pBlock');
+        document.getElementById('distAdminEditPane').style.display = 'block';
+        loadDistPortfolios(distVal);
+      } else {
+        msg.innerHTML = `<div class="alert alert-danger" style="margin-top:10px;"><i class="fa-solid fa-lock"></i> Invalid password for ${distVal} District Admin!</div>`;
+      }
+    };
 
     // Save District Portfolio
     document.getElementById('distPortfolioForm').addEventListener('submit', async (e) => {
@@ -1034,7 +1085,7 @@
       }
     });
 
-    // Public District Search
+    // Public District Search (EXECUTIVE NAME LARGE, DESIGNATION SMALLER)
     document.getElementById('publicDistSelect').addEventListener('change', async function() {
       const selected = this.value;
       const cardContainer = document.getElementById('publicPortfolioGrid');
@@ -1054,9 +1105,9 @@
         const d = docSnap.data();
         cardContainer.innerHTML += `
           <div class="portfolio-card">
-            <span class="badge">${d.assocDesignation}</span>
-            <h4>${d.name}</h4>
-            <div class="info-item"><i class="fa-solid fa-graduation-cap"></i> <span>School: <strong>${d.schoolDesignation}</strong></span></div>
+            <div class="exec-name">${d.name}</div>
+            <div class="assoc-desig-small">${d.assocDesignation}</div>
+            <div class="info-item"><i class="fa-solid fa-graduation-cap"></i> <span>School Post: <strong>${d.schoolDesignation}</strong></span></div>
             <div class="info-item"><i class="fa-solid fa-location-dot"></i> <span>Block: <strong>${d.block}</strong></span></div>
             <div class="info-item"><i class="fa-solid fa-school"></i> <span>OAV: <strong>${d.oavName}</strong></span></div>
             <div class="info-item"><i class="fa-solid fa-phone"></i> <span>Mobile: <strong>${d.mobile}</strong></span></div>
@@ -1224,7 +1275,7 @@
         <div id="memberDashboard" class="dynamic-edit-pane">
           <div style="display:flex; flex-wrap:wrap; gap:35px; justify-content:center;">
             
-            <!-- OFFICIAL DIGITAL ID CARD (MEMBER NAME LARGE, ID SMALLER BELOW IT) -->
+            <!-- DIGITAL ID CARD -->
             <div class="id-display-container">
               <div class="id-card-frame" id="printableCard">
                 <div class="id-card-header">
@@ -1305,7 +1356,7 @@
       </div>
     </div>
 
-    <!-- 4. DISTRICT ADMIN PORTAL (SHOWS ENTERED PORTFOLIOS & LEFT MEMBERS) -->
+    <!-- 4. DISTRICT ADMIN PORTAL (PROTECTED WITH PASSWORDS) -->
     <div id="distAdmin" class="panel">
       <div class="glass-card">
         <div class="section-header">
@@ -1317,6 +1368,16 @@
           <div class="form-group" style="max-width:400px; margin:0 auto;">
             <select id="pDist" required></select>
           </div>
+        </div>
+
+        <!-- PASSWORD ENTRY AREA -->
+        <div id="distPassAuthArea" style="display:none; max-width:400px; margin: 0 auto 20px; background:#f8fafc; padding:20px; border-radius:12px; border:1px solid var(--border-color); text-align:center;">
+          <div class="form-group">
+            <label><i class="fa-solid fa-lock"></i> Enter Password for District Admin</label>
+            <input type="password" id="distAdminPassInput" placeholder="District Password">
+          </div>
+          <button type="button" onclick="verifyDistPassword()" class="btn" style="margin-top:12px; width:100%;"><i class="fa-solid fa-key"></i> Unlock District Admin Pane</button>
+          <div id="distPassMsg"></div>
         </div>
 
         <div id="distMsg"></div>
