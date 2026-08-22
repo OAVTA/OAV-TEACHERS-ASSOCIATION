@@ -16,7 +16,7 @@
       --gold-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
       --blue-gradient: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0284c7 100%);
       --bg-slate: #f1f5f9;
-      --card-bg: rgba(255, 255, 255, 0.85);
+      --card-bg: #ffffff;
       --text-dark: #0f172a;
       --text-muted: #64748b;
       --border-color: #e2e8f0;
@@ -31,15 +31,6 @@
       color: var(--text-dark);
       line-height: 1.5;
       padding-bottom: 50px;
-      background-image: radial-gradient(#cbd5e1 0.75px, transparent 0.75px);
-      background-size: 16px 16px;
-    }
-
-    /* SVG Emblem Base Styling */
-    .oavta-logo-svg {
-      width: 100%;
-      height: 100%;
-      display: block;
     }
 
     .gov-topbar {
@@ -76,9 +67,10 @@
       height: 75px;
       background: #ffffff;
       border-radius: 50%;
-      padding: 4px;
+      padding: 2px;
       box-shadow: 0 0 20px rgba(217, 119, 6, 0.4);
       border: 2px solid var(--accent-gold);
+      object-fit: cover;
     }
 
     .brand-titles h1 {
@@ -108,17 +100,14 @@
       z-index: 10;
     }
 
-    /* Glassmorphic Navigation Tabs */
     .nav-tabs {
       display: flex;
-      background: rgba(255, 255, 255, 0.75);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: #ffffff;
       border-radius: 14px;
       padding: 8px;
       gap: 6px;
       box-shadow: var(--shadow-premium);
-      border: 1px solid rgba(255, 255, 255, 0.6);
+      border: 1px solid var(--border-color);
       overflow-x: auto;
     }
 
@@ -140,7 +129,7 @@
       gap: 8px;
     }
 
-    .tab-btn:hover { background: rgba(255, 255, 255, 0.8); color: var(--primary); }
+    .tab-btn:hover { background: #f8fafc; color: var(--primary); }
     .tab-btn.active {
       background: var(--blue-gradient);
       color: #ffffff;
@@ -183,14 +172,11 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Glassmorphic Card Container */
     .glass-card {
       background: var(--card-bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
       border-radius: var(--radius-lg);
       padding: 35px;
-      border: 1px solid rgba(255, 255, 255, 0.8);
+      border: 1px solid var(--border-color);
       box-shadow: var(--shadow-premium);
     }
 
@@ -217,7 +203,7 @@
     .section-title i { color: var(--accent-gold); }
 
     .selection-banner {
-      background: rgba(248, 250, 252, 0.8);
+      background: #f8fafc;
       border: 2px dashed #cbd5e1;
       border-radius: 14px;
       padding: 25px;
@@ -275,15 +261,6 @@
       box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
     }
 
-    /* Locked Field Styling Override */
-    input:disabled, select:disabled, .field-locked {
-      background-color: #fef2f2 !important;
-      color: #dc2626 !important;
-      border: 1.5px solid #fca5a5 !important;
-      font-weight: 700 !important;
-      cursor: not-allowed;
-    }
-
     .btn {
       background: var(--blue-gradient);
       color: #ffffff;
@@ -323,8 +300,7 @@
       top: 0; left: 0;
       width: 100vw; height: 100vh;
       background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(4px);
       display: none;
       justify-content: center;
       align-items: center;
@@ -377,7 +353,6 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
-      position: relative;
     }
 
     .portfolio-card .exec-name { font-family: 'Cinzel', serif; font-size: 20px; font-weight: 800; color: var(--primary); }
@@ -400,7 +375,6 @@
       border-radius: 12px;
       border: 1px solid var(--border-color);
       margin-top: 15px;
-      background: #ffffff;
     }
 
     table { width: 100%; border-collapse: collapse; font-size: 13.5px; text-align: left; }
@@ -423,72 +397,83 @@
     }
 
     .id-display-container { display: flex; flex-direction: column; align-items: center; gap: 20px; }
-    
-    /* Modern ID Card Styling */
     .id-card-frame {
       width: 340px; height: 540px; background: #ffffff; border-radius: 18px; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
       border: 1px solid #cbd5e1; position: relative; overflow: hidden; display: flex; flex-direction: column;
       background-image: radial-gradient(#e2e8f0 0.75px, transparent 0.75px); background-size: 12px 12px;
     }
-    .id-card-header { background: var(--blue-gradient); color: #ffffff; padding: 15px 15px 12px; text-align: center; border-bottom: 4px solid var(--accent-gold); position: relative;}
-    .id-card-header .id-logo-box { width: 50px; height: 50px; border-radius: 50%; background: #fff; padding: 2px; margin: 0 auto 5px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
-    .id-card-header h3 { font-family: 'Cinzel', serif; font-size: 13px; font-weight: 800; letter-spacing: 0.5px; }
+    .id-card-header { background: var(--blue-gradient); color: #ffffff; padding: 20px 15px 15px; text-align: center; border-bottom: 4px solid var(--accent-gold); }
+    .id-card-header img { width: 52px; height: 52px; border-radius: 50%; background: #fff; padding: 1px; object-fit: cover; }
+    .id-card-header h3 { font-family: 'Cinzel', serif; font-size: 13px; font-weight: 800; }
     .id-card-header p { font-size: 8px; letter-spacing: 1.5px; color: #fbbf24; text-transform: uppercase; font-weight: 700; }
-    
-    .id-card-body { padding: 15px 20px; flex: 1; display: flex; flex-direction: column; align-items: center; }
-    
-    .id-photo-frame {
-      width: 85px;
-      height: 85px;
-      border-radius: 50%;
-      border: 3px solid var(--accent-gold);
-      overflow: hidden;
-      background: #f1f5f9;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 8px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-    .id-photo-frame img { width: 100%; height: 100%; object-fit: cover; }
-    
-    .id-member-name { font-family: 'Cinzel', serif; font-size: 18px; font-weight: 800; color: #0a192f; text-align: center; }
-    .id-code-large { font-size: 12px; font-weight: 800; color: #d97706; letter-spacing: 1px; margin-top: 2px; }
-    .id-member-tag { background: #fef3c7; color: #b45309; font-size: 10px; font-weight: 800; padding: 3px 12px; border-radius: 20px; margin-top: 6px; border: 1px solid #fde68a; }
-    
-    .id-info-grid { width: 100%; margin-top: 12px; font-size: 11px; }
-    .id-info-row { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px dashed #e2e8f0; }
+    .id-card-body { padding: 25px 20px; flex: 1; display: flex; flex-direction: column; align-items: center; }
+    .id-member-name { font-family: 'Cinzel', serif; font-size: 24px; font-weight: 800; color: #0a192f; text-align: center; }
+    .id-code-large { font-size: 13px; font-weight: 700; color: #475569; letter-spacing: 1.5px; margin-top: 6px; }
+    .id-member-tag { background: #fef3c7; color: #b45309; font-size: 11px; font-weight: 800; padding: 4px 14px; border-radius: 20px; margin-top: 10px; border: 1px solid #fde68a; }
+    .id-info-grid { width: 100%; margin-top: 18px; font-size: 12px; }
+    .id-info-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #e2e8f0; }
     .id-info-row span:first-child { color: #64748b; font-weight: 600; }
     .id-info-row span:last-child { color: var(--primary); font-weight: 700; }
-    
-    .id-card-footer { background: #f8fafc; padding: 10px 15px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
-    .qr-stub { width: 42px; height: 42px; background: #fff; border: 1px solid #cbd5e1; border-radius: 4px; padding: 2px; }
+    .id-card-footer { background: #f8fafc; padding: 12px 20px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: flex-end; }
+    .barcode-stub { font-family: 'Courier New', monospace; font-weight: bold; font-size: 11px; letter-spacing: 3px; }
     .signature-stub { text-align: center; font-size: 8px; color: #64748b; font-weight: 600; }
     .signature-line { width: 70px; border-bottom: 1px solid #0f172a; margin-bottom: 2px; }
 
-    /* SVG Emblem Definition */
-    .svg-template { display: none; }
-  </style>
+    /* --- Locked / Read-only field styling --- */
+    input:disabled, .locked-field {
+      background: #fef2f2 !important;
+      color: #b91c1c !important;
+      font-weight: 800 !important;
+      border: 1.5px solid #fca5a5 !important;
+      cursor: not-allowed;
+    }
+    label.locked-label { color: #b91c1c; }
+    label.locked-label i.fa-lock { color: #dc2626; }
 
-  <!-- Embed SVG Logo Template -->
-  <svg class="svg-template">
-    <g id="oavta-emblem-src">
-      <circle cx="100" cy="100" r="96" fill="#0a192f" stroke="#d97706" stroke-width="6"/>
-      <circle cx="100" cy="100" r="84" fill="none" stroke="#ffffff" stroke-width="2" stroke-dasharray="4,3"/>
-      <path id="textPathTop" d="M 25,100 A 75,75 0 0,1 175,100" fill="none"/>
-      <path id="textPathBottom" d="M 175,100 A 75,75 0 0,1 25,100" fill="none"/>
-      <text font-family="'Cinzel', serif" font-size="11.5" font-weight="800" fill="#fbbf24" letter-spacing="1.2">
-        <textPath href="#textPathTop" startOffset="50%" text-anchor="middle">OAVTA ODISHA</textPath>
-      </text>
-      <text font-family="'Plus Jakarta Sans', sans-serif" font-size="8" font-weight="700" fill="#ffffff" letter-spacing="0.8">
-        <textPath href="#textPathBottom" startOffset="50%" text-anchor="middle">TEACHERS ASSOCIATION</textPath>
-      </text>
-      <polygon points="100,42 108,62 130,62 112,75 119,96 100,82 81,96 88,75 70,62 92,62" fill="#d97706"/>
-      <path d="M 65 135 Q 100 115 135 135 L 130 145 Q 100 128 70 145 Z" fill="#ffffff"/>
-      <path d="M 100 102 L 100 130 M 80 118 L 120 118" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/>
-      <circle cx="100" cy="100" r="5" fill="#d97706"/>
-    </g>
-  </svg>
+    /* --- Member photo --- */
+    .id-photo-frame {
+      width: 84px; height: 84px; border-radius: 50%; overflow: hidden;
+      border: 3px solid var(--accent-gold); background: #f1f5f9;
+      display: flex; align-items: center; justify-content: center;
+      margin: -55px auto 8px; box-shadow: 0 6px 14px rgba(0,0,0,0.2); position: relative; z-index: 2;
+    }
+    .id-photo-frame img { width: 100%; height: 100%; object-fit: cover; }
+    .id-photo-frame i { font-size: 34px; color: #94a3b8; }
+    .photo-upload-preview {
+      width: 70px; height: 70px; border-radius: 50%; object-fit: cover;
+      border: 2px solid var(--accent-gold); display: none; margin-top: 8px;
+    }
+
+    /* --- Status badge --- */
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 800;
+      padding: 4px 12px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px;
+      margin-top: 8px;
+    }
+    .status-badge.active { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+    .status-badge.inactive { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+    .status-badge i { font-size: 8px; }
+
+    /* --- Verification QR --- */
+    .verify-qr-box {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      padding: 10px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 12px;
+    }
+    .verify-qr-box img { width: 100px; height: 100px; border-radius: 6px; background: #fff; padding: 4px; }
+    .verify-qr-box span { font-size: 10px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* --- Site footer (logo everywhere) --- */
+    .site-footer {
+      max-width: 1150px; margin: 50px auto 0; padding: 30px 20px; text-align: center;
+      border-top: 2px solid var(--border-color);
+    }
+    .site-footer .logo-badge { width: 46px; height: 46px; margin: 0 auto 10px; display: block; }
+    .site-footer p { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+    .site-footer p.copyright { margin-top: 4px; font-size: 11px; color: #94a3b8; }
+
+    /* --- Small crest used inline (table headers, modal) --- */
+    .logo-badge-sm { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--accent-gold); object-fit: cover; }
+  </style>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -559,12 +544,6 @@
       "Sundargarh": ["Bargaon", "Bisra", "Bonai", "Guraundia", "Hemgir", "Kutra", "Lahunipara", "Lathikata", "Lephripara", "Nuwagaon", "Rajgangpur", "Subdega", "Sundargarh", "Tangarapali"]
     };
 
-    // Render Dynamic SVG Emblem directly into container
-    window.renderSvgLogo = function(targetEl) {
-      if (!targetEl) return;
-      targetEl.innerHTML = `<svg viewBox="0 0 200 200" class="oavta-logo-svg"><use href="#oavta-emblem-src"/></svg>`;
-    };
-
     window.populateDistricts = function(distId, blockId) {
       const distEl = document.getElementById(distId);
       if (!distEl) return;
@@ -592,12 +571,19 @@
     };
 
     window.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('.logo-badge, .id-logo-box').forEach(el => renderSvgLogo(el));
       populateDistricts('regDist', 'regBlock');
       populateDistricts('editDist', 'editBlock');
       populateDistricts('pDist', 'pBlock');
       populateDistricts('publicDistSelect', null);
       populateDistricts('stateDistFilterSelect', null);
+
+      const params = new URLSearchParams(window.location.search);
+      const verifyId = params.get('verify');
+      if (verifyId) {
+        document.getElementById('verifyTabBtn').click();
+        document.getElementById('verifyMemberId').value = verifyId;
+        runMemberVerification(verifyId);
+      }
     });
 
     window.switchTab = function(tabId, evt) {
@@ -618,6 +604,34 @@
     window.closeSuccessModal = function() {
       document.getElementById('successModal').style.display = 'none';
     };
+
+    window.regPhotoData = "";
+    window.previewRegPhoto = function(evt) {
+      const file = evt.target.files[0];
+      const preview = document.getElementById('regPhotoPreview');
+      if (!file) { window.regPhotoData = ""; preview.style.display = 'none'; return; }
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        window.regPhotoData = e.target.result;
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    };
+
+    function renderStatusBadge(status) {
+      const s = (status || 'Active');
+      const cls = s.toLowerCase() === 'active' ? 'active' : 'inactive';
+      const icon = cls === 'active' ? 'fa-circle-check' : 'fa-circle-xmark';
+      return `<div class="status-badge ${cls}"><i class="fa-solid ${icon}"></i> ${s}</div>`;
+    }
+
+    function renderCardPhoto(photoBase64) {
+      if (photoBase64) {
+        return `<div class="id-photo-frame"><img src="${photoBase64}" alt="Member Photo"></div>`;
+      }
+      return `<div class="id-photo-frame"><i class="fa-solid fa-user"></i></div>`;
+    }
 
     // Registration Handler
     document.getElementById('regForm').addEventListener('submit', async (e) => {
@@ -665,6 +679,8 @@
           oavName: document.getElementById('regOav').value,
           joinYear: year,
           mobile: mobile,
+          photoBase64: window.regPhotoData || "",
+          status: "Active",
           timestamp: new Date()
         };
 
@@ -674,36 +690,32 @@
         document.getElementById('successModal').style.display = 'flex';
         msg.innerHTML = '';
         document.getElementById('regForm').reset();
+        window.regPhotoData = "";
+        document.getElementById('regPhotoPreview').style.display = 'none';
       } catch (err) {
         console.error(err);
         msg.innerHTML = `<div class="alert alert-danger">Registration Failure: ${err.message}</div>`;
       }
     });
 
-    // Verification Portal Logic
-    window.verifyMemberID = async function(e) {
-      if (e) e.preventDefault();
-      const id = document.getElementById('verifyMemberId').value.trim();
-      const msg = document.getElementById('verifyMsg');
-      
-      if (!id) {
-        msg.innerHTML = `<div class="alert alert-danger"><i class="fa-solid fa-circle-exclamation"></i> Please input Member ID.</div>`;
-        return;
-      }
-
-      msg.innerHTML = '<div class="alert alert-success">Verifying record...</div>';
+    // Member Authentication & Dashboard
+    document.getElementById('memberLoginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('loginMemberId').value.trim();
+      const mobile = document.getElementById('loginMobile').value.trim();
+      const msg = document.getElementById('memberLoginMsg');
+      msg.innerHTML = '<div class="alert alert-success">Authenticating...</div>';
 
       try {
-        const q = query(collection(db, "members"), where("memberId", "==", id));
+        const q = query(collection(db, "members"), where("memberId", "==", id), where("mobile", "==", mobile));
         const snap = await getDocs(q);
 
         if (snap.empty) {
-          msg.innerHTML = `<div class="alert alert-danger"><i class="fa-solid fa-circle-xmark"></i> Invalid Member ID. No verification record found.</div>`;
-          document.getElementById('memberDashboard').style.display = 'none';
+          msg.innerHTML = `<div class="alert alert-danger"><i class="fa-solid fa-circle-xmark"></i> Credentials match no record. Verify details.</div>`;
           return;
         }
 
-        msg.innerHTML = `<div class="alert alert-success"><i class="fa-solid fa-circle-check"></i> Member Record Verified Successfully!</div>`;
+        msg.innerHTML = '';
         const d = snap.docs[0].data();
         const docId = snap.docs[0].id;
 
@@ -718,7 +730,6 @@
         document.getElementById('editYear').value = d.joinYear;
         document.getElementById('editMobile').value = d.mobile;
 
-        // Render Dynamic ID Card
         document.getElementById('cardName').innerText = d.name;
         document.getElementById('cardId').innerText = d.memberId;
         document.getElementById('cardDesig').innerText = d.designation;
@@ -727,19 +738,15 @@
         document.getElementById('cardOav').innerText = d.oavName;
         document.getElementById('cardYear').innerText = d.joinYear;
         document.getElementById('cardMobile').innerText = d.mobile;
-
-        // Generate Dynamic QR Code URL for Verification
-        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=OAVTA-VERIFIED-${d.memberId}-${encodeURIComponent(d.name)}`;
-        document.getElementById('cardQR').src = qrUrl;
+        document.getElementById('cardPhotoFrame').innerHTML = d.photoBase64 ? `<img src="${d.photoBase64}" alt="Member Photo">` : `<i class="fa-solid fa-user"></i>`;
+        document.getElementById('cardStatusBadge').innerHTML = renderStatusBadge(d.status);
 
         document.getElementById('memberDashboard').style.display = 'block';
       } catch(err) {
         console.error(err);
-        msg.innerHTML = `<div class="alert alert-danger">Verification Error: ${err.message}</div>`;
+        msg.innerHTML = `<div class="alert alert-danger">Error: ${err.message}</div>`;
       }
-    };
-
-    document.getElementById('verifyForm').addEventListener('submit', window.verifyMemberID);
+    });
 
     document.getElementById('updateProfileForm').addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -764,11 +771,55 @@
         document.getElementById('cardYear').innerText = updated.joinYear;
         document.getElementById('cardMobile').innerText = updated.mobile;
 
-        alert("Profile record updated successfully.");
+        alert("Profile details updated.");
       } catch(err) {
         alert("Update Failed: " + err.message);
       }
     });
+
+    document.getElementById('verifyForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      await runMemberVerification(document.getElementById('verifyMemberId').value.trim());
+    });
+
+    async function runMemberVerification(id) {
+      const msg = document.getElementById('verifyMsg');
+      const result = document.getElementById('verifyResult');
+      result.style.display = 'none';
+      if (!id) return;
+      msg.innerHTML = '<div class="alert alert-success">Looking up record...</div>';
+
+      try {
+        const q = query(collection(db, "members"), where("memberId", "==", id));
+        const snap = await getDocs(q);
+
+        if (snap.empty) {
+          msg.innerHTML = `<div class="alert alert-danger"><i class="fa-solid fa-circle-xmark"></i> No member found for ID "${id}". This ID could not be verified.</div>`;
+          return;
+        }
+
+        msg.innerHTML = `<div class="alert alert-success"><i class="fa-solid fa-shield-halved"></i> Record verified against official OAVTA registry.</div>`;
+        const d = snap.docs[0].data();
+
+        document.getElementById('vName').innerText = d.name;
+        document.getElementById('vId').innerText = d.memberId;
+        document.getElementById('vDesig').innerText = d.designation;
+        document.getElementById('vDist').innerText = d.district;
+        document.getElementById('vBlock').innerText = d.block;
+        document.getElementById('vOav').innerText = d.oavName;
+        document.getElementById('vYear').innerText = d.joinYear;
+        document.getElementById('vPhotoFrame').innerHTML = d.photoBase64 ? `<img src="${d.photoBase64}" alt="Member Photo">` : `<i class="fa-solid fa-user"></i>`;
+        document.getElementById('vStatusBadge').innerHTML = renderStatusBadge(d.status);
+
+        const qrData = encodeURIComponent(`${location.origin}${location.pathname}?verify=${d.memberId}`);
+        document.getElementById('vQrImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=110x110&data=${qrData}`;
+
+        result.style.display = 'block';
+      } catch (err) {
+        console.error(err);
+        msg.innerHTML = `<div class="alert alert-danger">Verification Error: ${err.message}</div>`;
+      }
+    }
 
     window.downloadIDCardHTML = function() {
       const name = document.getElementById('cardName').innerText || "Member";
@@ -782,48 +833,61 @@
       const oav = document.getElementById('cardOav').innerText;
       const year = document.getElementById('cardYear').innerText;
       const mobile = document.getElementById('cardMobile').innerText;
-      const qrSrc = document.getElementById('cardQR').src;
+      const photoHtml = document.getElementById('cardPhotoFrame').innerHTML;
+      const statusHtml = document.getElementById('cardStatusBadge').innerHTML;
+      const qrData = encodeURIComponent(`${location.origin}${location.pathname}?verify=${id}`);
+      const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=110x110&data=${qrData}`;
 
       const htmlContent = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>OAVTA Verified ID Card - ${name}</title>
+  <title>ID Card - ${name}</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #f1f5f9; font-family: 'Plus Jakarta Sans', sans-serif; }
     .id-card-frame { width: 340px; height: 540px; background: #ffffff; border-radius: 18px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); border: 1px solid #cbd5e1; position: relative; overflow: hidden; display: flex; flex-direction: column; background-image: radial-gradient(#e2e8f0 0.75px, transparent 0.75px); background-size: 12px 12px; }
-    .id-card-header { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0284c7 100%); color: #ffffff; padding: 15px 15px 12px; text-align: center; border-bottom: 4px solid #d97706; }
+    .id-card-header { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0284c7 100%); color: #ffffff; padding: 20px 15px 15px; text-align: center; border-bottom: 4px solid #d97706; }
+    .id-card-header img { width: 52px; height: 52px; border-radius: 50%; background: #fff; padding: 1px; object-fit: cover; }
     .id-card-header h3 { font-family: 'Cinzel', serif; font-size: 13px; font-weight: 800; }
     .id-card-header p { font-size: 8px; letter-spacing: 1.5px; color: #fbbf24; text-transform: uppercase; font-weight: 700; }
-    .id-card-body { padding: 15px 20px; flex: 1; display: flex; flex-direction: column; align-items: center; }
-    .id-photo-frame { width: 85px; height: 85px; border-radius: 50%; border: 3px solid #d97706; overflow: hidden; background: #f1f5f9; display: flex; align-items: center; justify-content: center; margin-bottom: 8px; }
-    .id-photo-frame img { width: 100%; height: 100%; object-fit: cover; }
-    .id-member-name { font-family: 'Cinzel', serif; font-size: 18px; font-weight: 800; color: #0a192f; text-align: center; }
-    .id-code-large { font-size: 12px; font-weight: 800; color: #d97706; letter-spacing: 1px; margin-top: 2px; }
-    .id-member-tag { background: #fef3c7; color: #b45309; font-size: 10px; font-weight: 800; padding: 3px 12px; border-radius: 20px; margin-top: 6px; border: 1px solid #fde68a; }
-    .id-info-grid { width: 100%; margin-top: 12px; font-size: 11px; }
-    .id-info-row { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px dashed #e2e8f0; }
+    .id-card-body { padding: 25px 20px; flex: 1; display: flex; flex-direction: column; align-items: center; }
+    .id-member-name { font-family: 'Cinzel', serif; font-size: 24px; font-weight: 800; color: #0a192f; text-align: center; }
+    .id-code-large { font-size: 13px; font-weight: 700; color: #475569; letter-spacing: 1.5px; margin-top: 6px; }
+    .id-member-tag { background: #fef3c7; color: #b45309; font-size: 11px; font-weight: 800; padding: 4px 14px; border-radius: 20px; margin-top: 10px; border: 1px solid #fde68a; }
+    .id-info-grid { width: 100%; margin-top: 18px; font-size: 12px; }
+    .id-info-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #e2e8f0; }
     .id-info-row span:first-child { color: #64748b; font-weight: 600; }
     .id-info-row span:last-child { color: #0a192f; font-weight: 700; }
-    .id-card-footer { background: #f8fafc; padding: 10px 15px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
-    .qr-stub { width: 42px; height: 42px; }
+    .id-card-footer { background: #f8fafc; padding: 12px 20px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: flex-end; }
+    .barcode-stub { font-family: 'Courier New', monospace; font-weight: bold; font-size: 11px; letter-spacing: 3px; }
     .signature-stub { text-align: center; font-size: 8px; color: #64748b; font-weight: 600; }
     .signature-line { width: 70px; border-bottom: 1px solid #0f172a; margin-bottom: 2px; }
+    .id-photo-frame { width: 84px; height: 84px; border-radius: 50%; overflow: hidden; border: 3px solid #d97706; background: #f1f5f9; display: flex; align-items: center; justify-content: center; margin: -55px auto 8px; box-shadow: 0 6px 14px rgba(0,0,0,0.2); position: relative; z-index: 2; }
+    .id-photo-frame img { width: 100%; height: 100%; object-fit: cover; }
+    .id-photo-frame i { font-size: 34px; color: #94a3b8; }
+    .status-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 800; padding: 4px 12px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 8px; }
+    .status-badge.active { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+    .status-badge.inactive { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+    .verify-footer { text-align:center; padding: 10px 0 4px; }
+    .verify-footer img { width: 70px; height: 70px; }
+    .verify-footer span { display:block; font-size: 9px; color:#64748b; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-top:4px; }
   </style>
 </head>
 <body>
   <div class="id-card-frame">
     <div class="id-card-header">
+      <img src="ChatGPT Image Aug 16, 2026, 12_28_14 PM.png" alt="Crest">
       <h3>OAVTA ODISHA</h3>
       <p>Official Membership Card</p>
     </div>
     <div class="id-card-body">
-      <div class="id-photo-frame"><img src="https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name)}" alt="Photo"></div>
+      ${photoHtml}
       <div class="id-member-name">${name}</div>
-      <div class="id-code-large">ID: ${id}</div>
+      <div class="id-code-large">${id}</div>
       <div class="id-member-tag">${desig}</div>
+      ${statusHtml}
       <div class="id-info-grid">
         <div class="id-info-row"><span>District</span><span>${dist}</span></div>
         <div class="id-info-row"><span>Block</span><span>${block}</span></div>
@@ -832,8 +896,12 @@
         <div class="id-info-row"><span>Mobile</span><span>${mobile}</span></div>
       </div>
     </div>
+    <div class="verify-footer">
+      <img src="${qrSrc}" alt="Verify QR">
+      <span>Scan to Verify Authenticity</span>
+    </div>
     <div class="id-card-footer">
-      <img src="${qrSrc}" class="qr-stub" alt="QR">
+      <div class="barcode-stub">|||| ||| |||||||</div>
       <div class="signature-stub">
         <div class="signature-line"></div>Authorized Signatory
       </div>
@@ -872,20 +940,19 @@
           const d = docSnap.data();
           const pId = docSnap.id;
           
-          const card = document.createElement('div');
-          card.className = 'portfolio-card';
-          card.innerHTML = `
-            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-              <div class="exec-name">${d.name}</div>
-              <button class="btn btn-danger" onclick="removePortfolio('${pId}', '${distVal}')"><i class="fa-solid fa-trash"></i></button>
+          container.innerHTML += `
+            <div class="portfolio-card">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div class="exec-name">${d.name}</div>
+                <button class="btn btn-danger" onclick="removePortfolio('${pId}', '${distVal}')"><i class="fa-solid fa-trash"></i></button>
+              </div>
+              <div class="assoc-desig-small">${d.assocDesignation}</div>
+              <div class="info-item"><i class="fa-solid fa-graduation-cap"></i> <span>Post: <strong>${d.schoolDesignation}</strong></span></div>
+              <div class="info-item"><i class="fa-solid fa-location-dot"></i> <span>Block: <strong>${d.block}</strong></span></div>
+              <div class="info-item"><i class="fa-solid fa-school"></i> <span>OAV: <strong>${d.oavName}</strong></span></div>
+              <div class="info-item"><i class="fa-solid fa-phone"></i> <span>Mobile: <strong>${d.mobile}</strong></span></div>
             </div>
-            <div class="assoc-desig-small">${d.assocDesignation}</div>
-            <div class="info-item"><i class="fa-solid fa-graduation-cap"></i> <span>Post: <strong>${d.schoolDesignation}</strong></span></div>
-            <div class="info-item"><i class="fa-solid fa-location-dot"></i> <span>Block: <strong>${d.block}</strong></span></div>
-            <div class="info-item"><i class="fa-solid fa-school"></i> <span>OAV: <strong>${d.oavName}</strong></span></div>
-            <div class="info-item"><i class="fa-solid fa-phone"></i> <span>Mobile: <strong>${d.mobile}</strong></span></div>
           `;
-          container.appendChild(card);
         });
       } catch(err) {
         console.error(err);
@@ -1064,17 +1131,16 @@
 
         snap.forEach(docSnap => {
           const d = docSnap.data();
-          const card = document.createElement('div');
-          card.className = 'portfolio-card';
-          card.innerHTML = `
-            <div class="exec-name">${d.name}</div>
-            <div class="assoc-desig-small">${d.assocDesignation}</div>
-            <div class="info-item"><i class="fa-solid fa-graduation-cap"></i> <span>School Post: <strong>${d.schoolDesignation}</strong></span></div>
-            <div class="info-item"><i class="fa-solid fa-location-dot"></i> <span>Block: <strong>${d.block}</strong></span></div>
-            <div class="info-item"><i class="fa-solid fa-school"></i> <span>OAV: <strong>${d.oavName}</strong></span></div>
-            <div class="info-item"><i class="fa-solid fa-phone"></i> <span>Mobile: <strong>${d.mobile}</strong></span></div>
+          cardContainer.innerHTML += `
+            <div class="portfolio-card">
+              <div class="exec-name">${d.name}</div>
+              <div class="assoc-desig-small">${d.assocDesignation}</div>
+              <div class="info-item"><i class="fa-solid fa-graduation-cap"></i> <span>School Post: <strong>${d.schoolDesignation}</strong></span></div>
+              <div class="info-item"><i class="fa-solid fa-location-dot"></i> <span>Block: <strong>${d.block}</strong></span></div>
+              <div class="info-item"><i class="fa-solid fa-school"></i> <span>OAV: <strong>${d.oavName}</strong></span></div>
+              <div class="info-item"><i class="fa-solid fa-phone"></i> <span>Mobile: <strong>${d.mobile}</strong></span></div>
+            </div>
           `;
-          cardContainer.appendChild(card);
         });
       } catch(err) {
         console.error(err);
@@ -1187,10 +1253,11 @@
 
   <div id="successModal" class="modal-overlay">
     <div class="modal-card">
+      <img src="ChatGPT Image Aug 16, 2026, 12_28_14 PM.png" alt="OAVTA Crest" class="logo-badge-sm" style="margin-bottom:12px;">
       <div class="tick-circle"><i class="fa-solid fa-check"></i></div>
       <div class="modal-title">Registration Completed</div>
       <div class="modal-text">
-        Generated Unique ID:<br><strong id="modalUniqueId">20260001</strong><br><br>
+        Generated Unique ID:<br><strong id="modalUniqueId">20150001</strong><br><br>
         Access Member Portal to retrieve digital card.
       </div>
       <button class="btn btn-gold" onclick="closeSuccessModal()" style="width: 100%;"><i class="fa-solid fa-thumbs-up"></i> Continue</button>
@@ -1204,7 +1271,7 @@
 
   <div class="header-hero">
     <div class="brand-container">
-      <div class="logo-badge"></div>
+      <img src="ChatGPT Image Aug 16, 2026, 12_28_14 PM.png" alt="OAVTA Crest" class="logo-badge">
       <div class="brand-titles">
         <h1>OAVTA ODISHA</h1>
         <p>Odisha Adarsha Vidyalaya Teachers Association</p>
@@ -1215,7 +1282,8 @@
   <div class="main-container">
     <div class="nav-tabs">
       <button class="tab-btn active" onclick="switchTab('register', event)"><i class="fa-solid fa-id-card"></i> Registration</button>
-      <button class="tab-btn" onclick="switchTab('memberLogin', event)"><i class="fa-solid fa-user-check"></i> Member Verification Portal</button>
+      <button class="tab-btn" onclick="switchTab('memberLogin', event)"><i class="fa-solid fa-user-check"></i> Member Portal</button>
+      <button class="tab-btn" id="verifyTabBtn" onclick="switchTab('verifyMember', event)"><i class="fa-solid fa-qrcode"></i> Verify Member</button>
       <button class="tab-btn" onclick="switchTab('publicPortfolios', event)"><i class="fa-solid fa-sitemap"></i> District Bodies Directory</button>
       <button class="tab-btn" onclick="switchTab('distAdmin', event)"><i class="fa-solid fa-user-gear"></i> District Admin</button>
       <button class="tab-btn" onclick="switchTab('stateAdmin', event)"><i class="fa-solid fa-building-shield"></i> State Admin</button>
@@ -1238,6 +1306,11 @@
             <div class="form-group"><label><i class="fa-solid fa-school"></i> OAV School Name</label><input type="text" id="regOav" required placeholder="OAV Name"></div>
             <div class="form-group"><label><i class="fa-solid fa-calendar"></i> Year of Joining</label><input type="number" id="regYear" required placeholder="YYYY"></div>
             <div class="form-group"><label><i class="fa-solid fa-phone"></i> Mobile Number</label><input type="tel" id="regMobile" required placeholder="+91..."></div>
+            <div class="form-group">
+              <label><i class="fa-solid fa-camera"></i> Passport Photo (optional)</label>
+              <input type="file" id="regPhoto" accept="image/*" onchange="previewRegPhoto(event)">
+              <img id="regPhotoPreview" class="photo-upload-preview" alt="Preview">
+            </div>
           </div>
           <div style="margin-top:25px;">
             <button type="submit" class="btn"><i class="fa-solid fa-paper-plane"></i> Submit Registration</button>
@@ -1246,58 +1319,59 @@
       </div>
     </div>
 
-    <!-- 2. MEMBER VERIFICATION PORTAL -->
+    <!-- 2. MEMBER PORTAL -->
     <div id="memberLogin" class="panel">
       <div class="glass-card">
         <div class="section-header">
-          <div class="section-title"><i class="fa-solid fa-id-card-clip"></i> Member Verification Portal</div>
+          <div class="section-title"><i class="fa-solid fa-right-to-bracket"></i> Member Verification Portal</div>
         </div>
         
         <div class="selection-banner">
-          <label><i class="fa-solid fa-magnifying-glass"></i> Enter Member ID No. to Verify & Retrieve Digital Card</label>
-          <div id="verifyMsg"></div>
-          <form id="verifyForm" style="max-width:400px; margin:0 auto; display:flex; gap:10px;">
-            <input type="text" id="verifyMemberId" placeholder="e.g. 20260001" required style="flex:1;">
-            <button type="submit" class="btn"><i class="fa-solid fa-shield-halved"></i> Verify</button>
+          <label><i class="fa-solid fa-key"></i> Authenticate credentials to retrieve card or modify details</label>
+          <div id="memberLoginMsg"></div>
+          <form id="memberLoginForm" style="max-width:500px; margin:0 auto;">
+            <div class="form-grid">
+              <div class="form-group"><label>Unique ID</label><input type="text" id="loginMemberId" placeholder="YYYYXXXX" required></div>
+              <div class="form-group"><label>Mobile Number</label><input type="tel" id="loginMobile" placeholder="+91..." required></div>
+            </div>
+            <button type="submit" class="btn" style="margin-top:15px; width:100%;"><i class="fa-solid fa-lock-open"></i> Authenticate Profile</button>
           </form>
         </div>
 
         <div id="memberDashboard" class="dynamic-edit-pane">
           <div style="display:flex; flex-wrap:wrap; gap:35px; justify-content:center;">
             
-            <!-- Dynamic ID Card Container -->
             <div class="id-display-container">
               <div class="id-card-frame" id="printableCard">
                 <div class="id-card-header">
-                  <div class="id-logo-box"></div>
+                  <img src="ChatGPT Image Aug 16, 2026, 12_28_14 PM.png" alt="Crest">
                   <h3>OAVTA ODISHA</h3>
                   <p>Official Membership Card</p>
                 </div>
                 <div class="id-card-body">
-                  <div class="id-photo-frame">
-                    <img id="cardPhoto" src="https://api.dicebear.com/7.x/initials/svg?seed=OAVTA" alt="Member Photo">
-                  </div>
+                  <div id="cardPhotoFrame" class="id-photo-frame" style="margin-top:-55px;"><i class="fa-solid fa-user"></i></div>
                   <div class="id-member-name" id="cardName">Member Name</div>
-                  <div class="id-code-large">ID: <span id="cardId">20260001</span></div>
+                  <div class="id-code-large" id="cardId">20150001</div>
                   <div class="id-member-tag" id="cardDesig">Designation</div>
+                  <div id="cardStatusBadge"></div>
 
                   <div class="id-info-grid">
                     <div class="id-info-row"><span>District</span><span id="cardDist">District</span></div>
                     <div class="id-info-row"><span>Block</span><span id="cardBlock">Block</span></div>
                     <div class="id-info-row"><span>OAV School</span><span id="cardOav">OAV Name</span></div>
-                    <div class="id-info-row"><span>Joined Year</span><span id="cardYear">2026</span></div>
+                    <div class="id-info-row"><span>Joined Year</span><span id="cardYear">2015</span></div>
                     <div class="id-info-row"><span>Mobile</span><span id="cardMobile">+91...</span></div>
                   </div>
                 </div>
                 <div class="id-card-footer">
-                  <img id="cardQR" src="" class="qr-stub" alt="Verification QR">
+                  <div class="barcode-stub">|||| ||| |||||||</div>
                   <div class="signature-stub">
                     <div class="signature-line"></div>Authorized Signatory
                   </div>
                 </div>
               </div>
 
-              <button onclick="downloadIDCardHTML()" class="btn btn-gold"><i class="fa-solid fa-file-code"></i> Download Digital ID (.HTML)</button>
+              <button onclick="downloadIDCardHTML()" class="btn btn-gold"><i class="fa-solid fa-file-code"></i> Download ID (.HTML)</button>
             </div>
 
             <div style="flex:1; min-width:320px;">
@@ -1305,14 +1379,8 @@
               <form id="updateProfileForm">
                 <input type="hidden" id="editDocId">
                 <div class="form-grid">
-                  <div class="form-group">
-                    <label><i class="fa-solid fa-lock"></i> Member ID (Locked)</label>
-                    <input type="text" id="editMemberId" class="field-locked" disabled>
-                  </div>
-                  <div class="form-group">
-                    <label><i class="fa-solid fa-lock"></i> Full Name (Locked)</label>
-                    <input type="text" id="editName" class="field-locked" disabled>
-                  </div>
+                  <div class="form-group"><label class="locked-label"><i class="fa-solid fa-lock"></i> Member ID (Locked)</label><input type="text" id="editMemberId" class="locked-field" disabled></div>
+                  <div class="form-group"><label class="locked-label"><i class="fa-solid fa-lock"></i> Name (Locked)</label><input type="text" id="editName" class="locked-field" disabled></div>
                   <div class="form-group"><label>School Designation</label><input type="text" id="editDesignation" required></div>
                   <div class="form-group"><label>District</label><select id="editDist" required></select></div>
                   <div class="form-group"><label>Block</label><select id="editBlock" required><option value="">-- Select Block --</option></select></div>
@@ -1324,6 +1392,56 @@
               </form>
             </div>
 
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2b. PUBLIC MEMBER VERIFICATION -->
+    <div id="verifyMember" class="panel">
+      <div class="glass-card">
+        <div class="section-header">
+          <div class="section-title"><i class="fa-solid fa-qrcode"></i> Member Verification Portal</div>
+        </div>
+        <p style="margin-bottom:20px; color:var(--text-muted); font-size:14px;">Enter a Member ID (or scan the QR on a printed card) to publicly verify a cadre member's authenticity and status.</p>
+
+        <div class="selection-banner">
+          <label><i class="fa-solid fa-hashtag"></i> Member ID</label>
+          <div id="verifyMsg"></div>
+          <form id="verifyForm" style="max-width:400px; margin:0 auto; display:flex; gap:10px;">
+            <input type="text" id="verifyMemberId" placeholder="e.g. 20150001" required style="flex:1;">
+            <button type="submit" class="btn"><i class="fa-solid fa-magnifying-glass"></i> Verify</button>
+          </form>
+        </div>
+
+        <div id="verifyResult" class="dynamic-edit-pane">
+          <div style="display:flex; flex-wrap:wrap; gap:35px; justify-content:center; align-items:flex-start;">
+            <div class="id-display-container">
+              <div class="id-card-frame">
+                <div class="id-card-header">
+                  <img src="ChatGPT Image Aug 16, 2026, 12_28_14 PM.png" alt="Crest">
+                  <h3>OAVTA ODISHA</h3>
+                  <p>Verified Membership Record</p>
+                </div>
+                <div class="id-card-body">
+                  <div id="vPhotoFrame" class="id-photo-frame" style="margin-top:-55px;"><i class="fa-solid fa-user"></i></div>
+                  <div class="id-member-name" id="vName">Member Name</div>
+                  <div class="id-code-large" id="vId">20150001</div>
+                  <div class="id-member-tag" id="vDesig">Designation</div>
+                  <div id="vStatusBadge"></div>
+                  <div class="id-info-grid">
+                    <div class="id-info-row"><span>District</span><span id="vDist">District</span></div>
+                    <div class="id-info-row"><span>Block</span><span id="vBlock">Block</span></div>
+                    <div class="id-info-row"><span>OAV School</span><span id="vOav">OAV Name</span></div>
+                    <div class="id-info-row"><span>Joined Year</span><span id="vYear">2015</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="verify-qr-box" id="vQrBox">
+              <img id="vQrImg" src="" alt="Verification QR">
+              <span>Scan to Verify</span>
+            </div>
           </div>
         </div>
       </div>
@@ -1347,7 +1465,7 @@
       </div>
     </div>
 
-    <!-- 4. DISTRICT ADMIN -->
+    <!-- 4. DISTRICT ADMIN (SPLIT PANELS) -->
     <div id="distAdmin" class="panel">
       <div class="glass-card">
         <div class="section-header">
@@ -1361,7 +1479,7 @@
           </div>
         </div>
 
-        <div id="distPassAuthArea" style="display:none; max-width:400px; margin: 0 auto 20px; background:rgba(248, 250, 252, 0.8); padding:20px; border-radius:12px; border:1px solid var(--border-color); text-align:center;">
+        <div id="distPassAuthArea" style="display:none; max-width:400px; margin: 0 auto 20px; background:#f8fafc; padding:20px; border-radius:12px; border:1px solid var(--border-color); text-align:center;">
           <div class="form-group">
             <label><i class="fa-solid fa-lock"></i> District Security Key</label>
             <input type="password" id="distAdminPassInput" placeholder="Enter Password">
@@ -1382,7 +1500,7 @@
           <!-- SUB PANEL 1: ENROLLED MEMBERS -->
           <div id="subDistMembers" class="sub-panel active">
             <div class="live-dist-indicator">
-              <span><i class="fa-solid fa-landmark"></i> DISTRICT DIRECTORY: <strong id="liveDistNameMemberTab">DISTRICT NAME</strong></span>
+              <span style="display:flex; align-items:center; gap:10px;"><img src="ChatGPT Image Aug 16, 2026, 12_28_14 PM.png" alt="Crest" class="logo-badge-sm"> DISTRICT DIRECTORY: <strong id="liveDistNameMemberTab">DISTRICT NAME</strong></span>
               <button class="btn btn-gold" onclick="downloadDistrictCSV()"><i class="fa-solid fa-file-csv"></i> Export District CSV</button>
             </div>
 
@@ -1420,7 +1538,7 @@
               <span style="font-size:12px; opacity:0.9;">Quota Utilization: (<span id="distCount">0</span>/10)</span>
             </div>
 
-            <div style="margin-bottom: 30px; background: rgba(248, 250, 252, 0.8); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color);">
+            <div style="margin-bottom: 30px; background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid var(--border-color);">
               <h4 style="font-family:'Cinzel'; color: var(--primary); margin-bottom: 15px;"><i class="fa-solid fa-list-check"></i> Assigned Portfolios</h4>
               <div id="distAdminPortfoliosList" class="portfolio-grid"></div>
             </div>
@@ -1444,14 +1562,14 @@
       </div>
     </div>
 
-    <!-- 5. STATE ADMIN -->
+    <!-- 5. STATE ADMIN (SPLIT PANELS) -->
     <div id="stateAdmin" class="panel">
       <div class="glass-card">
         <div class="section-header">
           <div class="section-title"><i class="fa-solid fa-vault"></i> State Executive Control Panel</div>
         </div>
 
-        <div id="stateAdminLoginArea" style="max-width:400px; margin: 0 auto 20px; background:rgba(248, 250, 252, 0.8); padding:25px; border-radius:12px; border:1px solid var(--border-color); text-align:center;">
+        <div id="stateAdminLoginArea" style="max-width:400px; margin: 0 auto 20px; background:#f8fafc; padding:25px; border-radius:12px; border:1px solid var(--border-color); text-align:center;">
           <div class="form-group">
             <label><i class="fa-solid fa-lock"></i> Master Password</label>
             <input type="password" id="stateAdminPassInput" placeholder="Password">
@@ -1471,7 +1589,7 @@
           <!-- STATE SUB 1: ALL MEMBERS -->
           <div id="subStateAllMembers" class="sub-panel active">
             <div class="section-header" style="border:none; margin-bottom:10px;">
-              <h3 style="font-family:'Cinzel'; color:var(--primary);">Master Members Directory (Total: <span id="stateTotalMembersCount">0</span>)</h3>
+              <h3 style="font-family:'Cinzel'; color:var(--primary); display:flex; align-items:center; gap:10px;"><img src="ChatGPT Image Aug 16, 2026, 12_28_14 PM.png" alt="Crest" class="logo-badge-sm"> Master Members Directory (Total: <span id="stateTotalMembersCount">0</span>)</h3>
               <button onclick="exportStateData('allMembers')" class="btn btn-gold"><i class="fa-solid fa-file-csv"></i> Download Master State CSV</button>
             </div>
             <div class="table-wrapper">
@@ -1524,6 +1642,12 @@
       </div>
     </div>
 
+  </div>
+
+  <div class="site-footer">
+    <img src="ChatGPT Image Aug 16, 2026, 12_28_14 PM.png" alt="OAVTA Crest" class="logo-badge">
+    <p>Odisha Adarsha Vidyalaya Teachers' Association</p>
+    <p class="copyright">&copy; OAVTA Odisha &mdash; Official State Cadre Portal</p>
   </div>
 
 </body>
