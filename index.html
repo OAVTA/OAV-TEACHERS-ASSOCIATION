@@ -276,6 +276,7 @@
       gap: 10px;
     }
     .alert-danger { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+    .alert-success { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
 
     /* POPUP MODAL STYLES */
     .modal-overlay {
@@ -1089,6 +1090,49 @@
       });
     }
 
+    // Load Enrolled Members in Dist Admin
+    async function loadDistMembers(distVal) {
+      const tbody = document.getElementById('distMembersTableBody');
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Loading enrolled members...</td></tr>';
+
+      const q = query(collection(db, "members"), where("district", "==", distVal));
+      const snap = await getDocs(q);
+
+      document.getElementById('distMembersCount').innerText = snap.size;
+
+      if (snap.empty) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#64748b;">No registered members found for ${distVal} district.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = '';
+      snap.forEach(docSnap => {
+        const d = docSnap.data();
+        tbody.innerHTML += `
+          <tr class="dist-member-row">
+            <td><strong>${d.memberId}</strong></td>
+            <td>${d.name}</td>
+            <td>${d.designation}</td>
+            <td>${d.block}</td>
+            <td>${d.oavName}</td>
+            <td>${d.joinYear}</td>
+            <td>${d.mobile}</td>
+          </tr>
+        `;
+      });
+    }
+
+    // Filter District Members Search Input
+    window.filterDistrictMembers = function() {
+      const input = document.getElementById('memberSearchInput').value.toLowerCase();
+      const rows = document.querySelectorAll('.dist-member-row');
+
+      rows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        row.style.display = text.includes(input) ? '' : 'none';
+      });
+    };
+
     window.removePortfolio = async function(pId, distVal) {
       if (confirm("Are you sure you want to mark this member as LEFT / REMOVED from the District Body?")) {
         try {
@@ -1132,6 +1176,7 @@
         populateBlocks(distVal, 'pBlock');
         document.getElementById('distAdminEditPane').style.display = 'block';
         loadDistPortfolios(distVal);
+        loadDistMembers(distVal);
       } else {
         msg.innerHTML = `<div class="alert alert-danger" style="margin-top:10px;"><i class="fa-solid fa-lock"></i> Invalid password for ${distVal} District Admin!</div>`;
       }
@@ -1471,6 +1516,35 @@
           <div class="live-dist-indicator">
             <span><i class="fa-solid fa-landmark"></i> ACTIVE DISTRICT: <strong id="liveDistName">DISTRICT NAME</strong></span>
             <span style="font-size:12px; font-weight:600; opacity:0.9;">Quota Limit: (<span id="distCount">0</span>/10)</span>
+          </div>
+
+          <!-- ENROLLED DISTRICT MEMBERS SECTION -->
+          <div style="margin-bottom: 30px; background: #ffffff; padding: 20px; border-radius: 12px; border: 1px solid var(--border-color);">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
+              <h4 style="font-family:'Cinzel'; color: var(--primary); margin: 0;">
+                <i class="fa-solid fa-users-rectangle"></i> Enrolled District Members (<span id="distMembersCount">0</span>)
+              </h4>
+              <input type="text" id="memberSearchInput" onkeyup="filterDistrictMembers()" placeholder="Search member by name/mobile/ID..." style="width: 260px; padding: 8px 12px; font-size: 12px;">
+            </div>
+            
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Member ID</th>
+                    <th>Full Name</th>
+                    <th>Designation</th>
+                    <th>Block</th>
+                    <th>OAV School</th>
+                    <th>Year</th>
+                    <th>Mobile</th>
+                  </tr>
+                </thead>
+                <tbody id="distMembersTableBody">
+                  <tr><td colspan="7" style="text-align:center;">Select district to load members...</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
 
           <div style="margin-bottom: 30px; background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid var(--border-color);">
