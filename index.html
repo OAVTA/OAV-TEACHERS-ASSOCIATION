@@ -70,9 +70,7 @@
       padding: 2px;
       box-shadow: 0 0 20px rgba(217, 119, 6, 0.4);
       border: 2px solid var(--accent-gold);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      object-fit: cover;
     }
 
     .brand-titles h1 {
@@ -400,22 +398,23 @@
 
     .id-display-container { display: flex; flex-direction: column; align-items: center; gap: 20px; }
     .id-card-frame {
-      width: 340px; height: 540px; background: #ffffff; border-radius: 18px; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-      border: 1px solid #cbd5e1; position: relative; overflow: hidden; display: flex; flex-direction: column;
+      width: 340px; min-height: 610px; background: #ffffff; border-radius: 18px; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      border: 1px solid #cbd5e1; position: relative; overflow: visible; display: flex; flex-direction: column;
       background-image: radial-gradient(#e2e8f0 0.75px, transparent 0.75px); background-size: 12px 12px;
     }
-    .id-card-header { background: var(--blue-gradient); color: #ffffff; padding: 20px 15px 15px; text-align: center; border-bottom: 4px solid var(--accent-gold); display: flex; flex-direction: column; align-items: center; gap: 4px; }
-    .id-card-header h3 { font-family: 'Cinzel', serif; font-size: 13px; font-weight: 800; margin-top: 4px; }
+    .id-card-header { background: var(--blue-gradient); color: #ffffff; padding: 20px 15px 15px; text-align: center; border-bottom: 4px solid var(--accent-gold); border-radius: 18px 18px 0 0; }
+    .id-card-header img { width: 52px; height: 52px; border-radius: 50%; background: #fff; padding: 1px; object-fit: cover; }
+    .id-card-header h3 { font-family: 'Cinzel', serif; font-size: 13px; font-weight: 800; }
     .id-card-header p { font-size: 8px; letter-spacing: 1.5px; color: #fbbf24; text-transform: uppercase; font-weight: 700; }
-    .id-card-body { padding: 25px 20px; flex: 1; display: flex; flex-direction: column; align-items: center; }
+    .id-card-body { padding: 18px 20px 25px; flex: 1; display: flex; flex-direction: column; align-items: center; }
     .id-member-name { font-family: 'Cinzel', serif; font-size: 24px; font-weight: 800; color: #0a192f; text-align: center; }
     .id-code-large { font-size: 13px; font-weight: 700; color: #475569; letter-spacing: 1.5px; margin-top: 6px; }
     .id-member-tag { background: #fef3c7; color: #b45309; font-size: 11px; font-weight: 800; padding: 4px 14px; border-radius: 20px; margin-top: 10px; border: 1px solid #fde68a; }
     .id-info-grid { width: 100%; margin-top: 18px; font-size: 12px; }
     .id-info-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #e2e8f0; }
     .id-info-row span:first-child { color: #64748b; font-weight: 600; }
-    .id-info-row span:last-child { color: var(--primary); font-weight: 700; }
-    .id-card-footer { background: #f8fafc; padding: 12px 20px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: flex-end; }
+    .id-info-row span:last-child { color: var(--primary); font-weight: 700; text-align: right; }
+    .id-card-footer { background: #f8fafc; padding: 12px 20px; border-top: 1px solid var(--border-color); border-radius: 0 0 18px 18px; display: flex; justify-content: space-between; align-items: flex-end; }
     .barcode-stub { font-family: 'Courier New', monospace; font-weight: bold; font-size: 11px; letter-spacing: 3px; }
     .signature-stub { text-align: center; font-size: 8px; color: #64748b; font-weight: 600; }
     .signature-line { width: 70px; border-bottom: 1px solid #0f172a; margin-bottom: 2px; }
@@ -433,13 +432,13 @@
 
     /* --- Member photo --- */
     .id-photo-frame {
-      width: 84px; height: 84px; border-radius: 50%; overflow: hidden;
+      width: 76px; height: 76px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
       border: 3px solid var(--accent-gold); background: #f1f5f9;
       display: flex; align-items: center; justify-content: center;
-      margin: -55px auto 8px; box-shadow: 0 6px 14px rgba(0,0,0,0.2); position: relative; z-index: 2;
+      margin: 0 auto 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
     .id-photo-frame img { width: 100%; height: 100%; object-fit: cover; }
-    .id-photo-frame i { font-size: 34px; color: #94a3b8; }
+    .id-photo-frame i { font-size: 30px; color: #94a3b8; }
     .photo-upload-preview {
       width: 70px; height: 70px; border-radius: 50%; object-fit: cover;
       border: 2px solid var(--accent-gold); display: none; margin-top: 8px;
@@ -455,30 +454,17 @@
     .status-badge.inactive { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
     .status-badge i { font-size: 8px; }
 
-    /* --- Verification QR --- */
-    .verify-qr-box {
-      display: flex; flex-direction: column; align-items: center; gap: 6px;
-      padding: 10px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 12px;
-    }
-    .verify-qr-box img { width: 100px; height: 100px; border-radius: 6px; background: #fff; padding: 4px; }
-    .verify-qr-box span { font-size: 10px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-
-    /* --- Site footer --- */
+    /* --- Site footer (logo everywhere) --- */
     .site-footer {
       max-width: 1150px; margin: 50px auto 0; padding: 30px 20px; text-align: center;
       border-top: 2px solid var(--border-color);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
     }
+    .site-footer .logo-badge { width: 46px; height: 46px; margin: 0 auto 10px; display: block; }
     .site-footer p { font-size: 12px; color: var(--text-muted); font-weight: 600; }
     .site-footer p.copyright { margin-top: 4px; font-size: 11px; color: #94a3b8; }
 
-    .logo-badge-sm { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--accent-gold); display: inline-flex; align-items: center; justify-content: center; background: #fff; }
-    
-    /* Inline Vector Crest SVG */
-    .crest-svg { width: 48px; height: 48px; fill: none; }
-    .crest-svg-sm { width: 24px; height: 24px; fill: none; }
+    /* --- Small crest used inline (table headers, modal) --- */
+    .logo-badge-sm { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--accent-gold); object-fit: cover; }
   </style>
 
   <script type="module">
@@ -582,14 +568,6 @@
       populateDistricts('pDist', 'pBlock');
       populateDistricts('publicDistSelect', null);
       populateDistricts('stateDistFilterSelect', null);
-
-      const params = new URLSearchParams(window.location.search);
-      const verifyId = params.get('verify');
-      if (verifyId) {
-        document.getElementById('verifyTabBtn').click();
-        document.getElementById('verifyMemberId').value = verifyId;
-        runMemberVerification(verifyId);
-      }
     });
 
     window.switchTab = function(tabId, evt) {
@@ -776,51 +754,6 @@
       }
     });
 
-    document.getElementById('verifyForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      await runMemberVerification(document.getElementById('verifyMemberId').value.trim());
-    });
-
-    async function runMemberVerification(id) {
-      const msg = document.getElementById('verifyMsg');
-      const result = document.getElementById('verifyResult');
-      result.style.display = 'none';
-      if (!id) return;
-      msg.innerHTML = '<div class="alert alert-success">Looking up record...</div>';
-
-      try {
-        const q = query(collection(db, "members"), where("memberId", "==", id));
-        const snap = await getDocs(q);
-
-        if (snap.empty) {
-          msg.innerHTML = `<div class="alert alert-danger"><i class="fa-solid fa-circle-xmark"></i> No member found for ID "${id}". This ID could not be verified.</div>`;
-          return;
-        }
-
-        msg.innerHTML = `<div class="alert alert-success"><i class="fa-solid fa-shield-halved"></i> Record verified against official OAVTA registry.</div>`;
-        const d = snap.docs[0].data();
-
-        document.getElementById('vName').innerText = d.name;
-        document.getElementById('vId').innerText = d.memberId;
-        document.getElementById('vDesig').innerText = d.designation;
-        document.getElementById('vDist').innerText = d.district;
-        document.getElementById('vBlock').innerText = d.block;
-        document.getElementById('vOav').innerText = d.oavName;
-        document.getElementById('vYear').innerText = d.joinYear;
-        document.getElementById('vPhotoFrame').innerHTML = d.photoBase64 ? `<img src="${d.photoBase64}" alt="Member Photo">` : `<i class="fa-solid fa-user"></i>`;
-        document.getElementById('vStatusBadge').innerHTML = renderStatusBadge(d.status);
-
-        const qrData = encodeURIComponent(`${location.origin}${location.pathname}?verify=${d.memberId}`);
-        document.getElementById('vQrImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=110x110&data=${qrData}`;
-
-        result.style.display = 'block';
-      } catch (err) {
-        console.error(err);
-        msg.innerHTML = `<div class="alert alert-danger">Verification Error: ${err.message}</div>`;
-      }
-    }
-
-    // Direct standalone HTML download with fully standalone Vector Crest Logo
     window.downloadIDCardHTML = function() {
       const name = document.getElementById('cardName').innerText || "Member";
       const sanitizedName = name.replace(/[^a-zA-Z0-9]/g, "_");
@@ -835,16 +768,6 @@
       const mobile = document.getElementById('cardMobile').innerText;
       const photoHtml = document.getElementById('cardPhotoFrame').innerHTML;
       const statusHtml = document.getElementById('cardStatusBadge').innerHTML;
-      const qrData = encodeURIComponent(`${location.origin}${location.pathname}?verify=${id}`);
-      const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=110x110&data=${qrData}`;
-
-      const svgCrest = `<svg class="crest-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="50" cy="50" r="46" fill="#ffffff" stroke="#d97706" stroke-width="4"/>
-        <circle cx="50" cy="50" r="40" fill="#0a192f"/>
-        <path d="M50 18 L76 30 L76 54 C76 70 50 82 50 82 C50 82 24 70 24 54 L24 30 Z" fill="#d97706" stroke="#ffffff" stroke-width="2"/>
-        <text x="50" y="52" font-family="'Cinzel', serif" font-size="11" font-weight="900" fill="#ffffff" text-anchor="middle">OAVTA</text>
-        <path d="M38 58 L50 66 L62 58" stroke="#ffffff" stroke-width="2" fill="none"/>
-      </svg>`;
 
       const htmlContent = `<!DOCTYPE html>
 <html lang="en">
@@ -854,39 +777,36 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #f1f5f9; font-family: 'Plus Jakarta Sans', sans-serif; }
-    .id-card-frame { width: 340px; height: 540px; background: #ffffff; border-radius: 18px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); border: 1px solid #cbd5e1; position: relative; overflow: hidden; display: flex; flex-direction: column; background-image: radial-gradient(#e2e8f0 0.75px, transparent 0.75px); background-size: 12px 12px; }
-    .id-card-header { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0284c7 100%); color: #ffffff; padding: 20px 15px 15px; text-align: center; border-bottom: 4px solid #d97706; display: flex; flex-direction: column; align-items: center; gap: 4px; }
-    .id-card-header h3 { font-family: 'Cinzel', serif; font-size: 13px; font-weight: 800; margin-top: 4px; }
+    body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #f1f5f9; font-family: 'Plus Jakarta Sans', sans-serif; padding: 20px; }
+    .id-card-frame { width: 340px; min-height: 590px; background: #ffffff; border-radius: 18px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); border: 1px solid #cbd5e1; position: relative; overflow: visible; display: flex; flex-direction: column; background-image: radial-gradient(#e2e8f0 0.75px, transparent 0.75px); background-size: 12px 12px; }
+    .id-card-header { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0284c7 100%); color: #ffffff; padding: 20px 15px 15px; text-align: center; border-bottom: 4px solid #d97706; border-radius: 18px 18px 0 0; }
+    .id-card-header img { width: 52px; height: 52px; border-radius: 50%; background: #fff; padding: 1px; object-fit: cover; }
+    .id-card-header h3 { font-family: 'Cinzel', serif; font-size: 13px; font-weight: 800; }
     .id-card-header p { font-size: 8px; letter-spacing: 1.5px; color: #fbbf24; text-transform: uppercase; font-weight: 700; }
-    .id-card-body { padding: 25px 20px; flex: 1; display: flex; flex-direction: column; align-items: center; }
+    .id-card-body { padding: 18px 20px 25px; flex: 1; display: flex; flex-direction: column; align-items: center; }
     .id-member-name { font-family: 'Cinzel', serif; font-size: 24px; font-weight: 800; color: #0a192f; text-align: center; }
     .id-code-large { font-size: 13px; font-weight: 700; color: #475569; letter-spacing: 1.5px; margin-top: 6px; }
     .id-member-tag { background: #fef3c7; color: #b45309; font-size: 11px; font-weight: 800; padding: 4px 14px; border-radius: 20px; margin-top: 10px; border: 1px solid #fde68a; }
     .id-info-grid { width: 100%; margin-top: 18px; font-size: 12px; }
     .id-info-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #e2e8f0; }
     .id-info-row span:first-child { color: #64748b; font-weight: 600; }
-    .id-info-row span:last-child { color: #0a192f; font-weight: 700; }
-    .id-card-footer { background: #f8fafc; padding: 12px 20px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: flex-end; }
+    .id-info-row span:last-child { color: #0a192f; font-weight: 700; text-align: right; }
+    .id-card-footer { background: #f8fafc; padding: 12px 20px; border-top: 1px solid #e2e8f0; border-radius: 0 0 18px 18px; display: flex; justify-content: space-between; align-items: flex-end; }
     .barcode-stub { font-family: 'Courier New', monospace; font-weight: bold; font-size: 11px; letter-spacing: 3px; }
     .signature-stub { text-align: center; font-size: 8px; color: #64748b; font-weight: 600; }
     .signature-line { width: 70px; border-bottom: 1px solid #0f172a; margin-bottom: 2px; }
-    .id-photo-frame { width: 84px; height: 84px; border-radius: 50%; overflow: hidden; border: 3px solid #d97706; background: #f1f5f9; display: flex; align-items: center; justify-content: center; margin: -55px auto 8px; box-shadow: 0 6px 14px rgba(0,0,0,0.2); position: relative; z-index: 2; }
+    .id-photo-frame { width: 76px; height: 76px; border-radius: 50%; overflow: hidden; flex-shrink: 0; border: 3px solid #d97706; background: #f1f5f9; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
     .id-photo-frame img { width: 100%; height: 100%; object-fit: cover; }
-    .id-photo-frame i { font-size: 34px; color: #94a3b8; }
+    .id-photo-frame i { font-size: 30px; color: #94a3b8; }
     .status-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 800; padding: 4px 12px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 8px; }
     .status-badge.active { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
     .status-badge.inactive { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
-    .verify-footer { text-align:center; padding: 10px 0 4px; }
-    .verify-footer img { width: 70px; height: 70px; }
-    .verify-footer span { display:block; font-size: 9px; color:#64748b; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-top:4px; }
-    .crest-svg { width: 50px; height: 50px; fill: none; }
   </style>
 </head>
 <body>
   <div class="id-card-frame">
     <div class="id-card-header">
-      ${svgCrest}
+      <img src="ChatGPT Image Aug 16, 2026, 12_28_14 PM.png" alt="Crest">
       <h3>OAVTA ODISHA</h3>
       <p>Official Membership Card</p>
     </div>
@@ -903,10 +823,6 @@
         <div class="id-info-row"><span>Joined Year</span><span>${year}</span></div>
         <div class="id-info-row"><span>Mobile</span><span>${mobile}</span></div>
       </div>
-    </div>
-    <div class="verify-footer">
-      <img src="${qrSrc}" alt="Verify QR">
-      <span>Scan to Verify Authenticity</span>
     </div>
     <div class="id-card-footer">
       <div class="barcode-stub">|||| ||| |||||||</div>
@@ -1259,24 +1175,9 @@
 </head>
 <body>
 
-  <!-- Modular Reusable Crest SVG Definition -->
-  <svg style="display:none;">
-    <defs>
-      <g id="oavtaCrest">
-        <circle cx="50" cy="50" r="46" fill="#ffffff" stroke="#d97706" stroke-width="4"/>
-        <circle cx="50" cy="50" r="40" fill="#0a192f"/>
-        <path d="M50 18 L76 30 L76 54 C76 70 50 82 50 82 C50 82 24 70 24 54 L24 30 Z" fill="#d97706" stroke="#ffffff" stroke-width="2"/>
-        <text x="50" y="52" font-family="'Cinzel', serif" font-size="11" font-weight="900" fill="#ffffff" text-anchor="middle">OAVTA</text>
-        <path d="M38 58 L50 66 L62 58" stroke="#ffffff" stroke-width="2" fill="none"/>
-      </g>
-    </defs>
-  </svg>
-
   <div id="successModal" class="modal-overlay">
     <div class="modal-card">
-      <div class="logo-badge-sm" style="margin-bottom:12px;">
-        <svg class="crest-svg-sm" viewBox="0 0 100 100"><use href="#oavtaCrest"/></svg>
-      </div>
+      <img src="ChatGPT Image Aug 16, 2026, 12_28_14 PM.png" alt="OAVTA Crest" class="logo-badge-sm" style="margin-bottom:12px;">
       <div class="tick-circle"><i class="fa-solid fa-check"></i></div>
       <div class="modal-title">Registration Completed</div>
       <div class="modal-text">
@@ -1294,9 +1195,7 @@
 
   <div class="header-hero">
     <div class="brand-container">
-      <div class="logo-badge">
-        <svg class="crest-svg" viewBox="0 0 100 100"><use href="#oavtaCrest"/></svg>
-      </div>
+      <img src="ChatGPT Image Aug 16, 2026, 12_28_14 PM.png" alt="OAVTA Crest" class="logo-badge">
       <div class="brand-titles">
         <h1>OAVTA ODISHA</h1>
         <p>Odisha Adarsha Vidyalaya Teachers Association</p>
@@ -1308,7 +1207,6 @@
     <div class="nav-tabs">
       <button class="tab-btn active" onclick="switchTab('register', event)"><i class="fa-solid fa-id-card"></i> Registration</button>
       <button class="tab-btn" onclick="switchTab('memberLogin', event)"><i class="fa-solid fa-user-check"></i> Member Portal</button>
-      <button class="tab-btn" id="verifyTabBtn" onclick="switchTab('verifyMember', event)"><i class="fa-solid fa-qrcode"></i> Verify Member</button>
       <button class="tab-btn" onclick="switchTab('publicPortfolios', event)"><i class="fa-solid fa-sitemap"></i> District Bodies Directory</button>
       <button class="tab-btn" onclick="switchTab('distAdmin', event)"><i class="fa-solid fa-user-gear"></i> District Admin</button>
       <button class="tab-btn" onclick="switchTab('stateAdmin', event)"><i class="fa-solid fa-building-shield"></i> State Admin</button>
@@ -1369,12 +1267,12 @@
             <div class="id-display-container">
               <div class="id-card-frame" id="printableCard">
                 <div class="id-card-header">
-                  <svg class="crest-svg" viewBox="0 0 100 100"><use href="#oavtaCrest"/></svg>
+                  <img src="ChatGPT Image Aug 16, 2026, 12_28_14 PM.png" alt="Crest">
                   <h3>OAVTA ODISHA</h3>
                   <p>Official Membership Card</p>
                 </div>
                 <div class="id-card-body">
-                  <div id="cardPhotoFrame" class="id-photo-frame" style="margin-top:-55px;"><i class="fa-solid fa-user"></i></div>
+                  <div id="cardPhotoFrame" class="id-photo-frame"><i class="fa-solid fa-user"></i></div>
                   <div class="id-member-name" id="cardName">Member Name</div>
                   <div class="id-code-large" id="cardId">20150001</div>
                   <div class="id-member-tag" id="cardDesig">Designation</div>
@@ -1422,56 +1320,6 @@
       </div>
     </div>
 
-    <!-- 2b. PUBLIC MEMBER VERIFICATION -->
-    <div id="verifyMember" class="panel">
-      <div class="glass-card">
-        <div class="section-header">
-          <div class="section-title"><i class="fa-solid fa-qrcode"></i> Member Verification Portal</div>
-        </div>
-        <p style="margin-bottom:20px; color:var(--text-muted); font-size:14px;">Enter a Member ID (or scan the QR on a printed card) to publicly verify a cadre member's authenticity and status.</p>
-
-        <div class="selection-banner">
-          <label><i class="fa-solid fa-hashtag"></i> Member ID</label>
-          <div id="verifyMsg"></div>
-          <form id="verifyForm" style="max-width:400px; margin:0 auto; display:flex; gap:10px;">
-            <input type="text" id="verifyMemberId" placeholder="e.g. 20150001" required style="flex:1;">
-            <button type="submit" class="btn"><i class="fa-solid fa-magnifying-glass"></i> Verify</button>
-          </form>
-        </div>
-
-        <div id="verifyResult" class="dynamic-edit-pane">
-          <div style="display:flex; flex-wrap:wrap; gap:35px; justify-content:center; align-items:flex-start;">
-            <div class="id-display-container">
-              <div class="id-card-frame">
-                <div class="id-card-header">
-                  <svg class="crest-svg" viewBox="0 0 100 100"><use href="#oavtaCrest"/></svg>
-                  <h3>OAVTA ODISHA</h3>
-                  <p>Verified Membership Record</p>
-                </div>
-                <div class="id-card-body">
-                  <div id="vPhotoFrame" class="id-photo-frame" style="margin-top:-55px;"><i class="fa-solid fa-user"></i></div>
-                  <div class="id-member-name" id="vName">Member Name</div>
-                  <div class="id-code-large" id="vId">20150001</div>
-                  <div class="id-member-tag" id="vDesig">Designation</div>
-                  <div id="vStatusBadge"></div>
-                  <div class="id-info-grid">
-                    <div class="id-info-row"><span>District</span><span id="vDist">District</span></div>
-                    <div class="id-info-row"><span>Block</span><span id="vBlock">Block</span></div>
-                    <div class="id-info-row"><span>OAV School</span><span id="vOav">OAV Name</span></div>
-                    <div class="id-info-row"><span>Joined Year</span><span id="vYear">2015</span></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="verify-qr-box" id="vQrBox">
-              <img id="vQrImg" src="" alt="Verification QR">
-              <span>Scan to Verify</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- 3. PUBLIC DIRECTORY -->
     <div id="publicPortfolios" class="panel">
       <div class="glass-card">
@@ -1490,7 +1338,7 @@
       </div>
     </div>
 
-    <!-- 4. DISTRICT ADMIN -->
+    <!-- 4. DISTRICT ADMIN (SPLIT PANELS) -->
     <div id="distAdmin" class="panel">
       <div class="glass-card">
         <div class="section-header">
@@ -1525,10 +1373,7 @@
           <!-- SUB PANEL 1: ENROLLED MEMBERS -->
           <div id="subDistMembers" class="sub-panel active">
             <div class="live-dist-indicator">
-              <span style="display:flex; align-items:center; gap:10px;">
-                <div class="logo-badge-sm"><svg class="crest-svg-sm" viewBox="0 0 100 100"><use href="#oavtaCrest"/></svg></div>
-                DISTRICT DIRECTORY: <strong id="liveDistNameMemberTab">DISTRICT NAME</strong>
-              </span>
+              <span style="display:flex; align-items:center; gap:10px;"><img src="ChatGPT Image Aug 16, 2026, 12_28_14 PM.png" alt="Crest" class="logo-badge-sm"> DISTRICT DIRECTORY: <strong id="liveDistNameMemberTab">DISTRICT NAME</strong></span>
               <button class="btn btn-gold" onclick="downloadDistrictCSV()"><i class="fa-solid fa-file-csv"></i> Export District CSV</button>
             </div>
 
@@ -1590,7 +1435,7 @@
       </div>
     </div>
 
-    <!-- 5. STATE ADMIN -->
+    <!-- 5. STATE ADMIN (SPLIT PANELS) -->
     <div id="stateAdmin" class="panel">
       <div class="glass-card">
         <div class="section-header">
@@ -1617,10 +1462,7 @@
           <!-- STATE SUB 1: ALL MEMBERS -->
           <div id="subStateAllMembers" class="sub-panel active">
             <div class="section-header" style="border:none; margin-bottom:10px;">
-              <h3 style="font-family:'Cinzel'; color:var(--primary); display:flex; align-items:center; gap:10px;">
-                <div class="logo-badge-sm"><svg class="crest-svg-sm" viewBox="0 0 100 100"><use href="#oavtaCrest"/></svg></div>
-                Master Members Directory (Total: <span id="stateTotalMembersCount">0</span>)
-              </h3>
+              <h3 style="font-family:'Cinzel'; color:var(--primary); display:flex; align-items:center; gap:10px;"><img src="ChatGPT Image Aug 16, 2026, 12_28_14 PM.png" alt="Crest" class="logo-badge-sm"> Master Members Directory (Total: <span id="stateTotalMembersCount">0</span>)</h3>
               <button onclick="exportStateData('allMembers')" class="btn btn-gold"><i class="fa-solid fa-file-csv"></i> Download Master State CSV</button>
             </div>
             <div class="table-wrapper">
@@ -1676,9 +1518,7 @@
   </div>
 
   <div class="site-footer">
-    <div class="logo-badge" style="margin-bottom: 10px;">
-      <svg class="crest-svg" viewBox="0 0 100 100"><use href="#oavtaCrest"/></svg>
-    </div>
+    <img src="ChatGPT Image Aug 16, 2026, 12_28_14 PM.png" alt="OAVTA Crest" class="logo-badge">
     <p>Odisha Adarsha Vidyalaya Teachers' Association</p>
     <p class="copyright">&copy; OAVTA Odisha &mdash; Official State Cadre Portal</p>
   </div>
