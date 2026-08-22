@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OAVTA Portal - Odisha Adarsha Vidyalaya Teachers Association</title>
   
-  <!-- Modern Typography & Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
@@ -34,7 +33,6 @@
       padding-bottom: 50px;
     }
 
-    /* Header Portal Banner */
     .gov-topbar {
       background: #020617;
       color: #94a3b8;
@@ -54,15 +52,6 @@
       position: relative;
       overflow: hidden;
       border-bottom: 5px solid var(--accent-gold);
-    }
-
-    .header-hero::before {
-      content: '';
-      position: absolute;
-      top: -50%; left: -50%;
-      width: 200%; height: 200%;
-      background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 60%);
-      pointer-events: none;
     }
 
     .brand-container {
@@ -103,9 +92,8 @@
       font-weight: 700;
     }
 
-    /* Floating Navigation Hub */
     .main-container {
-      max-width: 1100px;
+      max-width: 1150px;
       margin: -40px auto 0;
       padding: 0 15px;
       position: relative;
@@ -148,9 +136,36 @@
       box-shadow: 0 4px 15px rgba(30, 58, 138, 0.35);
     }
 
-    /* Content Layouts */
     .panel { display: none; margin-top: 25px; animation: fadeIn 0.4s ease-out; }
     .panel.active { display: block; }
+
+    .sub-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 10px;
+    }
+
+    .sub-tab-btn {
+      padding: 10px 18px;
+      border: none;
+      background: #e2e8f0;
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 13px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .sub-tab-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    .sub-panel { display: none; animation: fadeIn 0.3s ease-out; }
+    .sub-panel.active { display: block; }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
@@ -172,6 +187,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
     }
 
     .section-title {
@@ -247,11 +264,11 @@
     .btn {
       background: var(--blue-gradient);
       color: #ffffff;
-      padding: 14px 28px;
+      padding: 12px 24px;
       border: none;
       border-radius: 10px;
       font-weight: 700;
-      font-size: 14px;
+      font-size: 13.5px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -278,7 +295,6 @@
     .alert-danger { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
     .alert-success { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
 
-    /* POPUP MODAL STYLES */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0;
@@ -301,12 +317,6 @@
       text-align: center;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
       position: relative;
-      animation: scaleUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    @keyframes scaleUp {
-      from { transform: scale(0.8); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
     }
 
     .tick-circle {
@@ -321,28 +331,10 @@
       font-size: 40px;
       margin: 0 auto 20px;
       border: 3px solid #bbf7d0;
-      box-shadow: 0 10px 15px -3px rgba(22, 163, 74, 0.2);
     }
 
-    .modal-title {
-      font-family: 'Cinzel', serif;
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--primary);
-      margin-bottom: 10px;
-    }
-
-    .modal-text {
-      font-size: 15px;
-      color: #334155;
-      line-height: 1.6;
-      margin-bottom: 25px;
-    }
-
-    .modal-text strong {
-      color: var(--accent-gold);
-      font-size: 16px;
-    }
+    .modal-title { font-family: 'Cinzel', serif; font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 10px; }
+    .modal-text { font-size: 15px; color: #334155; line-height: 1.6; margin-bottom: 25px; }
 
     .portfolio-grid {
       display: grid;
@@ -358,26 +350,12 @@
       border-radius: 14px;
       padding: 20px;
       box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
-      transition: all 0.3s ease;
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
 
-    .portfolio-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
-    }
-
-    .portfolio-card .exec-name {
-      font-family: 'Cinzel', serif;
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--primary);
-      line-height: 1.2;
-      margin-bottom: 2px;
-    }
-
+    .portfolio-card .exec-name { font-family: 'Cinzel', serif; font-size: 20px; font-weight: 800; color: var(--primary); }
     .portfolio-card .assoc-desig-small {
       display: inline-block;
       align-self: flex-start;
@@ -388,48 +366,19 @@
       padding: 3px 10px;
       border-radius: 20px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
       border: 1px solid #fde68a;
-      margin-bottom: 8px;
     }
-
-    .portfolio-card .info-item {
-      font-size: 13px;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .portfolio-card .info-item strong {
-      color: var(--text-dark);
-    }
+    .portfolio-card .info-item { font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
 
     .table-wrapper {
       overflow-x: auto;
       border-radius: 12px;
       border: 1px solid var(--border-color);
-      margin-top: 20px;
+      margin-top: 15px;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13.5px;
-      text-align: left;
-    }
-
-    th {
-      background: #f8fafc;
-      color: var(--primary);
-      font-weight: 700;
-      padding: 14px 16px;
-      border-bottom: 2px solid var(--border-color);
-      text-transform: uppercase;
-      font-size: 11px;
-      letter-spacing: 0.5px;
-    }
-
+    table { width: 100%; border-collapse: collapse; font-size: 13.5px; text-align: left; }
+    th { background: #f8fafc; color: var(--primary); font-weight: 700; padding: 14px 16px; border-bottom: 2px solid var(--border-color); text-transform: uppercase; font-size: 11px; }
     td { padding: 14px 16px; border-bottom: 1px solid var(--border-color); color: #334155; }
     tr:nth-child(even) { background: #fafafa; }
     tr:hover { background: #f1f5f9; }
@@ -445,158 +394,32 @@
       align-items: center;
       justify-content: space-between;
       margin-bottom: 20px;
-      letter-spacing: 0.5px;
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
     }
 
-    /* ID CARD STYLING */
-    .id-display-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
-    }
-
+    .id-display-container { display: flex; flex-direction: column; align-items: center; gap: 20px; }
     .id-card-frame {
-      width: 340px;
-      height: 540px;
-      background: #ffffff;
-      border-radius: 18px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-      border: 1px solid #cbd5e1;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      background-image: radial-gradient(#e2e8f0 0.75px, transparent 0.75px);
-      background-size: 12px 12px;
+      width: 340px; height: 540px; background: #ffffff; border-radius: 18px; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      border: 1px solid #cbd5e1; position: relative; overflow: hidden; display: flex; flex-direction: column;
+      background-image: radial-gradient(#e2e8f0 0.75px, transparent 0.75px); background-size: 12px 12px;
     }
-
-    .id-card-header {
-      background: var(--blue-gradient);
-      color: #ffffff;
-      padding: 20px 15px 15px;
-      text-align: center;
-      position: relative;
-      border-bottom: 4px solid var(--accent-gold);
-    }
-
-    .id-card-header img {
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      background: #fff;
-      padding: 1px;
-      margin-bottom: 4px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      object-fit: cover;
-    }
-
-    .id-card-header h3 {
-      font-family: 'Cinzel', serif;
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-    }
-
-    .id-card-header p {
-      font-size: 8px;
-      letter-spacing: 1.5px;
-      color: #fbbf24;
-      text-transform: uppercase;
-      font-weight: 700;
-    }
-
-    .id-card-body {
-      padding: 25px 20px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-    }
-
-    .id-member-name {
-      font-family: 'Cinzel', serif;
-      font-size: 24px;
-      font-weight: 800;
-      color: #0a192f;
-      text-align: center;
-      margin-top: 5px;
-      line-height: 1.2;
-    }
-
-    .id-code-large {
-      font-size: 13px;
-      font-weight: 700;
-      color: #475569;
-      letter-spacing: 1.5px;
-      margin-top: 6px;
-      text-align: center;
-      text-transform: uppercase;
-    }
-
-    .id-member-tag {
-      background: #fef3c7;
-      color: #b45309;
-      font-size: 11px;
-      font-weight: 800;
-      padding: 4px 14px;
-      border-radius: 20px;
-      margin-top: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      border: 1px solid #fde68a;
-    }
-
-    .id-info-grid {
-      width: 100%;
-      margin-top: 18px;
-      font-size: 12px;
-    }
-
-    .id-info-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 6px 0;
-      border-bottom: 1px dashed #e2e8f0;
-    }
-
+    .id-card-header { background: var(--blue-gradient); color: #ffffff; padding: 20px 15px 15px; text-align: center; border-bottom: 4px solid var(--accent-gold); }
+    .id-card-header img { width: 52px; height: 52px; border-radius: 50%; background: #fff; padding: 1px; object-fit: cover; }
+    .id-card-header h3 { font-family: 'Cinzel', serif; font-size: 13px; font-weight: 800; }
+    .id-card-header p { font-size: 8px; letter-spacing: 1.5px; color: #fbbf24; text-transform: uppercase; font-weight: 700; }
+    .id-card-body { padding: 25px 20px; flex: 1; display: flex; flex-direction: column; align-items: center; }
+    .id-member-name { font-family: 'Cinzel', serif; font-size: 24px; font-weight: 800; color: #0a192f; text-align: center; }
+    .id-code-large { font-size: 13px; font-weight: 700; color: #475569; letter-spacing: 1.5px; margin-top: 6px; }
+    .id-member-tag { background: #fef3c7; color: #b45309; font-size: 11px; font-weight: 800; padding: 4px 14px; border-radius: 20px; margin-top: 10px; border: 1px solid #fde68a; }
+    .id-info-grid { width: 100%; margin-top: 18px; font-size: 12px; }
+    .id-info-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #e2e8f0; }
     .id-info-row span:first-child { color: #64748b; font-weight: 600; }
-    .id-info-row span:last-child { color: var(--primary); font-weight: 700; text-align: right; }
-
-    .id-card-footer {
-      background: #f8fafc;
-      padding: 12px 20px;
-      border-top: 1px solid var(--border-color);
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-    }
-
-    .barcode-stub {
-      font-family: 'Courier New', monospace;
-      font-weight: bold;
-      font-size: 11px;
-      letter-spacing: 3px;
-      color: #334155;
-    }
-
-    .signature-stub {
-      text-align: center;
-      font-size: 8px;
-      color: #64748b;
-      font-weight: 600;
-    }
-
-    .signature-line {
-      width: 70px;
-      border-bottom: 1px solid #0f172a;
-      margin-bottom: 2px;
-    }
+    .id-info-row span:last-child { color: var(--primary); font-weight: 700; }
+    .id-card-footer { background: #f8fafc; padding: 12px 20px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: flex-end; }
+    .barcode-stub { font-family: 'Courier New', monospace; font-weight: bold; font-size: 11px; letter-spacing: 3px; }
+    .signature-stub { text-align: center; font-size: 8px; color: #64748b; font-weight: 600; }
+    .signature-line { width: 70px; border-bottom: 1px solid #0f172a; margin-bottom: 2px; }
   </style>
 
-  <!-- Firebase Architecture -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -611,44 +434,26 @@
       appId: "1:123510841027:web:ba924a6bd865531cab0c76"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    let app, db;
+    try {
+      app = initializeApp(firebaseConfig);
+      db = getFirestore(app);
+      console.log("Firebase operational.");
+    } catch (e) {
+      console.error("Firebase init error: ", e);
+    }
 
-    // STATE ADMIN MASTER PASSWORD
     const stateAdminPassword = "state123";
 
-    // EDITABLE DISTRICT PASSWORDS FOR ALL 30 DISTRICTS
     const districtPasswords = {
-      "Angul": "angul123",
-      "Balangir": "balangir123",
-      "Balasore": "balasore123",
-      "Bargarh": "bargarh123",
-      "Bhadrak": "bhadrak123",
-      "Boudh": "boudh123",
-      "Cuttack": "cuttack123",
-      "Deogarh": "deogarh123",
-      "Dhenkanal": "dhenkanal123",
-      "Gajapati": "gajapati123",
-      "Ganjam": "ganjam123",
-      "Jagatsinghpur": "jagatsinghpur123",
-      "Jajpur": "jajpur123",
-      "Jharsuguda": "jharsuguda123",
-      "Kalahandi": "kalahandi123",
-      "Kandhamal": "kandhamal123",
-      "Kendrapara": "kendrapara123",
-      "Keonjhar": "keonjhar123",
-      "Khordha": "khordha123",
-      "Koraput": "koraput123",
-      "Malkangiri": "malkangiri123",
-      "Mayurbhanj": "mayurbhanj123",
-      "Nabarangpur": "nabarangpur123",
-      "Nayagarh": "nayagarh123",
-      "Nuapada": "nuapada123",
-      "Puri": "puri123",
-      "Rayagada": "rayagada123",
-      "Sambalpur": "sambalpur123",
-      "Subarnapur": "subarnapur123",
-      "Sundargarh": "sundargarh123"
+      "Angul": "angul123", "Balangir": "balangir123", "Balasore": "balasore123", "Bargarh": "bargarh123",
+      "Bhadrak": "bhadrak123", "Boudh": "boudh123", "Cuttack": "cuttack123", "Deogarh": "deogarh123",
+      "Dhenkanal": "dhenkanal123", "Gajapati": "gajapati123", "Ganjam": "ganjam123", "Jagatsinghpur": "jagatsinghpur123",
+      "Jajpur": "jajpur123", "Jharsuguda": "jharsuguda123", "Kalahandi": "kalahandi123", "Kandhamal": "kandhamal123",
+      "Kendrapara": "kendrapara123", "Keonjhar": "keonjhar123", "Khordha": "khordha123", "Koraput": "koraput123",
+      "Malkangiri": "malkangiri123", "Mayurbhanj": "mayurbhanj123", "Nabarangpur": "nabarangpur123", "Nayagarh": "nayagarh123",
+      "Nuapada": "nuapada123", "Puri": "puri123", "Rayagada": "rayagada123", "Sambalpur": "sambalpur123",
+      "Subarnapur": "subarnapur123", "Sundargarh": "sundargarh123"
     };
 
     const districtBlockData = {
@@ -715,6 +520,7 @@
       populateDistricts('editDist', 'editBlock');
       populateDistricts('pDist', 'pBlock');
       populateDistricts('publicDistSelect', null);
+      populateDistricts('stateDistFilterSelect', null);
     });
 
     window.switchTab = function(tabId, evt) {
@@ -724,113 +530,125 @@
       if (evt) evt.currentTarget.classList.add('active');
     };
 
+    window.switchSubTab = function(subPanelId, evt) {
+      const parent = evt.currentTarget.closest('.glass-card');
+      parent.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+      parent.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(subPanelId).classList.add('active');
+      evt.currentTarget.classList.add('active');
+    };
+
     window.closeSuccessModal = function() {
       document.getElementById('successModal').style.display = 'none';
     };
 
-    // Registration Handler with YYYYXXXX Sequential ID Logic
+    // Registration Handler
     document.getElementById('regForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const msg = document.getElementById('regMsg');
-      msg.innerHTML = '';
+      msg.innerHTML = '<div class="alert alert-success">Processing registration...</div>';
 
       const name = document.getElementById('regName').value.trim();
       const mobile = document.getElementById('regMobile').value.trim();
       const year = document.getElementById('regYear').value.trim();
 
-      // Check duplicate
-      const qDup = query(collection(db, "members"), where("name", "==", name), where("mobile", "==", mobile));
-      const snapDup = await getDocs(qDup);
-
-      if (!snapDup.empty) {
-        msg.innerHTML = `<div class="alert alert-danger"><i class="fa-solid fa-triangle-exclamation"></i> Duplicate Alert: User registered with matching Name & Mobile.</div>`;
-        return;
-      }
-
-      // Query existing members for this joinYear to calculate sequence
-      const qYear = query(collection(db, "members"), where("joinYear", "==", year));
-      const snapYear = await getDocs(qYear);
-
-      let maxSeq = 0;
-      snapYear.forEach(docSnap => {
-        const mData = docSnap.data();
-        if (mData.memberId && mData.memberId.length === 8) {
-          const seqPart = parseInt(mData.memberId.substring(4), 10);
-          if (!isNaN(seqPart) && seqPart > maxSeq) {
-            maxSeq = seqPart;
-          }
-        }
-      });
-
-      const nextSeq = maxSeq + 1;
-      const formattedSeq = String(nextSeq).padStart(4, '0');
-      const idCode = `${year}${formattedSeq}`; // e.g. 20150001
-
-      const data = {
-        memberId: idCode,
-        name: name,
-        designation: document.getElementById('regDesignation').value,
-        district: document.getElementById('regDist').value,
-        block: document.getElementById('regBlock').value,
-        oavName: document.getElementById('regOav').value,
-        joinYear: year,
-        mobile: mobile,
-        timestamp: new Date()
-      };
-
       try {
+        const qDup = query(collection(db, "members"), where("name", "==", name), where("mobile", "==", mobile));
+        const snapDup = await getDocs(qDup);
+
+        if (!snapDup.empty) {
+          msg.innerHTML = `<div class="alert alert-danger"><i class="fa-solid fa-triangle-exclamation"></i> Member already exists with identical Name & Mobile.</div>`;
+          return;
+        }
+
+        const qYear = query(collection(db, "members"), where("joinYear", "==", year));
+        const snapYear = await getDocs(qYear);
+
+        let maxSeq = 0;
+        snapYear.forEach(docSnap => {
+          const mData = docSnap.data();
+          if (mData.memberId && mData.memberId.length === 8) {
+            const seqPart = parseInt(mData.memberId.substring(4), 10);
+            if (!isNaN(seqPart) && seqPart > maxSeq) {
+              maxSeq = seqPart;
+            }
+          }
+        });
+
+        const nextSeq = maxSeq + 1;
+        const formattedSeq = String(nextSeq).padStart(4, '0');
+        const idCode = `${year}${formattedSeq}`;
+
+        const data = {
+          memberId: idCode,
+          name: name,
+          designation: document.getElementById('regDesignation').value,
+          district: document.getElementById('regDist').value,
+          block: document.getElementById('regBlock').value,
+          oavName: document.getElementById('regOav').value,
+          joinYear: year,
+          mobile: mobile,
+          timestamp: new Date()
+        };
+
         await addDoc(collection(db, "members"), data);
         
-        // Populate Popup Modal Exactly
         document.getElementById('modalUniqueId').innerText = idCode;
         document.getElementById('successModal').style.display = 'flex';
-
+        msg.innerHTML = '';
         document.getElementById('regForm').reset();
       } catch (err) {
-        msg.innerHTML = `<div class="alert alert-danger">Error: ${err.message}</div>`;
+        console.error(err);
+        msg.innerHTML = `<div class="alert alert-danger">Registration Failure: ${err.message}</div>`;
       }
     });
 
-    // Member Login & Display
+    // Member Authentication & Dashboard
     document.getElementById('memberLoginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const id = document.getElementById('loginMemberId').value.trim();
       const mobile = document.getElementById('loginMobile').value.trim();
       const msg = document.getElementById('memberLoginMsg');
+      msg.innerHTML = '<div class="alert alert-success">Authenticating...</div>';
 
-      const q = query(collection(db, "members"), where("memberId", "==", id), where("mobile", "==", mobile));
-      const snap = await getDocs(q);
+      try {
+        const q = query(collection(db, "members"), where("memberId", "==", id), where("mobile", "==", mobile));
+        const snap = await getDocs(q);
 
-      if (snap.empty) {
-        msg.innerHTML = `<div class="alert alert-danger"><i class="fa-solid fa-circle-xmark"></i> Records Not Found: Check credentials and retry.</div>`;
-        return;
+        if (snap.empty) {
+          msg.innerHTML = `<div class="alert alert-danger"><i class="fa-solid fa-circle-xmark"></i> Credentials match no record. Verify details.</div>`;
+          return;
+        }
+
+        msg.innerHTML = '';
+        const d = snap.docs[0].data();
+        const docId = snap.docs[0].id;
+
+        document.getElementById('editDocId').value = docId;
+        document.getElementById('editMemberId').value = d.memberId;
+        document.getElementById('editName').value = d.name;
+        document.getElementById('editDesignation').value = d.designation;
+        document.getElementById('editDist').value = d.district;
+        populateBlocks(d.district, 'editBlock');
+        document.getElementById('editBlock').value = d.block;
+        document.getElementById('editOav').value = d.oavName;
+        document.getElementById('editYear').value = d.joinYear;
+        document.getElementById('editMobile').value = d.mobile;
+
+        document.getElementById('cardName').innerText = d.name;
+        document.getElementById('cardId').innerText = d.memberId;
+        document.getElementById('cardDesig').innerText = d.designation;
+        document.getElementById('cardDist').innerText = d.district;
+        document.getElementById('cardBlock').innerText = d.block;
+        document.getElementById('cardOav').innerText = d.oavName;
+        document.getElementById('cardYear').innerText = d.joinYear;
+        document.getElementById('cardMobile').innerText = d.mobile;
+
+        document.getElementById('memberDashboard').style.display = 'block';
+      } catch(err) {
+        console.error(err);
+        msg.innerHTML = `<div class="alert alert-danger">Error: ${err.message}</div>`;
       }
-
-      const d = snap.docs[0].data();
-      const docId = snap.docs[0].id;
-
-      document.getElementById('editDocId').value = docId;
-      document.getElementById('editMemberId').value = d.memberId;
-      document.getElementById('editName').value = d.name;
-      document.getElementById('editDesignation').value = d.designation;
-      document.getElementById('editDist').value = d.district;
-      populateBlocks(d.district, 'editBlock');
-      document.getElementById('editBlock').value = d.block;
-      document.getElementById('editOav').value = d.oavName;
-      document.getElementById('editYear').value = d.joinYear;
-      document.getElementById('editMobile').value = d.mobile;
-
-      // Render ID Card
-      document.getElementById('cardName').innerText = d.name;
-      document.getElementById('cardId').innerText = d.memberId;
-      document.getElementById('cardDesig').innerText = d.designation;
-      document.getElementById('cardDist').innerText = d.district;
-      document.getElementById('cardBlock').innerText = d.block;
-      document.getElementById('cardOav').innerText = d.oavName;
-      document.getElementById('cardYear').innerText = d.joinYear;
-      document.getElementById('cardMobile').innerText = d.mobile;
-
-      document.getElementById('memberDashboard').style.display = 'block';
     });
 
     document.getElementById('updateProfileForm').addEventListener('submit', async (e) => {
@@ -856,13 +674,12 @@
         document.getElementById('cardYear').innerText = updated.joinYear;
         document.getElementById('cardMobile').innerText = updated.mobile;
 
-        alert("Profile details updated successfully!");
+        alert("Profile details updated.");
       } catch(err) {
-        alert("Update Error: " + err.message);
+        alert("Update Failed: " + err.message);
       }
     });
 
-    // HTML DOWNLOADER
     window.downloadIDCardHTML = function() {
       const name = document.getElementById('cardName').innerText || "Member";
       const sanitizedName = name.replace(/[^a-zA-Z0-9]/g, "_");
@@ -884,136 +701,24 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      background: #f1f5f9;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-    .id-card-frame {
-      width: 340px;
-      height: 540px;
-      background: #ffffff;
-      border-radius: 18px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-      border: 1px solid #cbd5e1;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      background-image: radial-gradient(#e2e8f0 0.75px, transparent 0.75px);
-      background-size: 12px 12px;
-    }
-    .id-card-header {
-      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0284c7 100%);
-      color: #ffffff;
-      padding: 20px 15px 15px;
-      text-align: center;
-      position: relative;
-      border-bottom: 4px solid #d97706;
-    }
-    .id-card-header img {
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      background: #fff;
-      padding: 1px;
-      margin-bottom: 4px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      object-fit: cover;
-    }
-    .id-card-header h3 {
-      font-family: 'Cinzel', serif;
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-    }
-    .id-card-header p {
-      font-size: 8px;
-      letter-spacing: 1.5px;
-      color: #fbbf24;
-      text-transform: uppercase;
-      font-weight: 700;
-    }
-    .id-card-body {
-      padding: 25px 20px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-    }
-    .id-member-name {
-      font-family: 'Cinzel', serif;
-      font-size: 24px;
-      font-weight: 800;
-      color: #0a192f;
-      text-align: center;
-      margin-top: 5px;
-      line-height: 1.2;
-    }
-    .id-code-large {
-      font-size: 13px;
-      font-weight: 700;
-      color: #475569;
-      letter-spacing: 1.5px;
-      margin-top: 6px;
-      text-align: center;
-      text-transform: uppercase;
-    }
-    .id-member-tag {
-      background: #fef3c7;
-      color: #b45309;
-      font-size: 11px;
-      font-weight: 800;
-      padding: 4px 14px;
-      border-radius: 20px;
-      margin-top: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      border: 1px solid #fde68a;
-    }
-    .id-info-grid {
-      width: 100%;
-      margin-top: 18px;
-      font-size: 12px;
-    }
-    .id-info-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 6px 0;
-      border-bottom: 1px dashed #e2e8f0;
-    }
+    body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #f1f5f9; font-family: 'Plus Jakarta Sans', sans-serif; }
+    .id-card-frame { width: 340px; height: 540px; background: #ffffff; border-radius: 18px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); border: 1px solid #cbd5e1; position: relative; overflow: hidden; display: flex; flex-direction: column; background-image: radial-gradient(#e2e8f0 0.75px, transparent 0.75px); background-size: 12px 12px; }
+    .id-card-header { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0284c7 100%); color: #ffffff; padding: 20px 15px 15px; text-align: center; border-bottom: 4px solid #d97706; }
+    .id-card-header img { width: 52px; height: 52px; border-radius: 50%; background: #fff; padding: 1px; object-fit: cover; }
+    .id-card-header h3 { font-family: 'Cinzel', serif; font-size: 13px; font-weight: 800; }
+    .id-card-header p { font-size: 8px; letter-spacing: 1.5px; color: #fbbf24; text-transform: uppercase; font-weight: 700; }
+    .id-card-body { padding: 25px 20px; flex: 1; display: flex; flex-direction: column; align-items: center; }
+    .id-member-name { font-family: 'Cinzel', serif; font-size: 24px; font-weight: 800; color: #0a192f; text-align: center; }
+    .id-code-large { font-size: 13px; font-weight: 700; color: #475569; letter-spacing: 1.5px; margin-top: 6px; }
+    .id-member-tag { background: #fef3c7; color: #b45309; font-size: 11px; font-weight: 800; padding: 4px 14px; border-radius: 20px; margin-top: 10px; border: 1px solid #fde68a; }
+    .id-info-grid { width: 100%; margin-top: 18px; font-size: 12px; }
+    .id-info-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #e2e8f0; }
     .id-info-row span:first-child { color: #64748b; font-weight: 600; }
-    .id-info-row span:last-child { color: #0a192f; font-weight: 700; text-align: right; }
-    .id-card-footer {
-      background: #f8fafc;
-      padding: 12px 20px;
-      border-top: 1px solid #e2e8f0;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-    }
-    .barcode-stub {
-      font-family: 'Courier New', monospace;
-      font-weight: bold;
-      font-size: 11px;
-      letter-spacing: 3px;
-      color: #334155;
-    }
-    .signature-stub {
-      text-align: center;
-      font-size: 8px;
-      color: #64748b;
-      font-weight: 600;
-    }
-    .signature-line {
-      width: 70px;
-      border-bottom: 1px solid #0f172a;
-      margin-bottom: 2px;
-    }
+    .id-info-row span:last-child { color: #0a192f; font-weight: 700; }
+    .id-card-footer { background: #f8fafc; padding: 12px 20px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: flex-end; }
+    .barcode-stub { font-family: 'Courier New', monospace; font-weight: bold; font-size: 11px; letter-spacing: 3px; }
+    .signature-stub { text-align: center; font-size: 8px; color: #64748b; font-weight: 600; }
+    .signature-line { width: 70px; border-bottom: 1px solid #0f172a; margin-bottom: 2px; }
   </style>
 </head>
 <body>
@@ -1027,7 +732,6 @@
       <div class="id-member-name">${name}</div>
       <div class="id-code-large">${id}</div>
       <div class="id-member-tag">${desig}</div>
-
       <div class="id-info-grid">
         <div class="id-info-row"><span>District</span><span>${dist}</span></div>
         <div class="id-info-row"><span>Block</span><span>${block}</span></div>
@@ -1039,8 +743,7 @@
     <div class="id-card-footer">
       <div class="barcode-stub">|||| ||| |||||||</div>
       <div class="signature-stub">
-        <div class="signature-line"></div>
-        Authorized Signatory
+        <div class="signature-line"></div>Authorized Signatory
       </div>
     </div>
   </div>
@@ -1055,74 +758,86 @@
       URL.revokeObjectURL(link.href);
     };
 
-    // Load Existing Portfolios in Dist Admin
+    window.currentDistMembersData = [];
+
     async function loadDistPortfolios(distVal) {
       const container = document.getElementById('distAdminPortfoliosList');
-      container.innerHTML = '';
+      container.innerHTML = '<div style="grid-column:1/-1; text-align:center;">Loading portfolios...</div>';
       
-      const q = query(collection(db, "portfolios"), where("district", "==", distVal));
-      const snap = await getDocs(q);
+      try {
+        const q = query(collection(db, "portfolios"), where("district", "==", distVal));
+        const snap = await getDocs(q);
 
-      document.getElementById('distCount').innerText = snap.size;
+        document.getElementById('distCount').innerText = snap.size;
 
-      if (snap.empty) {
-        container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:15px; background:#fff; border-radius:10px; border:1px dashed #cbd5e1; color:#64748b; font-size:13px;">No Portfolios Entered Yet for ${distVal}.</div>`;
-        return;
-      }
+        if (snap.empty) {
+          container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:15px; background:#fff; border-radius:10px; border:1px dashed #cbd5e1; color:#64748b;">No Executive Council Members Assigned Yet.</div>`;
+          return;
+        }
 
-      snap.forEach(docSnap => {
-        const d = docSnap.data();
-        const pId = docSnap.id;
-        
-        container.innerHTML += `
-          <div class="portfolio-card" style="padding:20px; position:relative;">
-            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-              <div class="exec-name">${d.name}</div>
-              <button class="btn btn-danger" onclick="removePortfolio('${pId}', '${distVal}')"><i class="fa-solid fa-user-minus"></i> Remove</button>
+        container.innerHTML = '';
+        snap.forEach(docSnap => {
+          const d = docSnap.data();
+          const pId = docSnap.id;
+          
+          container.innerHTML += `
+            <div class="portfolio-card">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div class="exec-name">${d.name}</div>
+                <button class="btn btn-danger" onclick="removePortfolio('${pId}', '${distVal}')"><i class="fa-solid fa-trash"></i></button>
+              </div>
+              <div class="assoc-desig-small">${d.assocDesignation}</div>
+              <div class="info-item"><i class="fa-solid fa-graduation-cap"></i> <span>Post: <strong>${d.schoolDesignation}</strong></span></div>
+              <div class="info-item"><i class="fa-solid fa-location-dot"></i> <span>Block: <strong>${d.block}</strong></span></div>
+              <div class="info-item"><i class="fa-solid fa-school"></i> <span>OAV: <strong>${d.oavName}</strong></span></div>
+              <div class="info-item"><i class="fa-solid fa-phone"></i> <span>Mobile: <strong>${d.mobile}</strong></span></div>
             </div>
-            <div class="assoc-desig-small">${d.assocDesignation}</div>
-            <div class="info-item"><i class="fa-solid fa-graduation-cap"></i> <span>School Post: <strong>${d.schoolDesignation}</strong></span></div>
-            <div class="info-item"><i class="fa-solid fa-location-dot"></i> <span>Block: <strong>${d.block}</strong></span></div>
-            <div class="info-item"><i class="fa-solid fa-school"></i> <span>OAV: <strong>${d.oavName}</strong></span></div>
-            <div class="info-item"><i class="fa-solid fa-phone"></i> <span>Mobile: <strong>${d.mobile}</strong></span></div>
-          </div>
-        `;
-      });
+          `;
+        });
+      } catch(err) {
+        console.error(err);
+        container.innerHTML = `<div style="grid-column:1/-1; color:red;">Error: ${err.message}</div>`;
+      }
     }
 
-    // Load Enrolled Members in Dist Admin
     async function loadDistMembers(distVal) {
       const tbody = document.getElementById('distMembersTableBody');
-      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Loading enrolled members...</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Fetching district records...</td></tr>';
 
-      const q = query(collection(db, "members"), where("district", "==", distVal));
-      const snap = await getDocs(q);
+      try {
+        const q = query(collection(db, "members"), where("district", "==", distVal));
+        const snap = await getDocs(q);
 
-      document.getElementById('distMembersCount').innerText = snap.size;
+        document.getElementById('distMembersCount').innerText = snap.size;
+        window.currentDistMembersData = [];
 
-      if (snap.empty) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#64748b;">No registered members found for ${distVal} district.</td></tr>`;
-        return;
+        if (snap.empty) {
+          tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#64748b;">No registered members in ${distVal} district.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = '';
+        snap.forEach(docSnap => {
+          const d = docSnap.data();
+          window.currentDistMembersData.push(d);
+          tbody.innerHTML += `
+            <tr class="dist-member-row">
+              <td><strong>${d.memberId}</strong></td>
+              <td>${d.name}</td>
+              <td>${d.designation}</td>
+              <td>${d.block}</td>
+              <td>${d.oavName}</td>
+              <td>${d.joinYear}</td>
+              <td>${d.mobile}</td>
+            </tr>
+          `;
+        });
+      } catch(err) {
+        console.error(err);
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:red;">Error loading directory: ${err.message}</td></tr>`;
       }
-
-      tbody.innerHTML = '';
-      snap.forEach(docSnap => {
-        const d = docSnap.data();
-        tbody.innerHTML += `
-          <tr class="dist-member-row">
-            <td><strong>${d.memberId}</strong></td>
-            <td>${d.name}</td>
-            <td>${d.designation}</td>
-            <td>${d.block}</td>
-            <td>${d.oavName}</td>
-            <td>${d.joinYear}</td>
-            <td>${d.mobile}</td>
-          </tr>
-        `;
-      });
     }
 
-    // Filter District Members Search Input
     window.filterDistrictMembers = function() {
       const input = document.getElementById('memberSearchInput').value.toLowerCase();
       const rows = document.querySelectorAll('.dist-member-row');
@@ -1133,19 +848,39 @@
       });
     };
 
+    window.downloadDistrictCSV = function() {
+      const distVal = document.getElementById('pDist').value;
+      if (!window.currentDistMembersData || window.currentDistMembersData.length === 0) {
+        return alert("No member data to export.");
+      }
+
+      const cols = ["memberId", "name", "designation", "district", "block", "oavName", "joinYear", "mobile"];
+      const csv = [cols.join(',')];
+
+      for (const row of window.currentDistMembersData) {
+        const vals = cols.map(c => `"${row[c] || ''}"`);
+        csv.push(vals.join(','));
+      }
+
+      const blob = new Blob([csv.join('\n')], { type: 'text/csv' });
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = `OAVTA_Members_${distVal}.csv`;
+      link.click();
+    };
+
     window.removePortfolio = async function(pId, distVal) {
-      if (confirm("Are you sure you want to mark this member as LEFT / REMOVED from the District Body?")) {
+      if (confirm("Remove executive from district council?")) {
         try {
           await deleteDoc(doc(db, "portfolios", pId));
-          alert("Portfolio removed successfully.");
+          alert("Executive removed.");
           loadDistPortfolios(distVal);
         } catch(err) {
-          alert("Error removing portfolio: " + err.message);
+          alert("Error: " + err.message);
         }
       }
     };
 
-    // DISTRICT ADMIN PASSWORD AUTHENTICATION & SELECTION
     document.getElementById('pDist').addEventListener('change', function() {
       const distVal = this.value;
       const editSection = document.getElementById('distAdminEditPane');
@@ -1173,51 +908,51 @@
       if (inputPass === correctPass) {
         document.getElementById('distPassAuthArea').style.display = 'none';
         document.getElementById('liveDistName').innerText = distVal;
+        document.getElementById('liveDistNameMemberTab').innerText = distVal;
         populateBlocks(distVal, 'pBlock');
         document.getElementById('distAdminEditPane').style.display = 'block';
         loadDistPortfolios(distVal);
         loadDistMembers(distVal);
       } else {
-        msg.innerHTML = `<div class="alert alert-danger" style="margin-top:10px;"><i class="fa-solid fa-lock"></i> Invalid password for ${distVal} District Admin!</div>`;
+        msg.innerHTML = `<div class="alert alert-danger" style="margin-top:10px;"><i class="fa-solid fa-lock"></i> Invalid password for ${distVal} Admin.</div>`;
       }
     };
 
-    // Save District Portfolio
     document.getElementById('distPortfolioForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const dist = document.getElementById('pDist').value;
       const msg = document.getElementById('distMsg');
 
-      const q = query(collection(db, "portfolios"), where("district", "==", dist));
-      const snap = await getDocs(q);
-
-      if (snap.size >= 10) {
-        msg.innerHTML = `<div class="alert alert-danger"><i class="fa-solid fa-lock"></i> Quota Reached: District Executive list for ${dist} has hit the maximum limit of 10.</div>`;
-        return;
-      }
-
-      const pData = {
-        name: document.getElementById('pName').value,
-        assocDesignation: document.getElementById('pAssocDesig').value,
-        schoolDesignation: document.getElementById('pSchoolDesig').value,
-        district: dist,
-        block: document.getElementById('pBlock').value,
-        oavName: document.getElementById('pOav').value,
-        joinYear: document.getElementById('pYear').value,
-        mobile: document.getElementById('pMobile').value
-      };
-
       try {
+        const q = query(collection(db, "portfolios"), where("district", "==", dist));
+        const snap = await getDocs(q);
+
+        if (snap.size >= 10) {
+          msg.innerHTML = `<div class="alert alert-danger"><i class="fa-solid fa-lock"></i> Executive limit (10) reached for ${dist}.</div>`;
+          return;
+        }
+
+        const pData = {
+          name: document.getElementById('pName').value,
+          assocDesignation: document.getElementById('pAssocDesig').value,
+          schoolDesignation: document.getElementById('pSchoolDesig').value,
+          district: dist,
+          block: document.getElementById('pBlock').value,
+          oavName: document.getElementById('pOav').value,
+          joinYear: document.getElementById('pYear').value,
+          mobile: document.getElementById('pMobile').value
+        };
+
         await addDoc(collection(db, "portfolios"), pData);
-        msg.innerHTML = `<div class="alert alert-success"><i class="fa-solid fa-check"></i> Portfolio saved! Registered (${snap.size + 1}/10) positions for ${dist}.</div>`;
+        msg.innerHTML = `<div class="alert alert-success"><i class="fa-solid fa-check"></i> Executive added successfully.</div>`;
         document.getElementById('distPortfolioForm').reset();
         loadDistPortfolios(dist);
       } catch(err) {
+        console.error(err);
         msg.innerHTML = `<div class="alert alert-danger">Error: ${err.message}</div>`;
       }
     });
 
-    // Public District Search
     document.getElementById('publicDistSelect').addEventListener('change', async function() {
       const selected = this.value;
       const cardContainer = document.getElementById('publicPortfolioGrid');
@@ -1225,30 +960,34 @@
 
       if (!selected) return;
 
-      const q = query(collection(db, "portfolios"), where("district", "==", selected));
-      const snap = await getDocs(q);
+      try {
+        const q = query(collection(db, "portfolios"), where("district", "==", selected));
+        const snap = await getDocs(q);
 
-      if (snap.empty) {
-        cardContainer.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:30px; background:#f8fafc; border-radius:12px; border:1px dashed #cbd5e1; color:#64748b; font-weight:600;">No Executive Positions Found for Selected District.</div>';
-        return;
+        if (snap.empty) {
+          cardContainer.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:30px; background:#f8fafc; border-radius:12px; border:1px dashed #cbd5e1; color:#64748b;">No Executive Council Members Registered for Selected District.</div>';
+          return;
+        }
+
+        snap.forEach(docSnap => {
+          const d = docSnap.data();
+          cardContainer.innerHTML += `
+            <div class="portfolio-card">
+              <div class="exec-name">${d.name}</div>
+              <div class="assoc-desig-small">${d.assocDesignation}</div>
+              <div class="info-item"><i class="fa-solid fa-graduation-cap"></i> <span>School Post: <strong>${d.schoolDesignation}</strong></span></div>
+              <div class="info-item"><i class="fa-solid fa-location-dot"></i> <span>Block: <strong>${d.block}</strong></span></div>
+              <div class="info-item"><i class="fa-solid fa-school"></i> <span>OAV: <strong>${d.oavName}</strong></span></div>
+              <div class="info-item"><i class="fa-solid fa-phone"></i> <span>Mobile: <strong>${d.mobile}</strong></span></div>
+            </div>
+          `;
+        });
+      } catch(err) {
+        console.error(err);
+        cardContainer.innerHTML = `<div style="grid-column:1/-1; color:red;">Error: ${err.message}</div>`;
       }
-
-      snap.forEach(docSnap => {
-        const d = docSnap.data();
-        cardContainer.innerHTML += `
-          <div class="portfolio-card">
-            <div class="exec-name">${d.name}</div>
-            <div class="assoc-desig-small">${d.assocDesignation}</div>
-            <div class="info-item"><i class="fa-solid fa-graduation-cap"></i> <span>School Post: <strong>${d.schoolDesignation}</strong></span></div>
-            <div class="info-item"><i class="fa-solid fa-location-dot"></i> <span>Block: <strong>${d.block}</strong></span></div>
-            <div class="info-item"><i class="fa-solid fa-school"></i> <span>OAV: <strong>${d.oavName}</strong></span></div>
-            <div class="info-item"><i class="fa-solid fa-phone"></i> <span>Mobile: <strong>${d.mobile}</strong></span></div>
-          </div>
-        `;
-      });
     });
 
-    // STATE ADMIN PASSWORD AUTHENTICATION
     window.verifyStatePassword = function() {
       const inputPass = document.getElementById('stateAdminPassInput').value.trim();
       const msg = document.getElementById('statePassMsg');
@@ -1258,37 +997,81 @@
         document.getElementById('stateAdminDashboard').style.display = 'block';
         fetchStateMasterData();
       } else {
-        msg.innerHTML = `<div class="alert alert-danger" style="margin-top:10px;"><i class="fa-solid fa-lock"></i> Invalid State Admin Password!</div>`;
+        msg.innerHTML = `<div class="alert alert-danger" style="margin-top:10px;"><i class="fa-solid fa-lock"></i> Invalid Master Admin Credentials!</div>`;
       }
     };
 
     async function fetchStateMasterData() {
-      const mSnap = await getDocs(collection(db, "members"));
-      const mTable = document.getElementById('allMembersTable');
-      mTable.innerHTML = '';
-      window.masterMembers = [];
+      try {
+        const mSnap = await getDocs(collection(db, "members"));
+        const mTable = document.getElementById('allMembersTable');
+        mTable.innerHTML = '';
+        window.masterMembers = [];
 
-      mSnap.forEach(docSnap => {
-        const d = docSnap.data();
-        window.masterMembers.push(d);
-        mTable.innerHTML += `<tr><td>${d.memberId}</td><td>${d.name}</td><td>${d.designation}</td><td>${d.district}</td><td>${d.block}</td><td>${d.mobile}</td></tr>`;
-      });
+        mSnap.forEach(docSnap => {
+          const d = docSnap.data();
+          window.masterMembers.push(d);
+          mTable.innerHTML += `<tr><td>${d.memberId}</td><td>${d.name}</td><td>${d.designation}</td><td>${d.district}</td><td>${d.block}</td><td>${d.oavName}</td><td>${d.mobile}</td></tr>`;
+        });
 
-      const pSnap = await getDocs(collection(db, "portfolios"));
-      const pTable = document.getElementById('allPortfoliosTable');
-      pTable.innerHTML = '';
-      window.masterPortfolios = [];
+        document.getElementById('stateTotalMembersCount').innerText = window.masterMembers.length;
 
-      pSnap.forEach(docSnap => {
-        const d = docSnap.data();
-        window.masterPortfolios.push(d);
-        pTable.innerHTML += `<tr><td>${d.district}</td><td>${d.name}</td><td>${d.assocDesignation}</td><td>${d.schoolDesignation}</td><td>${d.mobile}</td></tr>`;
-      });
+        const pSnap = await getDocs(collection(db, "portfolios"));
+        const pTable = document.getElementById('allPortfoliosTable');
+        pTable.innerHTML = '';
+        window.masterPortfolios = [];
+
+        pSnap.forEach(docSnap => {
+          const d = docSnap.data();
+          window.masterPortfolios.push(d);
+          pTable.innerHTML += `<tr><td>${d.district}</td><td>${d.name}</td><td>${d.assocDesignation}</td><td>${d.schoolDesignation}</td><td>${d.block}</td><td>${d.mobile}</td></tr>`;
+        });
+      } catch(err) {
+        console.error(err);
+        alert("State Data Error: " + err.message);
+      }
     }
 
-    window.exportCSV = function(type) {
-      const dataset = type === 'members' ? window.masterMembers : window.masterPortfolios;
-      if (!dataset || dataset.length === 0) return alert("Empty database table. Export aborted.");
+    document.getElementById('stateDistFilterSelect').addEventListener('change', function() {
+      const selectedDist = this.value;
+      const tbody = document.getElementById('stateDistMembersTable');
+      tbody.innerHTML = '';
+
+      if (!selectedDist) {
+        window.filteredStateDistMembers = [];
+        return;
+      }
+
+      window.filteredStateDistMembers = window.masterMembers.filter(m => m.district === selectedDist);
+
+      if (window.filteredStateDistMembers.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#64748b;">No registered members in ${selectedDist}.</td></tr>`;
+        return;
+      }
+
+      window.filteredStateDistMembers.forEach(d => {
+        tbody.innerHTML += `<tr><td>${d.memberId}</td><td>${d.name}</td><td>${d.designation}</td><td>${d.block}</td><td>${d.oavName}</td><td>${d.mobile}</td></tr>`;
+      });
+    });
+
+    window.exportStateData = function(category) {
+      let dataset = [];
+      let filename = "";
+
+      if (category === 'allMembers') {
+        dataset = window.masterMembers;
+        filename = "OAVTA_STATE_ALL_MEMBERS.csv";
+      } else if (category === 'distMembers') {
+        const distVal = document.getElementById('stateDistFilterSelect').value;
+        if (!distVal) return alert("Select a district first.");
+        dataset = window.filteredStateDistMembers;
+        filename = `OAVTA_STATE_MEMBERS_${distVal}.csv`;
+      } else if (category === 'portfolios') {
+        dataset = window.masterPortfolios;
+        filename = "OAVTA_STATE_EXECUTIVE_PORTFOLIOS.csv";
+      }
+
+      if (!dataset || dataset.length === 0) return alert("No data available for export.");
 
       const cols = Object.keys(dataset[0]);
       const csv = [cols.join(',')];
@@ -1301,35 +1084,30 @@
       const blob = new Blob([csv.join('\n')], { type: 'text/csv' });
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);
-      link.download = `OAVTA_STATE_EXPORT_${type.toUpperCase()}.csv`;
+      link.download = filename;
       link.click();
     };
   </script>
 </head>
 <body>
 
-  <!-- SUCCESS POPUP MODAL WITH GREEN TICK -->
   <div id="successModal" class="modal-overlay">
     <div class="modal-card">
-      <div class="tick-circle">
-        <i class="fa-solid fa-check"></i>
-      </div>
-      <div class="modal-title">Registration Successful!</div>
+      <div class="tick-circle"><i class="fa-solid fa-check"></i></div>
+      <div class="modal-title">Registration Completed</div>
       <div class="modal-text">
-        Your Unique ID:<br><strong id="modalUniqueId">20150001</strong><br><br>
-        Switch to Member Portal to view your digital card.
+        Generated Unique ID:<br><strong id="modalUniqueId">20150001</strong><br><br>
+        Access Member Portal to retrieve digital card.
       </div>
       <button class="btn btn-gold" onclick="closeSuccessModal()" style="width: 100%;"><i class="fa-solid fa-thumbs-up"></i> Continue</button>
     </div>
   </div>
 
-  <!-- Top Portal Notice -->
   <div class="gov-topbar">
     <span><i class="fa-solid fa-building-columns"></i> State Cadre Portal - Government of Odisha Association</span>
     <span><i class="fa-solid fa-shield-halved"></i> Official Portal</span>
   </div>
 
-  <!-- Header Hero Banner -->
   <div class="header-hero">
     <div class="brand-container">
       <img src="ChatGPT Image Aug 16, 2026, 12_28_14 PM.png" alt="OAVTA Crest" class="logo-badge">
@@ -1340,10 +1118,7 @@
     </div>
   </div>
 
-  <!-- Main Interaction Area -->
   <div class="main-container">
-    
-    <!-- Navigation Tabs Hub -->
     <div class="nav-tabs">
       <button class="tab-btn active" onclick="switchTab('register', event)"><i class="fa-solid fa-id-card"></i> Registration</button>
       <button class="tab-btn" onclick="switchTab('memberLogin', event)"><i class="fa-solid fa-user-check"></i> Member Portal</button>
@@ -1352,60 +1127,53 @@
       <button class="tab-btn" onclick="switchTab('stateAdmin', event)"><i class="fa-solid fa-building-shield"></i> State Admin</button>
     </div>
 
-    <!-- 1. MEMBER REGISTRATION PANEL -->
+    <!-- 1. REGISTRATION PANEL -->
     <div id="register" class="panel active">
       <div class="glass-card">
         <div class="section-header">
-          <div class="section-title"><i class="fa-solid fa-user-plus"></i> Official Member Registration Form</div>
+          <div class="section-title"><i class="fa-solid fa-user-plus"></i> Member Registration Form</div>
         </div>
-        <p style="margin-bottom:20px; color:var(--text-muted); font-size:14px;">Fill in your verified teaching credentials below to complete cadre registration and generate your digital association identity.</p>
+        <p style="margin-bottom:20px; color:var(--text-muted); font-size:14px;">Enter verified cadre details to complete registration and derive state unique ID.</p>
         <div id="regMsg"></div>
         <form id="regForm">
           <div class="form-grid">
-            <div class="form-group"><label><i class="fa-solid fa-user"></i> Full Name</label><input type="text" id="regName" required placeholder="e.g. Dr. Sameer Kumar Swain"></div>
+            <div class="form-group"><label><i class="fa-solid fa-user"></i> Full Name</label><input type="text" id="regName" required placeholder="Full Name"></div>
             <div class="form-group"><label><i class="fa-solid fa-graduation-cap"></i> School Designation</label><input type="text" id="regDesignation" required placeholder="e.g. PGT Physics"></div>
-            <div class="form-group">
-              <label><i class="fa-solid fa-map-location-dot"></i> District</label>
-              <select id="regDist" required></select>
-            </div>
-            <div class="form-group">
-              <label><i class="fa-solid fa-location-dot"></i> Block</label>
-              <select id="regBlock" required><option value="">-- Select Block --</option></select>
-            </div>
-            <div class="form-group"><label><i class="fa-solid fa-school"></i> OAV School Name</label><input type="text" id="regOav" required placeholder="e.g. OAV Todanga"></div>
-            <div class="form-group"><label><i class="fa-solid fa-calendar"></i> Year of Joining</label><input type="number" id="regYear" required placeholder="YYYY (e.g. 2015)"></div>
+            <div class="form-group"><label><i class="fa-solid fa-map-location-dot"></i> District</label><select id="regDist" required></select></div>
+            <div class="form-group"><label><i class="fa-solid fa-location-dot"></i> Block</label><select id="regBlock" required><option value="">-- Select Block --</option></select></div>
+            <div class="form-group"><label><i class="fa-solid fa-school"></i> OAV School Name</label><input type="text" id="regOav" required placeholder="OAV Name"></div>
+            <div class="form-group"><label><i class="fa-solid fa-calendar"></i> Year of Joining</label><input type="number" id="regYear" required placeholder="YYYY"></div>
             <div class="form-group"><label><i class="fa-solid fa-phone"></i> Mobile Number</label><input type="tel" id="regMobile" required placeholder="+91..."></div>
           </div>
           <div style="margin-top:25px;">
-            <button type="submit" class="btn"><i class="fa-solid fa-paper-plane"></i> Submit Membership Registration</button>
+            <button type="submit" class="btn"><i class="fa-solid fa-paper-plane"></i> Submit Registration</button>
           </div>
         </form>
       </div>
     </div>
 
-    <!-- 2. MEMBER PORTAL & EDIT -->
+    <!-- 2. MEMBER PORTAL -->
     <div id="memberLogin" class="panel">
       <div class="glass-card">
         <div class="section-header">
-          <div class="section-title"><i class="fa-solid fa-right-to-bracket"></i> Member Portal Login</div>
+          <div class="section-title"><i class="fa-solid fa-right-to-bracket"></i> Member Verification Portal</div>
         </div>
         
         <div class="selection-banner">
-          <label><i class="fa-solid fa-key"></i> Enter Credentials to Access Identity Card & Profile Editor</label>
+          <label><i class="fa-solid fa-key"></i> Authenticate credentials to retrieve card or modify details</label>
           <div id="memberLoginMsg"></div>
           <form id="memberLoginForm" style="max-width:500px; margin:0 auto;">
             <div class="form-grid">
-              <div class="form-group"><label>Member Unique ID</label><input type="text" id="loginMemberId" placeholder="YYYYXXXX (e.g. 20150001)" required></div>
-              <div class="form-group"><label>Registered Mobile</label><input type="tel" id="loginMobile" placeholder="+91..." required></div>
+              <div class="form-group"><label>Unique ID</label><input type="text" id="loginMemberId" placeholder="YYYYXXXX" required></div>
+              <div class="form-group"><label>Mobile Number</label><input type="tel" id="loginMobile" placeholder="+91..." required></div>
             </div>
-            <button type="submit" class="btn" style="margin-top:15px; width:100%;"><i class="fa-solid fa-lock-open"></i> Authenticate & Load Profile</button>
+            <button type="submit" class="btn" style="margin-top:15px; width:100%;"><i class="fa-solid fa-lock-open"></i> Authenticate Profile</button>
           </form>
         </div>
 
         <div id="memberDashboard" class="dynamic-edit-pane">
           <div style="display:flex; flex-wrap:wrap; gap:35px; justify-content:center;">
             
-            <!-- DIGITAL ID CARD -->
             <div class="id-display-container">
               <div class="id-card-frame" id="printableCard">
                 <div class="id-card-header">
@@ -1429,37 +1197,29 @@
                 <div class="id-card-footer">
                   <div class="barcode-stub">|||| ||| |||||||</div>
                   <div class="signature-stub">
-                    <div class="signature-line"></div>
-                    Authorized Signatory
+                    <div class="signature-line"></div>Authorized Signatory
                   </div>
                 </div>
               </div>
 
-              <button onclick="downloadIDCardHTML()" class="btn btn-gold"><i class="fa-solid fa-file-code"></i> Download ID Card (.HTML)</button>
+              <button onclick="downloadIDCardHTML()" class="btn btn-gold"><i class="fa-solid fa-file-code"></i> Download ID (.HTML)</button>
             </div>
 
-            <!-- Profile Modification Form -->
             <div style="flex:1; min-width:320px;">
-              <h3 style="font-family:'Cinzel'; margin-bottom:15px; color:var(--primary); font-size:18px;"><i class="fa-solid fa-user-pen"></i> Edit Profile Details</h3>
+              <h3 style="font-family:'Cinzel'; margin-bottom:15px; color:var(--primary); font-size:18px;"><i class="fa-solid fa-user-pen"></i> Profile Record Editor</h3>
               <form id="updateProfileForm">
                 <input type="hidden" id="editDocId">
                 <div class="form-grid">
-                  <div class="form-group"><label>Member ID (Read Only)</label><input type="text" id="editMemberId" disabled></div>
-                  <div class="form-group"><label>Name (Read Only)</label><input type="text" id="editName" disabled></div>
+                  <div class="form-group"><label>Member ID (Locked)</label><input type="text" id="editMemberId" disabled></div>
+                  <div class="form-group"><label>Name (Locked)</label><input type="text" id="editName" disabled></div>
                   <div class="form-group"><label>School Designation</label><input type="text" id="editDesignation" required></div>
-                  <div class="form-group">
-                    <label>District</label>
-                    <select id="editDist" required></select>
-                  </div>
-                  <div class="form-group">
-                    <label>Block</label>
-                    <select id="editBlock" required><option value="">-- Select Block --</option></select>
-                  </div>
+                  <div class="form-group"><label>District</label><select id="editDist" required></select></div>
+                  <div class="form-group"><label>Block</label><select id="editBlock" required><option value="">-- Select Block --</option></select></div>
                   <div class="form-group"><label>OAV School Name</label><input type="text" id="editOav" required></div>
                   <div class="form-group"><label>Year of Joining</label><input type="number" id="editYear" required></div>
                   <div class="form-group"><label>Mobile Number</label><input type="tel" id="editMobile" required></div>
                 </div>
-                <button type="submit" class="btn" style="margin-top:20px;"><i class="fa-solid fa-floppy-disk"></i> Save Profile Changes</button>
+                <button type="submit" class="btn" style="margin-top:20px;"><i class="fa-solid fa-floppy-disk"></i> Save Modifications</button>
               </form>
             </div>
 
@@ -1468,15 +1228,15 @@
       </div>
     </div>
 
-    <!-- 3. PUBLIC DISTRICT BODIES DIRECTORY -->
+    <!-- 3. PUBLIC DIRECTORY -->
     <div id="publicPortfolios" class="panel">
       <div class="glass-card">
         <div class="section-header">
-          <div class="section-title"><i class="fa-solid fa-sitemap"></i> District Executive Bodies Directory</div>
+          <div class="section-title"><i class="fa-solid fa-sitemap"></i> District Bodies Public Directory</div>
         </div>
         
         <div class="selection-banner">
-          <label><i class="fa-solid fa-magnifying-glass-location"></i> Select District to View Executive Council</label>
+          <label><i class="fa-solid fa-magnifying-glass-location"></i> Select District to Display Executive Structure</label>
           <div class="form-group" style="max-width:400px; margin:0 auto;">
             <select id="publicDistSelect"></select>
           </div>
@@ -1486,47 +1246,52 @@
       </div>
     </div>
 
-    <!-- 4. DISTRICT ADMIN PORTAL -->
+    <!-- 4. DISTRICT ADMIN (SPLIT PANELS) -->
     <div id="distAdmin" class="panel">
       <div class="glass-card">
         <div class="section-header">
-          <div class="section-title"><i class="fa-solid fa-shield-halved"></i> District Executive Body Management</div>
+          <div class="section-title"><i class="fa-solid fa-shield-halved"></i> District Administration Console</div>
         </div>
         
         <div class="selection-banner">
-          <label><i class="fa-solid fa-building-flag"></i> Choose District to Manage Executive Council</label>
+          <label><i class="fa-solid fa-building-flag"></i> Target District Selection</label>
           <div class="form-group" style="max-width:400px; margin:0 auto;">
             <select id="pDist" required></select>
           </div>
         </div>
 
-        <!-- PASSWORD ENTRY AREA -->
         <div id="distPassAuthArea" style="display:none; max-width:400px; margin: 0 auto 20px; background:#f8fafc; padding:20px; border-radius:12px; border:1px solid var(--border-color); text-align:center;">
           <div class="form-group">
-            <label><i class="fa-solid fa-lock"></i> Enter Password for District Admin</label>
-            <input type="password" id="distAdminPassInput" placeholder="District Password">
+            <label><i class="fa-solid fa-lock"></i> District Security Key</label>
+            <input type="password" id="distAdminPassInput" placeholder="Enter Password">
           </div>
-          <button type="button" onclick="verifyDistPassword()" class="btn" style="margin-top:12px; width:100%;"><i class="fa-solid fa-key"></i> Unlock District Admin Pane</button>
+          <button type="button" onclick="verifyDistPassword()" class="btn" style="margin-top:12px; width:100%;"><i class="fa-solid fa-key"></i> Authenticate Session</button>
           <div id="distPassMsg"></div>
         </div>
 
         <div id="distMsg"></div>
 
         <div id="distAdminEditPane" class="dynamic-edit-pane">
-          <div class="live-dist-indicator">
-            <span><i class="fa-solid fa-landmark"></i> ACTIVE DISTRICT: <strong id="liveDistName">DISTRICT NAME</strong></span>
-            <span style="font-size:12px; font-weight:600; opacity:0.9;">Quota Limit: (<span id="distCount">0</span>/10)</span>
+          
+          <div class="sub-tabs">
+            <button class="sub-tab-btn active" onclick="switchSubTab('subDistMembers', event)"><i class="fa-solid fa-users"></i> Enrolled Members</button>
+            <button class="sub-tab-btn" onclick="switchSubTab('subDistExec', event)"><i class="fa-solid fa-user-shield"></i> Executive Body Console</button>
           </div>
 
-          <!-- ENROLLED DISTRICT MEMBERS SECTION -->
-          <div style="margin-bottom: 30px; background: #ffffff; padding: 20px; border-radius: 12px; border: 1px solid var(--border-color);">
+          <!-- SUB PANEL 1: ENROLLED MEMBERS -->
+          <div id="subDistMembers" class="sub-panel active">
+            <div class="live-dist-indicator">
+              <span><i class="fa-solid fa-landmark"></i> DISTRICT DIRECTORY: <strong id="liveDistNameMemberTab">DISTRICT NAME</strong></span>
+              <button class="btn btn-gold" onclick="downloadDistrictCSV()"><i class="fa-solid fa-file-csv"></i> Export District CSV</button>
+            </div>
+
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
               <h4 style="font-family:'Cinzel'; color: var(--primary); margin: 0;">
-                <i class="fa-solid fa-users-rectangle"></i> Enrolled District Members (<span id="distMembersCount">0</span>)
+                Enrolled Cadre Members (<span id="distMembersCount">0</span>)
               </h4>
-              <input type="text" id="memberSearchInput" onkeyup="filterDistrictMembers()" placeholder="Search member by name/mobile/ID..." style="width: 260px; padding: 8px 12px; font-size: 12px;">
+              <input type="text" id="memberSearchInput" onkeyup="filterDistrictMembers()" placeholder="Search member by name/ID/mobile..." style="width: 280px;">
             </div>
-            
+
             <div class="table-wrapper">
               <table>
                 <thead>
@@ -1541,77 +1306,120 @@
                   </tr>
                 </thead>
                 <tbody id="distMembersTableBody">
-                  <tr><td colspan="7" style="text-align:center;">Select district to load members...</td></tr>
+                  <tr><td colspan="7" style="text-align:center;">Select district to populate list...</td></tr>
                 </tbody>
               </table>
             </div>
           </div>
 
-          <div style="margin-bottom: 30px; background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid var(--border-color);">
-            <h4 style="font-family:'Cinzel'; color: var(--primary); margin-bottom: 15px;"><i class="fa-solid fa-list-check"></i> Currently Entered Portfolios for District</h4>
-            <div id="distAdminPortfoliosList" class="portfolio-grid"></div>
+          <!-- SUB PANEL 2: EXECUTIVE MANAGEMENT -->
+          <div id="subDistExec" class="sub-panel">
+            <div class="live-dist-indicator">
+              <span><i class="fa-solid fa-landmark"></i> EXECUTIVE COUNCIL: <strong id="liveDistName">DISTRICT NAME</strong></span>
+              <span style="font-size:12px; opacity:0.9;">Quota Utilization: (<span id="distCount">0</span>/10)</span>
+            </div>
+
+            <div style="margin-bottom: 30px; background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid var(--border-color);">
+              <h4 style="font-family:'Cinzel'; color: var(--primary); margin-bottom: 15px;"><i class="fa-solid fa-list-check"></i> Assigned Portfolios</h4>
+              <div id="distAdminPortfoliosList" class="portfolio-grid"></div>
+            </div>
+
+            <h4 style="font-family:'Cinzel'; color: var(--primary); margin-bottom: 15px;"><i class="fa-solid fa-user-plus"></i> Assign Executive Position</h4>
+            <form id="distPortfolioForm">
+              <div class="form-grid">
+                <div class="form-group"><label>Executive Name</label><input type="text" id="pName" placeholder="Full Name" required></div>
+                <div class="form-group"><label>Association Designation</label><input type="text" id="pAssocDesig" placeholder="e.g. District President" required></div>
+                <div class="form-group"><label>School Designation</label><input type="text" id="pSchoolDesig" placeholder="e.g. TGT CBZ" required></div>
+                <div class="form-group"><label>Block</label><select id="pBlock" required><option value="">-- Select Block --</option></select></div>
+                <div class="form-group"><label>OAV School Name</label><input type="text" id="pOav" placeholder="School Name" required></div>
+                <div class="form-group"><label>Joining Year</label><input type="number" id="pYear" placeholder="YYYY" required></div>
+                <div class="form-group"><label>Mobile Number</label><input type="tel" id="pMobile" placeholder="+91..." required></div>
+              </div>
+              <button type="submit" class="btn" style="margin-top:20px;"><i class="fa-solid fa-plus-circle"></i> Commit Executive Record</button>
+            </form>
           </div>
 
-          <h4 style="font-family:'Cinzel'; color: var(--primary); margin-bottom: 15px;"><i class="fa-solid fa-user-plus"></i> Add New Executive Portfolio</h4>
-          <form id="distPortfolioForm">
-            <div class="form-grid">
-              <div class="form-group"><label>Executive Name</label><input type="text" id="pName" placeholder="Full Name" required></div>
-              <div class="form-group"><label>Association Designation</label><input type="text" id="pAssocDesig" placeholder="e.g. District President" required></div>
-              <div class="form-group"><label>School Designation</label><input type="text" id="pSchoolDesig" placeholder="e.g. TGT CBZ" required></div>
-              <div class="form-group">
-                <label>Block</label>
-                <select id="pBlock" required><option value="">-- Select Block --</option></select>
-              </div>
-              <div class="form-group"><label>OAV School Name</label><input type="text" id="pOav" placeholder="School Name" required></div>
-              <div class="form-group"><label>Joining Year</label><input type="number" id="pYear" placeholder="YYYY" required></div>
-              <div class="form-group"><label>Mobile Number</label><input type="tel" id="pMobile" placeholder="+91..." required></div>
-            </div>
-            <button type="submit" class="btn" style="margin-top:20px;"><i class="fa-solid fa-plus-circle"></i> Register Executive Council Member</button>
-          </form>
         </div>
       </div>
     </div>
 
-    <!-- 5. STATE ADMIN PORTAL -->
+    <!-- 5. STATE ADMIN (SPLIT PANELS) -->
     <div id="stateAdmin" class="panel">
       <div class="glass-card">
         <div class="section-header">
-          <div class="section-title"><i class="fa-solid fa-vault"></i> State Level Administration Dashboard</div>
+          <div class="section-title"><i class="fa-solid fa-vault"></i> State Executive Control Panel</div>
         </div>
 
-        <!-- STATE ADMIN PASSWORD AREA -->
         <div id="stateAdminLoginArea" style="max-width:400px; margin: 0 auto 20px; background:#f8fafc; padding:25px; border-radius:12px; border:1px solid var(--border-color); text-align:center;">
           <div class="form-group">
-            <label><i class="fa-solid fa-lock"></i> Enter State Admin Password</label>
-            <input type="password" id="stateAdminPassInput" placeholder="State Admin Password">
+            <label><i class="fa-solid fa-lock"></i> Master Password</label>
+            <input type="password" id="stateAdminPassInput" placeholder="Password">
           </div>
-          <button type="button" onclick="verifyStatePassword()" class="btn" style="margin-top:12px; width:100%;"><i class="fa-solid fa-key"></i> Unlock State Admin Dashboard</button>
+          <button type="button" onclick="verifyStatePassword()" class="btn" style="margin-top:12px; width:100%;"><i class="fa-solid fa-key"></i> Authorize Access</button>
           <div id="statePassMsg"></div>
         </div>
 
         <div id="stateAdminDashboard" class="dynamic-edit-pane">
-          <div style="display:flex; gap:15px; flex-wrap:wrap; margin-bottom:25px;">
-            <button onclick="exportCSV('members')" class="btn btn-gold"><i class="fa-solid fa-file-csv"></i> Export All Members Data</button>
-            <button onclick="exportCSV('portfolios')" class="btn btn-gold"><i class="fa-solid fa-file-csv"></i> Export District Executive Portfolios</button>
+          
+          <div class="sub-tabs">
+            <button class="sub-tab-btn active" onclick="switchSubTab('subStateAllMembers', event)"><i class="fa-solid fa-users-gear"></i> State Cadre Records</button>
+            <button class="sub-tab-btn" onclick="switchSubTab('subStateDistMembers', event)"><i class="fa-solid fa-filter"></i> District-Wise Viewer</button>
+            <button class="sub-tab-btn" onclick="switchSubTab('subStatePortfolios', event)"><i class="fa-solid fa-sitemap"></i> State Portfolios Registry</button>
           </div>
 
-          <h3 style="font-family:'Cinzel'; color:var(--primary); margin-top:20px;">Master Members Database</h3>
-          <div class="table-wrapper">
-            <table>
-              <thead><tr><th>Member ID</th><th>Name</th><th>Designation</th><th>District</th><th>Block</th><th>Mobile</th></tr></thead>
-              <tbody id="allMembersTable"></tbody>
-            </table>
+          <!-- STATE SUB 1: ALL MEMBERS -->
+          <div id="subStateAllMembers" class="sub-panel active">
+            <div class="section-header" style="border:none; margin-bottom:10px;">
+              <h3 style="font-family:'Cinzel'; color:var(--primary);">Master Members Directory (Total: <span id="stateTotalMembersCount">0</span>)</h3>
+              <button onclick="exportStateData('allMembers')" class="btn btn-gold"><i class="fa-solid fa-file-csv"></i> Download Master State CSV</button>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead><tr><th>Member ID</th><th>Name</th><th>Designation</th><th>District</th><th>Block</th><th>OAV School</th><th>Mobile</th></tr></thead>
+                <tbody id="allMembersTable"></tbody>
+              </table>
+            </div>
           </div>
 
-          <h3 style="font-family:'Cinzel'; color:var(--primary); margin-top:30px;">Master District Portfolios Registry</h3>
-          <div class="table-wrapper">
-            <table>
-              <thead><tr><th>District</th><th>Name</th><th>Assoc. Designation</th><th>School Designation</th><th>Mobile</th></tr></thead>
-              <tbody id="allPortfoliosTable"></tbody>
-            </table>
+          <!-- STATE SUB 2: DISTRICT WISE MEMBERS -->
+          <div id="subStateDistMembers" class="sub-panel">
+            <div class="selection-banner">
+              <label><i class="fa-solid fa-location-dot"></i> Select Target District to Isolate Data</label>
+              <div class="form-group" style="max-width:350px; margin:0 auto;">
+                <select id="stateDistFilterSelect"></select>
+              </div>
+            </div>
+
+            <div class="section-header" style="border:none; margin-bottom:10px;">
+              <h3 style="font-family:'Cinzel'; color:var(--primary);">Filtered District Directory</h3>
+              <button onclick="exportStateData('distMembers')" class="btn btn-gold"><i class="fa-solid fa-file-csv"></i> Download Filtered CSV</button>
+            </div>
+
+            <div class="table-wrapper">
+              <table>
+                <thead><tr><th>Member ID</th><th>Name</th><th>Designation</th><th>Block</th><th>OAV School</th><th>Mobile</th></tr></thead>
+                <tbody id="stateDistMembersTable">
+                  <tr><td colspan="6" style="text-align:center;">Select district above to filter...</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
+
+          <!-- STATE SUB 3: EXECUTIVE PORTFOLIOS -->
+          <div id="subStatePortfolios" class="sub-panel">
+            <div class="section-header" style="border:none; margin-bottom:10px;">
+              <h3 style="font-family:'Cinzel'; color:var(--primary);">Master Executive Bodies Registry</h3>
+              <button onclick="exportStateData('portfolios')" class="btn btn-gold"><i class="fa-solid fa-file-csv"></i> Download Portfolios CSV</button>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead><tr><th>District</th><th>Name</th><th>Assoc. Designation</th><th>School Designation</th><th>Block</th><th>Mobile</th></tr></thead>
+                <tbody id="allPortfoliosTable"></tbody>
+              </table>
+            </div>
+          </div>
+
         </div>
-
       </div>
     </div>
 
