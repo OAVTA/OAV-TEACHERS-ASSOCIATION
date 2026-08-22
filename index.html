@@ -1205,9 +1205,9 @@
 
   <div class="main-container">
     <div class="nav-tabs">
-      <button class="tab-btn active" onclick="switchTab('register', event)"><i class="fa-solid fa-id-card"></i> Registration</button>
-      <button class="tab-btn" onclick="switchTab('memberLogin', event)"><i class="fa-solid fa-user-check"></i> Member Portal</button>
-      <button class="tab-btn" onclick="switchTab('publicPortfolios', event)"><i class="fa-solid fa-sitemap"></i> District Bodies Directory</button>
+      <button class="tab-btn active" onclick="switchTab('register', event)"><i class="fa-solid fa-id-card"></i> Join Association</button>
+      <button class="tab-btn" onclick="switchTab('memberLogin', event)"><i class="fa-solid fa-user-check"></i> Member Login</button>
+      <button class="tab-btn" onclick="switchTab('publicPortfolios', event)"><i class="fa-solid fa-sitemap"></i> District Portfolios</button>
       <button class="tab-btn" onclick="switchTab('distAdmin', event)"><i class="fa-solid fa-user-gear"></i> District Admin</button>
       <button class="tab-btn" onclick="switchTab('stateAdmin', event)"><i class="fa-solid fa-building-shield"></i> State Admin</button>
     </div>
@@ -1218,15 +1218,15 @@
         <div class="section-header">
           <div class="section-title"><i class="fa-solid fa-user-plus"></i> Member Registration Form</div>
         </div>
-        <p style="margin-bottom:20px; color:var(--text-muted); font-size:14px;">Enter verified cadre details to complete registration and derive state unique ID.</p>
+        <p style="margin-bottom:20px; color:var(--text-muted); font-size:14px;">Enter details (in CAPITAL Letters) to complete registration and derive state unique Membership ID.</p>
         <div id="regMsg"></div>
         <form id="regForm">
           <div class="form-grid">
             <div class="form-group"><label><i class="fa-solid fa-user"></i> Full Name</label><input type="text" id="regName" required placeholder="Full Name"></div>
-            <div class="form-group"><label><i class="fa-solid fa-graduation-cap"></i> School Designation</label><input type="text" id="regDesignation" required placeholder="e.g. PGT Physics"></div>
+            <div class="form-group"><label><i class="fa-solid fa-graduation-cap"></i> Vidyalaya Designation</label><input type="text" id="regDesignation" required placeholder="e.g. PGT Physics"></div>
             <div class="form-group"><label><i class="fa-solid fa-map-location-dot"></i> District</label><select id="regDist" required></select></div>
             <div class="form-group"><label><i class="fa-solid fa-location-dot"></i> Block</label><select id="regBlock" required><option value="">-- Select Block --</option></select></div>
-            <div class="form-group"><label><i class="fa-solid fa-school"></i> OAV School Name</label><input type="text" id="regOav" required placeholder="OAV Name"></div>
+            <div class="form-group"><label><i class="fa-solid fa-school"></i> OAV Name</label><input type="text" id="regOav" required placeholder="OAV Shyampur"></div>
             <div class="form-group"><label><i class="fa-solid fa-calendar"></i> Year of Joining</label><input type="number" id="regYear" required placeholder="YYYY"></div>
             <div class="form-group"><label><i class="fa-solid fa-phone"></i> Mobile Number</label><input type="tel" id="regMobile" required placeholder="+91..."></div>
             <div class="form-group">
@@ -1257,7 +1257,7 @@
               <div class="form-group"><label>Unique ID</label><input type="text" id="loginMemberId" placeholder="YYYYXXXX" required></div>
               <div class="form-group"><label>Mobile Number</label><input type="tel" id="loginMobile" placeholder="+91..." required></div>
             </div>
-            <button type="submit" class="btn" style="margin-top:15px; width:100%;"><i class="fa-solid fa-lock-open"></i> Authenticate Profile</button>
+            <button type="submit" class="btn" style="margin-top:15px; width:100%;"><i class="fa-solid fa-lock-open"></i> Login</button>
           </form>
         </div>
 
@@ -1268,7 +1268,7 @@
               <div class="id-card-frame" id="printableCard">
                 <div class="id-card-header">
                   <img src="ChatGPT Image Aug 16, 2026, 12_28_14 PM.png" alt="Crest">
-                  <h3>OAVTA ODISHA</h3>
+                  <h3>ODISHA ADARSHA VIDYALAYA TEACHERS' ASSOCIATION</h3>
                   <p>Official Membership Card</p>
                 </div>
                 <div class="id-card-body">
@@ -1298,16 +1298,16 @@
             </div>
 
             <div style="flex:1; min-width:320px;">
-              <h3 style="font-family:'Cinzel'; margin-bottom:15px; color:var(--primary); font-size:18px;"><i class="fa-solid fa-user-pen"></i> Profile Record Editor</h3>
+              <h3 style="font-family:'Cinzel'; margin-bottom:15px; color:var(--primary); font-size:18px;"><i class="fa-solid fa-user-pen"></i> Edit Profile</h3>
               <form id="updateProfileForm">
                 <input type="hidden" id="editDocId">
                 <div class="form-grid">
                   <div class="form-group"><label class="locked-label"><i class="fa-solid fa-lock"></i> Member ID (Locked)</label><input type="text" id="editMemberId" class="locked-field" disabled></div>
                   <div class="form-group"><label class="locked-label"><i class="fa-solid fa-lock"></i> Name (Locked)</label><input type="text" id="editName" class="locked-field" disabled></div>
-                  <div class="form-group"><label>School Designation</label><input type="text" id="editDesignation" required></div>
+                  <div class="form-group"><label>Vidyalaya Designation</label><input type="text" id="editDesignation" required></div>
                   <div class="form-group"><label>District</label><select id="editDist" required></select></div>
                   <div class="form-group"><label>Block</label><select id="editBlock" required><option value="">-- Select Block --</option></select></div>
-                  <div class="form-group"><label>OAV School Name</label><input type="text" id="editOav" required></div>
+                  <div class="form-group"><label>OAV Name</label><input type="text" id="editOav" required></div>
                   <div class="form-group"><label>Year of Joining</label><input type="number" id="editYear" required></div>
                   <div class="form-group"><label>Mobile Number</label><input type="tel" id="editMobile" required></div>
                 </div>
@@ -1324,11 +1324,11 @@
     <div id="publicPortfolios" class="panel">
       <div class="glass-card">
         <div class="section-header">
-          <div class="section-title"><i class="fa-solid fa-sitemap"></i> District Bodies Public Directory</div>
+          <div class="section-title"><i class="fa-solid fa-sitemap"></i> District Portfolios</div>
         </div>
         
         <div class="selection-banner">
-          <label><i class="fa-solid fa-magnifying-glass-location"></i> Select District to Display Executive Structure</label>
+          <label><i class="fa-solid fa-magnifying-glass-location"></i> Select District to Display Portfolio Structure</label>
           <div class="form-group" style="max-width:400px; margin:0 auto;">
             <select id="publicDistSelect"></select>
           </div>
@@ -1357,7 +1357,7 @@
             <label><i class="fa-solid fa-lock"></i> District Security Key</label>
             <input type="password" id="distAdminPassInput" placeholder="Enter Password">
           </div>
-          <button type="button" onclick="verifyDistPassword()" class="btn" style="margin-top:12px; width:100%;"><i class="fa-solid fa-key"></i> Authenticate Session</button>
+          <button type="button" onclick="verifyDistPassword()" class="btn" style="margin-top:12px; width:100%;"><i class="fa-solid fa-key"></i> Login</button>
           <div id="distPassMsg"></div>
         </div>
 
@@ -1367,7 +1367,7 @@
           
           <div class="sub-tabs">
             <button class="sub-tab-btn active" onclick="switchSubTab('subDistMembers', event)"><i class="fa-solid fa-users"></i> Enrolled Members</button>
-            <button class="sub-tab-btn" onclick="switchSubTab('subDistExec', event)"><i class="fa-solid fa-user-shield"></i> Executive Body Console</button>
+            <button class="sub-tab-btn" onclick="switchSubTab('subDistExec', event)"><i class="fa-solid fa-user-shield"></i> District Portfolios</button>
           </div>
 
           <!-- SUB PANEL 1: ENROLLED MEMBERS -->
@@ -1416,18 +1416,18 @@
               <div id="distAdminPortfoliosList" class="portfolio-grid"></div>
             </div>
 
-            <h4 style="font-family:'Cinzel'; color: var(--primary); margin-bottom: 15px;"><i class="fa-solid fa-user-plus"></i> Assign Executive Position</h4>
+            <h4 style="font-family:'Cinzel'; color: var(--primary); margin-bottom: 15px;"><i class="fa-solid fa-user-plus"></i> Assign Portfolio</h4>
             <form id="distPortfolioForm">
               <div class="form-grid">
-                <div class="form-group"><label>Executive Name</label><input type="text" id="pName" placeholder="Full Name" required></div>
-                <div class="form-group"><label>Association Designation</label><input type="text" id="pAssocDesig" placeholder="e.g. District President" required></div>
-                <div class="form-group"><label>School Designation</label><input type="text" id="pSchoolDesig" placeholder="e.g. TGT CBZ" required></div>
+                <div class="form-group"><label> Name</label><input type="text" id="pName" placeholder="Full Name" required></div>
+                <div class="form-group"><label>Association Designation</label><input type="text" id="pAssocDesig" placeholder="e.g. President" required></div>
+                <div class="form-group"><label>Vidyalaya Designation</label><input type="text" id="pSchoolDesig" placeholder="e.g. TGT SST" required></div>
                 <div class="form-group"><label>Block</label><select id="pBlock" required><option value="">-- Select Block --</option></select></div>
-                <div class="form-group"><label>OAV School Name</label><input type="text" id="pOav" placeholder="School Name" required></div>
+                <div class="form-group"><label>OAV Name</label><input type="text" id="pOav" placeholder="School Name" required></div>
                 <div class="form-group"><label>Joining Year</label><input type="number" id="pYear" placeholder="YYYY" required></div>
                 <div class="form-group"><label>Mobile Number</label><input type="tel" id="pMobile" placeholder="+91..." required></div>
               </div>
-              <button type="submit" class="btn" style="margin-top:20px;"><i class="fa-solid fa-plus-circle"></i> Commit Executive Record</button>
+              <button type="submit" class="btn" style="margin-top:20px;"><i class="fa-solid fa-plus-circle"></i> Save Portfolio Record</button>
             </form>
           </div>
 
@@ -1439,31 +1439,31 @@
     <div id="stateAdmin" class="panel">
       <div class="glass-card">
         <div class="section-header">
-          <div class="section-title"><i class="fa-solid fa-vault"></i> State Executive Control Panel</div>
+          <div class="section-title"><i class="fa-solid fa-vault"></i> State Admin Control Panel</div>
         </div>
 
         <div id="stateAdminLoginArea" style="max-width:400px; margin: 0 auto 20px; background:#f8fafc; padding:25px; border-radius:12px; border:1px solid var(--border-color); text-align:center;">
           <div class="form-group">
-            <label><i class="fa-solid fa-lock"></i> Master Password</label>
+            <label><i class="fa-solid fa-lock"></i> Password</label>
             <input type="password" id="stateAdminPassInput" placeholder="Password">
           </div>
-          <button type="button" onclick="verifyStatePassword()" class="btn" style="margin-top:12px; width:100%;"><i class="fa-solid fa-key"></i> Authorize Access</button>
+          <button type="button" onclick="verifyStatePassword()" class="btn" style="margin-top:12px; width:100%;"><i class="fa-solid fa-key"></i> Login</button>
           <div id="statePassMsg"></div>
         </div>
 
         <div id="stateAdminDashboard" class="dynamic-edit-pane">
           
           <div class="sub-tabs">
-            <button class="sub-tab-btn active" onclick="switchSubTab('subStateAllMembers', event)"><i class="fa-solid fa-users-gear"></i> State Cadre Records</button>
-            <button class="sub-tab-btn" onclick="switchSubTab('subStateDistMembers', event)"><i class="fa-solid fa-filter"></i> District-Wise Viewer</button>
-            <button class="sub-tab-btn" onclick="switchSubTab('subStatePortfolios', event)"><i class="fa-solid fa-sitemap"></i> State Portfolios Registry</button>
+            <button class="sub-tab-btn active" onclick="switchSubTab('subStateAllMembers', event)"><i class="fa-solid fa-users-gear"></i> All Members</button>
+            <button class="sub-tab-btn" onclick="switchSubTab('subStateDistMembers', event)"><i class="fa-solid fa-filter"></i> District Wise Members</button>
+            <button class="sub-tab-btn" onclick="switchSubTab('subStatePortfolios', event)"><i class="fa-solid fa-sitemap"></i> District Portfolios</button>
           </div>
 
           <!-- STATE SUB 1: ALL MEMBERS -->
           <div id="subStateAllMembers" class="sub-panel active">
             <div class="section-header" style="border:none; margin-bottom:10px;">
               <h3 style="font-family:'Cinzel'; color:var(--primary); display:flex; align-items:center; gap:10px;"><img src="ChatGPT Image Aug 16, 2026, 12_28_14 PM.png" alt="Crest" class="logo-badge-sm"> Master Members Directory (Total: <span id="stateTotalMembersCount">0</span>)</h3>
-              <button onclick="exportStateData('allMembers')" class="btn btn-gold"><i class="fa-solid fa-file-csv"></i> Download Master State CSV</button>
+              <button onclick="exportStateData('allMembers')" class="btn btn-gold"><i class="fa-solid fa-file-csv"></i> Download CSV</button>
             </div>
             <div class="table-wrapper">
               <table>
