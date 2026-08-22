@@ -1460,7 +1460,7 @@ const districtPasswords = {
 
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
               <h4 style="font-family:'Cinzel'; color: var(--primary); margin: 0;">
-                Enrolled Cadre Members (<span id="distMembersCount">0</span>)
+                Enrolled Members (<span id="distMembersCount">0</span>)
               </h4>
               <input type="text" id="memberSearchInput" onkeyup="filterDistrictMembers()" placeholder="Search member by name/ID/mobile..." style="width: 280px;">
             </div>
@@ -1473,7 +1473,7 @@ const districtPasswords = {
                     <th>Full Name</th>
                     <th>Designation</th>
                     <th>Block</th>
-                    <th>OAV School</th>
+                    <th>OAV Name</th>
                     <th>Year</th>
                     <th>Mobile</th>
                   </tr>
@@ -1488,8 +1488,8 @@ const districtPasswords = {
           <!-- SUB PANEL 2: EXECUTIVE MANAGEMENT -->
           <div id="subDistExec" class="sub-panel">
             <div class="live-dist-indicator">
-              <span><i class="fa-solid fa-landmark"></i> EXECUTIVE COUNCIL: <strong id="liveDistName">DISTRICT NAME</strong></span>
-              <span style="font-size:12px; opacity:0.9;">Quota Utilization: (<span id="distCount">0</span>/10)</span>
+              <span><i class="fa-solid fa-landmark"></i> District: <strong id="liveDistName">DISTRICT NAME</strong></span>
+              <span style="font-size:12px; opacity:0.9;">Portfolios Added: (<span id="distCount">0</span>/10)</span>
             </div>
 
             <div style="margin-bottom: 30px; background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid var(--border-color);">
@@ -1497,18 +1497,18 @@ const districtPasswords = {
               <div id="distAdminPortfoliosList" class="portfolio-grid"></div>
             </div>
 
-            <h4 style="font-family:'Cinzel'; color: var(--primary); margin-bottom: 15px;"><i class="fa-solid fa-user-plus"></i> Assign Executive Position</h4>
+            <h4 style="font-family:'Cinzel'; color: var(--primary); margin-bottom: 15px;"><i class="fa-solid fa-user-plus"></i> Assign Portfolios</h4>
             <form id="distPortfolioForm">
               <div class="form-grid">
-                <div class="form-group"><label>Executive Name</label><input type="text" id="pName" placeholder="Full Name" required></div>
+                <div class="form-group"><label>Portfolio Name</label><input type="text" id="pName" placeholder="Full Name" required></div>
                 <div class="form-group"><label>Association Designation</label><input type="text" id="pAssocDesig" placeholder="e.g. District President" required></div>
-                <div class="form-group"><label>School Designation</label><input type="text" id="pSchoolDesig" placeholder="e.g. TGT CBZ" required></div>
+                <div class="form-group"><label>Vidyalaya Designation</label><input type="text" id="pSchoolDesig" placeholder="e.g. TGT SST" required></div>
                 <div class="form-group"><label>Block</label><select id="pBlock" required><option value="">-- Select Block --</option></select></div>
-                <div class="form-group"><label>OAV School Name</label><input type="text" id="pOav" placeholder="School Name" required></div>
+                <div class="form-group"><label>OAV Name</label><input type="text" id="pOav" placeholder="School Name" required></div>
                 <div class="form-group"><label>Joining Year</label><input type="number" id="pYear" placeholder="YYYY" required></div>
                 <div class="form-group"><label>Mobile Number</label><input type="tel" id="pMobile" placeholder="+91..." required></div>
               </div>
-              <button type="submit" class="btn" style="margin-top:20px;"><i class="fa-solid fa-plus-circle"></i> Commit Executive Record</button>
+              <button type="submit" class="btn" style="margin-top:20px;"><i class="fa-solid fa-plus-circle"></i> Update</button>
             </form>
           </div>
 
@@ -1520,7 +1520,7 @@ const districtPasswords = {
     <div id="stateAdmin" class="panel">
       <div class="glass-card">
         <div class="section-header">
-          <div class="section-title"><i class="fa-solid fa-vault"></i> State Executive Control Panel</div>
+          <div class="section-title"><i class="fa-solid fa-vault"></i> State Administrative Control Panel</div>
         </div>
 
         <div id="stateAdminLoginArea" style="max-width:400px; margin: 0 auto 20px; background:#f8fafc; padding:25px; border-radius:12px; border:1px solid var(--border-color); text-align:center;">
