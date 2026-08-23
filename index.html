@@ -100,6 +100,138 @@
       z-index: 10;
     }
 
+    /* ================= SIDEBAR APP SHELL ================= */
+    .app-shell {
+      max-width: 1400px;
+      margin: -40px auto 0;
+      padding: 0 15px;
+      position: relative;
+      z-index: 10;
+      display: flex;
+      align-items: flex-start;
+      gap: 22px;
+    }
+
+    .sidebar {
+      width: 250px;
+      flex-shrink: 0;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 18px 14px;
+      box-shadow: var(--shadow-premium);
+      border: 1px solid var(--border-color);
+      position: sticky;
+      top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-height: calc(100vh - 40px);
+      overflow-y: auto;
+    }
+
+    .sidebar-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 6px 14px;
+      border-bottom: 2px solid var(--bg-slate);
+      margin-bottom: 8px;
+    }
+    .sidebar-logo { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--accent-gold); object-fit: cover; }
+    .sidebar-title { font-family: 'Cinzel', serif; font-weight: 800; font-size: 13px; color: var(--primary); line-height: 1.25; }
+
+    .side-tab-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      text-align: left;
+      padding: 12px 14px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 13px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .side-tab-btn i { width: 18px; text-align: center; color: var(--accent-gold); }
+    .side-tab-btn:hover { background: #f8fafc; color: var(--primary); }
+    .side-tab-btn.active {
+      background: var(--blue-gradient);
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(30, 58, 138, 0.35);
+    }
+    .side-tab-btn.active i { color: #fbbf24; }
+
+    .main-content { flex: 1; min-width: 0; }
+
+    .sidebar-toggle {
+      display: none;
+      position: fixed;
+      top: 14px;
+      right: 14px;
+      z-index: 1001;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: none;
+      background: var(--blue-gradient);
+      color: #fff;
+      font-size: 18px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      z-index: 999;
+    }
+
+    @media (max-width: 900px) {
+      .app-shell { display: block; padding: 0 12px; }
+      .sidebar-toggle { display: flex; }
+      .sidebar {
+        position: fixed;
+        top: 0; left: 0;
+        height: 100vh;
+        max-height: 100vh;
+        width: 78%;
+        max-width: 300px;
+        border-radius: 0 16px 16px 0;
+        transform: translateX(-105%);
+        transition: transform 0.3s ease;
+        z-index: 1000;
+      }
+      .sidebar.open { transform: translateX(0); }
+      .sidebar-overlay.open { display: block; }
+      .main-content { width: 100%; }
+      .header-hero { padding: 25px 15px 55px; }
+      .brand-titles h1 { font-size: 20px; letter-spacing: 0.8px; }
+      .brand-titles p { font-size: 11px; letter-spacing: 1.5px; }
+      .logo-badge { width: 58px; height: 58px; }
+      .glass-card { padding: 20px; }
+      .section-title { font-size: 18px; }
+      .dash-value { font-size: 26px !important; }
+      .gov-topbar { font-size: 10px; padding: 6px 12px; }
+      .gov-topbar span:last-child { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .dash-cards-grid { grid-template-columns: 1fr 1fr; }
+      .dash-drill-selects { grid-template-columns: 1fr; }
+      .id-card-frame { width: 100%; }
+      .live-dist-indicator { flex-direction: column; align-items: flex-start; gap: 8px; }
+    }
+
+    /* ================= NAV TABS (legacy, unused visually) ================= */
     .nav-tabs {
       display: flex;
       background: #ffffff;
@@ -136,8 +268,76 @@
       box-shadow: 0 4px 15px rgba(30, 58, 138, 0.35);
     }
 
-    .panel { display: none; margin-top: 25px; animation: fadeIn 0.4s ease-out; }
+    .panel { display: none; margin-top: 0; animation: fadeIn 0.4s ease-out; }
     .panel.active { display: block; }
+
+    /* ================= DASHBOARD CARDS ================= */
+    .dash-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .dash-card {
+      background: linear-gradient(145deg, #ffffff, #f8fafc);
+      border: 1px solid var(--border-color);
+      border-top: 4px solid var(--accent-gold);
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 120px;
+      justify-content: center;
+    }
+
+    .dash-card .dash-icon {
+      width: 42px; height: 42px;
+      border-radius: 12px;
+      background: var(--blue-gradient);
+      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+
+    .dash-card .dash-label {
+      font-size: 11.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+    }
+
+    .dash-card .dash-value {
+      font-family: 'Cinzel', serif;
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .dash-card .dash-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .dash-drill-section {
+      background: #f8fafc;
+      border: 2px dashed #cbd5e1;
+      border-radius: 16px;
+      padding: 25px;
+      margin-bottom: 25px;
+    }
+
+    .dash-drill-selects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 4px;
+    }
 
     .sub-tabs {
       display: flex;
@@ -398,7 +598,7 @@
 
     .id-display-container { display: flex; flex-direction: column; align-items: center; gap: 20px; }
     .id-card-frame {
-      width: 320px; min-height: 450px; background: #ffffff; border-radius: 18px; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      width: 320px; max-width: 100%; min-height: 450px; background: #ffffff; border-radius: 18px; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
       border: 1px solid #cbd5e1; position: relative; overflow: visible; display: flex; flex-direction: column;
       background-image: radial-gradient(#e2e8f0 0.75px, transparent 0.75px); background-size: 12px 12px;
     }
@@ -494,94 +694,463 @@
 
     const stateAdminPassword = "state123";
 
-const districtPasswords = {
-  "Angul": "ANGL4928",
-  "Balangir": "BLNG1835",
-  "Balasore": "BLSR7204",
-  "Bargarh": "BRGH6159",
-  "Bhadrak": "BHDR3820",
-  "Boudh": "BODH8491",
-  "Cuttack": "CTTK5037",
-  "Deogarh": "DEOG9162",
-  "Dhenkanal": "DHNK2748",
-  "Gajapati": "GJPT6315",
-  "Ganjam": "GNJM8590",
-  "Jagatsinghpur": "JGSP1473",
-  "Jajpur": "JJPR8301",
-  "Jharsuguda": "JRSG9264",
-  "Kalahandi": "KLHD3718",
-  "Kandhamal": "KNDM6042",
-  "Kendrapara": "KNDP7529",
-  "Keonjhar": "KNJR1983",
-  "Khordha": "KHRD4620",
-  "Koraput": "KRPT8315",
-  "Malkangiri": "MLKG5291",
-  "Mayurbhanj": "MYRB7034",
-  "Nabarangpur": "NBRG1685",
-  "Nayagarh": "NYGH9420",
-  "Nuapada": "NUPD3851",
-  "Puri": "PURI6174",
-  "Rayagada": "RYGD8209",
-  "Sambalpur": "SMLP4936",
-  "Subarnapur": "SBNP7152",
-  "Sundargarh": "SNDG2840"
-};
-
-    const districtBlockData = {
-      "Angul": ["Angul", "Athamallik", "Baniarpal", "Chhendipada", "Kaniha", "Kishorenagar", "Pallahara", "Talcher"],
-      "Balangir": ["Agalpur", "Balangir", "Belpara", "Bhangamunda", "Deogaon", "Gudvella", "Khaprakhol", "Loisingha", "Muribahal", "Patnagarh", "Puintala", "Saintala", "Tituraghar", "Tushura"],
-      "Balasore": ["Bahanaga", "Balasore", "Basta", "Bhanjapur", "Bhograi", "Jaleswar", "Khaira", "Oupada", "Remuna", "Simulia", "Soro"],
-      "Bargarh": ["Attabira", "Bargarh", "Barpali", "Bheden", "Bijepur", "Bhatli", "Gaisilet", "Jharbandh", "Padampur", "Paikmal", "Sohela", "Ambabhona"],
-      "Bhadrak": ["Bhadrak", "Bhandaripokhari", "Bonth", "Chandbali", "Dhamnagar", "Tihidi"],
-      "Boudh": ["Boudh", "Harbhanga", "Kantamal"],
-      "Cuttack": ["Athagarh", "Banki", "Banki-Dampada", "Baramba", "Barang", "Cuttack Sadar", "Kantapada", "Mahanga", "Narasinghpur", "Niali", "Nischintakoili", "Salepur", "Tangi-Choudwar"],
-      "Deogarh": ["Barkote", "Deogarh", "Reamal", "Tileibani"],
-      "Dhenkanal": ["Bhuban", "Dhenkanal", "Gondia", "Hindol", "Kamakhyanagar", "Kankadahad", "Odalanga", "Parjang"],
-      "Gajapati": ["Goszani", "Gumma", "Kashinagara", "Mohana", "Nuagada", "R Udayagiri", "Rayagada"],
-      "Ganjam": ["Aska", "Beguniapada", "Bellaguntha", "Bhanjanagar", "Buguda", "Chhatrapur", "Chikiti", "Dharakote", "Digapahandi", "Ganjam", "Hinjilicut", "Jagannathprasad", "Kabisuryanagar", "Khallikote", "Kukudakhandi", "Patrapur", "Polasara", "Purushottampur", "Sanakhemundi", "Sheragada", "Surada"],
-      "Jagatsinghpur": ["Balikuda", "Biridi", "Erasama", "Jagatsinghpur", "Kujang", "Naugaon", "Raghunathpur", "Tirtol"],
-      "Jajpur": ["Bari", "Binjharpur", "Danagadi", "Dharmasala", "Jajpur", "Korai", "Rasulpur", "Sukinda"],
-      "Jharsuguda": ["Jharsuguda", "Kirmira", "Kolabira", "Laikera", "Lakhanpur"],
-      "Kalahandi": ["Bhawanipatna", "Dharamgarh", "Golamunda", "Jaipatna", "Junagarh", "Karlamunda", "Kesinga", "Kokusara", "Lanjigarh", "M. Rampur", "Narla", "Thiamul Rampur"],
-      "Kandhamal": ["Baliguda", "Chakapad", "Daringbadi", "G. Udayagiri", "K. Nuagaon", "Khajuripada", "Kotagarh", "Phiringia", "Phulbani", "Raikia", "Tikabali"],
-      "Kendrapara": ["Aul", "Derabish", "Garadapur", "Kendrapara", "Mahakalapada", "Marshaghai", "Pattamundai", "Rajkanika", "Rajnagar"],
-      "Keonjhar": ["Anandapur", "Banspal", "Champua", "Ghatagaon", "Ghashipura", "Harichandanpur", "Jhumpura", "Joda", "Keonjhar", "Patana", "Saharapada", "Telkoi"],
-      "Khordha": ["Balianta", "Balipatna", "Banapur", "Begunia", "Bhubaneswar", "Bolagarh", "Chilika", "Jatni", "Khordha", "Tangi"],
-      "Koraput": ["Bandhugaon", "Boipariguda", "Borigumma", "Dasamantapur", "Damanjodi", "Jeypore", "Koraput", "Kundra", "Lamtaput", "Laxmipur", "Nandapur", "Narayapatna", "Pottangi", "Semiliguda"],
-      "Malkangiri": ["Chitrakonda", "Kalimela", "Khairaput", "Kudumulu Guma", "Malkangiri", "Mathili", "Podia"],
-      "Mayurbhanj": ["Badasahi", "Bahalda", "Bangriposi", "Baripada", "Betnoti", "Bijatala", "Bisoi", "Gopabandhunagar", "Jamda", "Joshipur", "Kaptipada", "Karanjia", "Khunta", "Kuliana", "Kusumi", "Morada", "Rairangpur", "Raruan", "Rasgovindpur", "Samakhunta", "Udala"],
-      "Nabarangpur": ["Chandahandi", "Dabugam", "Jharigam", "Kosagumuda", "Nabarangpur", "Nandahandi", "Papadahandi", "Raighar", "Tentulikhunti", "Umerkote"],
-      "Nayagarh": ["Bhapur", "Daspalla", "Gania", "Khandapada", "Nayagarh", "Odagaon", "Ranpur"],
-      "Nuapada": ["Boden", "Khariar", "Komna", "Nuapada", "Sinapali"],
-      "Puri": ["Astranga", "Brahmagiri", "Delanga", "Gop", "Kanas", "Krushnaprasad", "Nimapara", "Pipili", "Puri Sadar", "Satyabadi"],
-      "Rayagada": ["Bissam Cuttack", "Chandrapur", "Gudari", "Gunupur", "Kalyansinghpur", "Kashipur", "Kolnara", "Muniguda", "Padmapur", "Ramanaguda", "Rayagada"],
-      "Sambalpur": ["Bamra", "Jujomura", "Kuchar", "Maneswar", "Naktideul", "Rairakhol", "Rengali", "Sambalpur Sadar"],
-      "Subarnapur": ["Biramaharajpur", "Dunguripali", "Sonepur", "Tarbha", "Ullunda"],
-      "Sundargarh": ["Bargaon", "Bisra", "Bonai", "Guraundia", "Hemgir", "Kutra", "Lahunipara", "Lathikata", "Lephripara", "Nuwagaon", "Rajgangpur", "Subdega", "Sundargarh", "Tangarapali"]
+    const districtPasswords = {
+      "Angul": "ANGL4928",
+      "Balangir": "BLNG1835",
+      "Balasore (Baleswar)": "BLSR7204",
+      "Bargarh": "BRGH6159",
+      "Bhadrak": "BHDR3820",
+      "Boudh": "BODH8491",
+      "Cuttack": "CTTK5037",
+      "Deogarh (Debagarh)": "DEOG9162",
+      "Dhenkanal": "DHNK2748",
+      "Gajapati": "GJPT6315",
+      "Ganjam": "GNJM8590",
+      "Jagatsinghpur": "JGSP1473",
+      "Jajpur": "JJPR8301",
+      "Jharsuguda": "JRSG9264",
+      "Kalahandi": "KLHD3718",
+      "Kandhamal": "KNDM6042",
+      "Kendrapara": "KNDP7529",
+      "Keonjhar (Kendujhar)": "KNJR1983",
+      "Khordha": "KHRD4620",
+      "Koraput": "KRPT8315",
+      "Malkangiri": "MLKG5291",
+      "Mayurbhanj": "MYRB7034",
+      "Nabarangpur": "NBRG1685",
+      "Nayagarh": "NYGH9420",
+      "Nuapada": "NUPD3851",
+      "Puri": "PURI6174",
+      "Rayagada": "RYGD8209",
+      "Sambalpur": "SMLP4936",
+      "Subarnapur (Sonepur)": "SBNP7152",
+      "Sundargarh": "SNDG2840"
     };
 
-    window.populateDistricts = function(distId, blockId) {
+    /* ============================================================
+       EXTRACTED OAV MASTER DATA (District -> Block -> OAV Name)
+       Source: Official list of 313 Odisha Adarsha Vidyalayas (OAVs)
+       extracted from the uploaded master document. This single data
+       object drives every District / Block / OAV dropdown across the
+       entire portal (Registration, Profile Edit, District Admin,
+       Home Dashboard, etc.)
+       ============================================================ */
+    const OAV_DATA = {
+      "Angul": {
+        "Angul": ["OAV Khandahata"],
+        "Athmallik": ["OAV Banmalipur"],
+        "Banarpal": ["OAV Shantri"],
+        "Chhendipada": ["OAV Gopinathpur"],
+        "Kaniha": ["OAV Jharabarani"],
+        "Kishorenagar": ["OAV Raniakata"],
+        "Pallahara": ["OAV Subarnapali"],
+        "Talcher": ["OAV Mahulapal"]
+      },
+      "Balangir": {
+        "Agalpur": ["OAV Duduka"],
+        "Balangir": ["OAV Patharchepa"],
+        "Bangomunda": ["OAV Bhalumunda"],
+        "Belpara": ["OAV Bharuamunda"],
+        "Deogaon": ["OAV Chandrapur"],
+        "Gudvella": ["OAV Tentulikhunti"],
+        "Khaprakhol": ["OAV Khaprakhol"],
+        "Loisingha": ["OAV Jharmunda"],
+        "Muribahal": ["OAV Muribahal"],
+        "Patnagarh": ["OAV Bhainsa"],
+        "Puintala": ["OAV Mahimunda"],
+        "Saintala": ["OAV Bibina"],
+        "Titilagarh": ["OAV Kursud"],
+        "Turekela": ["OAV Jharni"]
+      },
+      "Balasore (Baleswar)": {
+        "Bahanaga": ["OAV Jageswarpada"],
+        "Balasore Sadar": ["OAV Hinjala"],
+        "Baliapal": ["OAV Balarampur"],
+        "Basta": ["OAV Patharajhada"],
+        "Bhograi": ["OAV Kanthibhuri"],
+        "Jaleswar": ["OAV Kalika"],
+        "Khaira": ["OAV Arjunpur"],
+        "Nilagiri": ["OAV Jamudiha"],
+        "Oupada": ["OAV Dhimpura"],
+        "Remuna": ["OAV Sutei"],
+        "Simulia": ["OAV Dakhinaoda"],
+        "Soro": ["OAV Nadigaon"]
+      },
+      "Bargarh": {
+        "Ambabhona": ["OAV Ambabhona"],
+        "Attabira": ["OAV Bhoipura"],
+        "Bargarh": ["OAV Govindpur"],
+        "Barpali": ["OAV Kusanpali"],
+        "Bhatli": ["OAV Keshaipali"],
+        "Bheden": ["OAV Barpadar"],
+        "Bijepur": ["OAV Bijepur"],
+        "Gaisilet": ["OAV Gaisilet"],
+        "Jharbandh": ["OAV Balidhipa"],
+        "Paikmal": ["OAV Frezorpur"],
+        "Rajborasambar (Padampur)": ["OAV Bandhupali"],
+        "Sohella": ["OAV Kangaon"]
+      },
+      "Bhadrak": {
+        "Basudevpur": ["OAV Eram"],
+        "Bhadrak": ["OAV Olanga"],
+        "Bhandaripokhari": ["OAV Uttarabada"],
+        "Bonth": ["OAV Pallasgadia"],
+        "Chandabali": ["OAV Majhigaon"],
+        "Dhamnagar": ["OAV Shyampur"],
+        "Tihidi": ["OAV Santhapur"]
+      },
+      "Boudh": {
+        "Boudh": ["OAV Tetelenga"],
+        "Harbhanga": ["OAV Manipur"],
+        "Kantamal": ["OAV Ainlachuan"]
+      },
+      "Cuttack": {
+        "Athagad": ["OAV Gunichapur"],
+        "Badamba": ["OAV Kirikicha"],
+        "Banki": ["OAV Jokidola"],
+        "Baranga": ["OAV Ramdaspur"],
+        "Cuttack Sadar": ["OAV Sriram"],
+        "Damapada": ["OAV Govindpur"],
+        "Kantapara": ["OAV Chitalpur"],
+        "Mahanga": ["OAV Kaudukola"],
+        "Narsinghpur": ["OAV Paikapadapatna"],
+        "Niali": ["OAV Tola Gopinathpur"],
+        "Nischintakoili": ["OAV Kulagalishalo"],
+        "Salipur": ["OAV Raghavapur"],
+        "Tangi-Choudwar": ["OAV Kandarkana"],
+        "Tigiria": ["OAV Achalkot"]
+      },
+      "Deogarh (Debagarh)": {
+        "Barkote": ["OAV Barkote"],
+        "Reamal": ["OAV Budhapal"],
+        "Tileibani": ["OAV Tileibani"]
+      },
+      "Dhenkanal": {
+        "Bhuban": ["OAV Bhuban"],
+        "Dhenkanal Sadar": ["OAV Dhenkanal"],
+        "Gondia": ["OAV Biswanathpur"],
+        "Hindol": ["OAV Hindol"],
+        "Kamakhyanagar": ["OAV Jantaribol"],
+        "Kankadahad": ["OAV Kandhara"],
+        "Odapada": ["OAV Ankarantipur"],
+        "Parajang": ["OAV Barihapur"]
+      },
+      "Gajapati": {
+        "Gosani": ["OAV Lingipur"],
+        "Gumma": ["OAV Gumma"],
+        "Kashinagar": ["OAV Allada"],
+        "Mohana": ["OAV Gundima"],
+        "Nuagada": ["OAV Parimala"],
+        "R. Udayagiri": ["OAV Chheligada"],
+        "Rayagada": ["OAV Kaithapadar"]
+      },
+      "Ganjam": {
+        "Aska": ["OAV Nimina"],
+        "Beguniapada": ["OAV Rajapur"],
+        "Bellaguntha": ["OAV Pratap Laxmanpur"],
+        "Bhanjanagar": ["OAV Sanakodanda"],
+        "Buguda": ["OAV Golia"],
+        "Chhatrapur": ["OAV Chamakhandi"],
+        "Chikiti": ["OAV Pitatali"],
+        "Dharakote": ["OAV Kusaguma"],
+        "Digapahandi": ["OAV Sidheswar"],
+        "Ganjam": ["OAV Satrusole"],
+        "Hinjilicut": ["OAV Hinjilicut"],
+        "Jagannath Prasad": ["OAV Jamagarada"],
+        "Kabisuryanagar": ["OAV Kabisuryanagar"],
+        "Khallikote": ["OAV Baurigandapalli"],
+        "Kukudakhandi": ["OAV Kukudakhandi"],
+        "Marada": ["OAV Marada"],
+        "Patrapur": ["OAV Bhatakumarada"],
+        "Polasara": ["OAV Hatiota"],
+        "Purushottampur": ["OAV Purushottampur"],
+        "Sanakhemundi": ["OAV Sanakhemundi"],
+        "Sheragada": ["OAV Bhusunda"],
+        "Surada": ["OAV Surada"]
+      },
+      "Jagatsinghpur": {
+        "Balikuda": ["OAV Dua"],
+        "Biridi": ["OAV Biridi"],
+        "Ersama": ["OAV Ersama"],
+        "Jagatsinghpur": ["OAV Salijanga"],
+        "Kujang": ["OAV Agapal"],
+        "Naugaon": ["OAV Dahipal"],
+        "Raghunathpur": ["OAV Raghunathpur"],
+        "Tirtol": ["OAV Tirtol"]
+      },
+      "Jajpur": {
+        "Badchana": ["OAV Darpani"],
+        "Bari": ["OAV Jagannathpur"],
+        "Binjharpur": ["OAV Uttarkul"],
+        "Danagadi": ["OAV Gohirapatoli"],
+        "Dasarathpur": ["OAV Mallikapur"],
+        "Dharmasala": ["OAV Deulipal"],
+        "Jajpur": ["OAV Jamdhar"],
+        "Korei": ["OAV Begana"],
+        "Rasulpur": ["OAV Rasulpur"],
+        "Sukinda": ["OAV Madhapur"]
+      },
+      "Jharsuguda": {
+        "Jharsuguda": ["OAV Katapali"],
+        "Kirimira": ["OAV Kirimira"],
+        "Kolabira": ["OAV Patrapali"],
+        "Laikera": ["OAV Mudrajore"],
+        "Lakhanpur": ["OAV Lakhanpur"]
+      },
+      "Kalahandi": {
+        "Bhawanipatna": ["OAV Musiguda"],
+        "Dharmagarh": ["OAV Dharmagarh"],
+        "Golamunda": ["OAV Golamunda"],
+        "Jaipatna": ["OAV Jaipatna"],
+        "Junagarh": ["OAV Junagarh"],
+        "Kalampur": ["OAV Kalampur"],
+        "Karlamunda": ["OAV Karlamunda"],
+        "Kesinga": ["OAV Kesinga"],
+        "Koksara": ["OAV Bongomunda"],
+        "Lanjigarh": ["OAV Dhanurbhata"],
+        "M. Rampur": ["OAV M. Rampur"],
+        "Narla": ["OAV Narla"],
+        "Thuamul Rampur": ["OAV Thuamul Rampur"]
+      },
+      "Kandhamal": {
+        "Balliguda": ["OAV Balliguda"],
+        "Chakapad": ["OAV Chakapad"],
+        "Daringbadi": ["OAV Daringbadi"],
+        "G. Udayagiri": ["OAV G. Udayagiri"],
+        "K. Nuagaon": ["OAV K. Nuagaon"],
+        "Khajuripada": ["OAV Dutimendi"],
+        "Kotagarh": ["OAV Kotagarh"],
+        "Phiringia": ["OAV Dindiragaon"],
+        "Phulbani": ["OAV Dhobatota"],
+        "Raikia": ["OAV Raikia"],
+        "Tikabali": ["OAV Tikabali"],
+        "Tumudibandha": ["OAV Jalespatta"]
+      },
+      "Kendrapara": {
+        "Aul": ["OAV Beleswarpur"],
+        "Derabish": ["OAV Derabish"],
+        "Garadapur": ["OAV Garadapur"],
+        "Kendrapara": ["OAV Kendrapara"],
+        "Mahakalapada": ["OAV Mahakalapada"],
+        "Marshaghai": ["OAV Hatia"],
+        "Pattamundai": ["OAV Banto"],
+        "Rajkanika": ["OAV Rajkanika"],
+        "Rajnagar": ["OAV Rajnagar"]
+      },
+      "Keonjhar (Kendujhar)": {
+        "Anandapur": ["OAV Anandapur"],
+        "Banspal": ["OAV Banspal"],
+        "Champua": ["OAV Champua"],
+        "Ghasipura": ["OAV Ghasipura"],
+        "Ghatagaon": ["OAV Ghatagaon"],
+        "Harichandanpur": ["OAV Harichandanpur"],
+        "Hatadihi": ["OAV Hatadihi"],
+        "Jhumpura": ["OAV Khendra"],
+        "Joda": ["OAV Lahanda"],
+        "Keonjhar Sadar": ["OAV Bodapalasa"],
+        "Patna": ["OAV Kendiposi"],
+        "Saharapada": ["OAV Saharapada"],
+        "Telkoi": ["OAV Oria"]
+      },
+      "Khordha": {
+        "Balianta": ["OAV Pratap Sasan"],
+        "Balipatna": ["OAV Bhakrasahi"],
+        "Banapur": ["OAV Thekuapalli / Bhatapada"],
+        "Begunia": ["OAV Begunia"],
+        "Bolagarh": ["OAV Tikatala"],
+        "Chilika": ["OAV Gainapada"],
+        "Jatni": ["OAV Sandhapur"],
+        "Khordha": ["OAV Sialia"],
+        "Tangi": ["OAV Adipada"]
+      },
+      "Koraput": {
+        "Bandhugaon": ["OAV Nilabadi"],
+        "Boipariguda": ["OAV Gumma"],
+        "Borigumma": ["OAV Tarabhatta"],
+        "Dasamantapur": ["OAV Prajapucci"],
+        "Jeypore": ["OAV Jayantigiri"],
+        "Koraput": ["OAV Machhara"],
+        "Kotpad": ["OAV Kotpad"],
+        "Kundra": ["OAV Gundal"],
+        "Lamtaput": ["OAV Messingput"],
+        "Laxmipur": ["OAV Goudaguda"],
+        "Nandapur": ["OAV Ganinayakput"],
+        "Narayanpatna": ["OAV Pachingi"],
+        "Pottangi": ["OAV Pottangi"],
+        "Semiliguda": ["OAV Semiliguda"]
+      },
+      "Malkangiri": {
+        "Kalimela": ["OAV Kalimela"],
+        "Khairaput": ["OAV Khairaput"],
+        "Korkunda": ["OAV Korkunda"],
+        "Korukonda (Kudumulugumma)": ["OAV Gunduriguda"],
+        "Malkangiri": ["OAV Malkangiri"],
+        "Mathili": ["OAV Mathili"],
+        "Podia": ["OAV Bapanpally"]
+      },
+      "Mayurbhanj": {
+        "Badasahi": ["OAV Badasahi"],
+        "Bahalda": ["OAV Bahalda"],
+        "Bangiriposi": ["OAV Jamdapal"],
+        "Baripada": ["OAV Baripada"],
+        "Betnoti": ["OAV Betnoti"],
+        "Bijatala": ["OAV Bijatala"],
+        "Bisoi": ["OAV Jamirdiha"],
+        "GB Nagar": ["OAV GB Nagar"],
+        "Gopabandhunagar": ["OAV Gopabandhunagar"],
+        "Jamda": ["OAV Jamda"],
+        "Jashipur": ["OAV Jashipur"],
+        "Kaptipada": ["OAV Kaptipada"],
+        "Karanjia": ["OAV Karanjia"],
+        "Khunta": ["OAV Khunta"],
+        "Kuliana": ["OAV Kuliana"],
+        "Morada": ["OAV Morada"],
+        "Rairangpur": ["OAV Sanmouda"],
+        "Raruan": ["OAV Raruan"],
+        "Rasgovindpur": ["OAV Rasgovindpur"],
+        "Samakhunta": ["OAV Samakhunta"],
+        "Saraskana": ["OAV Saraskana"],
+        "Sukruli": ["OAV Sukruli"],
+        "Suliapada": ["OAV Suliapada"],
+        "Thakurmunda": ["OAV Digdhar"],
+        "Tiring": ["OAV Tiring"],
+        "Udala": ["OAV Udala"]
+      },
+      "Nabarangpur": {
+        "Chandahandi": ["OAV Chandahandi"],
+        "Dabugaon": ["OAV Dongriguda"],
+        "Jharigam": ["OAV Jharigam"],
+        "Kosagumuda": ["OAV Kosagumuda"],
+        "Nabarangpur": ["OAV Agnipur"],
+        "Nandahandi": ["OAV Nandahandi"],
+        "Papadahandi": ["OAV Papadahandi"],
+        "Raighar": ["OAV Dumardihi"],
+        "Tentulikhunti": ["OAV Tentulikhunti"],
+        "Umarkote": ["OAV Bangaripada"]
+      },
+      "Nayagarh": {
+        "Bhapur": ["OAV Bhapur"],
+        "Daspalla": ["OAV Daspalla"],
+        "Gania": ["OAV Kakudikhol"],
+        "Khandapada": ["OAV Khandapada"],
+        "Nayagarh": ["OAV Nayagarh"],
+        "Nuagaon": ["OAV Nuagaon"],
+        "Odagaon": ["OAV Akhupadar"],
+        "Ranpur": ["OAV Ranpur"]
+      },
+      "Nuapada": {
+        "Boden": ["OAV Boden"],
+        "Khariar": ["OAV Khariar"],
+        "Komna": ["OAV Jhagrahi"],
+        "Nuapada": ["OAV Nuapada"],
+        "Sinapali": ["OAV Sinapali"]
+      },
+      "Puri": {
+        "Astaranga": ["OAV Astaranga"],
+        "Brahmagiri": ["OAV Brahmagiri"],
+        "Delanga": ["OAV Delanga"],
+        "Gop": ["OAV Gop"],
+        "Kakatpur": ["OAV Kakatpur"],
+        "Kanas": ["OAV Jamlagada"],
+        "Krushnaprasad": ["OAV Krushnaprasad"],
+        "Nimapara": ["OAV Hansapada"],
+        "Pipili": ["OAV Pipili"],
+        "Puri Sadar": ["OAV Puri"],
+        "Satyabadi": ["OAV Satyabadi"]
+      },
+      "Rayagada": {
+        "Ambadola / Bissam Cuttack": ["OAV Bissam Cuttack"],
+        "Chandrapur": ["OAV Chandrapur"],
+        "Gudari": ["OAV Gudari"],
+        "Gunupur": ["OAV Gunupur"],
+        "Kalyansingpur": ["OAV Kalyansingpur"],
+        "Kashipur": ["OAV Kashipur"],
+        "Kolnara": ["OAV Kolnara"],
+        "Muniguda": ["OAV Muniguda"],
+        "Padmapur": ["OAV Padmapur"],
+        "Ramanaguda": ["OAV Ramanaguda"],
+        "Rayagada": ["OAV Rayagada"]
+      },
+      "Sambalpur": {
+        "Bamra": ["OAV Dumgermudabad"],
+        "Dhankauda": ["OAV Dhankauda"],
+        "Jamankira": ["OAV Jamankira"],
+        "Jujomura": ["OAV Jujomura"],
+        "Kuchinda": ["OAV Kuchinda"],
+        "Maneswar": ["OAV Maneswar"],
+        "Naktideul": ["OAV Naktideul"],
+        "Rairakhol": ["OAV Rairakhol"],
+        "Rengali": ["OAV Rengali"]
+      },
+      "Subarnapur (Sonepur)": {
+        "Binka": ["OAV Binika"],
+        "Birmaharajpur": ["OAV Birmaharajpur"],
+        "Dunguripali": ["OAV Dunguripali"],
+        "Sonepur": ["OAV Sonepur"],
+        "Tarabha": ["OAV Jamkani"],
+        "Ullunda": ["OAV Ullunda"]
+      },
+      "Sundargarh": {
+        "Balisankara": ["OAV Balisankara"],
+        "Bargaon": ["OAV Bhoipali"],
+        "Bisra": ["OAV Bisra"],
+        "Bonai (Bonaigarh)": ["OAV Bonai"],
+        "Gurundia": ["OAV Gurundia"],
+        "Hemgir": ["OAV Hemgir"],
+        "Koida": ["OAV Koida"],
+        "Kuarmunda": ["OAV Kuarmunda"],
+        "Kutra": ["OAV Budakata"],
+        "Lahunipara": ["OAV Lahunipara"],
+        "Lathikata": ["OAV Lathikata"],
+        "Lephripara": ["OAV Lephripara"],
+        "Nuagaon": ["OAV Jaharitoli"],
+        "Rajgangpur": ["OAV Rajgangpur"],
+        "Sabdega / Subdega": ["OAV Sabdega"],
+        "Sundargarh Sadar": ["OAV Sundargarh"],
+        "Tangarpali": ["OAV Tangarpali"]
+      }
+    };
+
+    window.populateDistricts = function(distId, blockId, oavId) {
       const distEl = document.getElementById(distId);
       if (!distEl) return;
       distEl.innerHTML = '<option value="">-- Select District --</option>';
-      Object.keys(districtBlockData).forEach(d => {
+      Object.keys(OAV_DATA).sort().forEach(d => {
         distEl.innerHTML += `<option value="${d}">${d}</option>`;
       });
 
       if (blockId) {
         distEl.addEventListener('change', function() {
-          populateBlocks(this.value, blockId);
+          populateBlocks(this.value, blockId, oavId);
         });
       }
     };
 
-    window.populateBlocks = function(distVal, blockId) {
+    window.populateBlocks = function(distVal, blockId, oavId) {
       const blockEl = document.getElementById(blockId);
       if (!blockEl) return;
       blockEl.innerHTML = '<option value="">-- Select Block --</option>';
-      if (distVal && districtBlockData[distVal]) {
-        districtBlockData[distVal].forEach(b => {
+      if (distVal && OAV_DATA[distVal]) {
+        Object.keys(OAV_DATA[distVal]).sort().forEach(b => {
           blockEl.innerHTML += `<option value="${b}">${b}</option>`;
+        });
+      }
+      if (oavId) {
+        const oavEl = document.getElementById(oavId);
+        if (oavEl) oavEl.innerHTML = '<option value="">-- Select OAV --</option>';
+        blockEl.onchange = function() {
+          populateOAVs(distVal, this.value, oavId);
+        };
+      }
+    };
+
+    window.populateOAVs = function(distVal, blockVal, oavId) {
+      const oavEl = document.getElementById(oavId);
+      if (!oavEl) return;
+      oavEl.innerHTML = '<option value="">-- Select OAV --</option>';
+      if (distVal && blockVal && OAV_DATA[distVal] && OAV_DATA[distVal][blockVal]) {
+        OAV_DATA[distVal][blockVal].forEach(o => {
+          oavEl.innerHTML += `<option value="${o}">${o}</option>`;
         });
       }
     };
@@ -589,19 +1158,112 @@ const districtPasswords = {
     window.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('img[data-logo]').forEach(im => { im.src = OAVTA_LOGO; });
 
-      populateDistricts('regDist', 'regBlock');
-      populateDistricts('editDist', 'editBlock');
-      populateDistricts('pDist', 'pBlock');
+      populateDistricts('regDist', 'regBlock', 'regOav');
+      populateDistricts('editDist', 'editBlock', 'editOav');
+      populateDistricts('pDist', 'pBlock', 'pOav');
       populateDistricts('publicDistSelect', null);
       populateDistricts('stateDistFilterSelect', null);
+      populateDistricts('dashDistSelect', 'dashBlockSelect', 'dashOavSelect');
+
+      if (document.getElementById('dashDistSelect')) {
+        document.getElementById('dashDistSelect').addEventListener('change', updateDashboardCounts);
+        document.getElementById('dashBlockSelect').addEventListener('change', updateDashboardCounts);
+        document.getElementById('dashOavSelect').addEventListener('change', updateDashboardCounts);
+      }
+      loadDashboardStats();
+      loadPasswordManagerTable();
     });
 
     window.switchTab = function(tabId, evt) {
       document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.side-tab-btn').forEach(b => b.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
       if (evt) evt.currentTarget.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      closeSidebarOnMobile();
     };
+
+    window.toggleSidebar = function() {
+      document.getElementById('appSidebar').classList.toggle('open');
+      document.getElementById('sidebarOverlay').classList.toggle('open');
+    };
+
+    window.closeSidebarOnMobile = function() {
+      if (window.innerWidth <= 900) {
+        document.getElementById('appSidebar').classList.remove('open');
+        document.getElementById('sidebarOverlay').classList.remove('open');
+      }
+    };
+
+    window.filterTableRows = function(tableBodyId, searchInputId) {
+      const input = document.getElementById(searchInputId).value.toLowerCase();
+      const rows = document.querySelectorAll(`#${tableBodyId} tr`);
+      rows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        row.style.display = text.includes(input) ? '' : 'none';
+      });
+    };
+
+    async function loadDashboardStats() {
+      try {
+        const snap = await getDocs(collection(db, "members"));
+        window.dashboardAllMembers = [];
+        snap.forEach(d => window.dashboardAllMembers.push(d.data()));
+
+        document.getElementById('dashTotalMembers').innerText = window.dashboardAllMembers.length;
+
+        const districtSet = new Set();
+        const blockSet = new Set();
+        const oavSet = new Set();
+        window.dashboardAllMembers.forEach(m => {
+          if (m.district) districtSet.add(m.district);
+          if (m.district && m.block) blockSet.add(m.district + '|' + m.block);
+          if (m.district && m.block && m.oavName) oavSet.add(m.district + '|' + m.block + '|' + m.oavName);
+        });
+        document.getElementById('dashTotalDistricts').innerText = districtSet.size;
+        document.getElementById('dashTotalBlocks').innerText = blockSet.size;
+        document.getElementById('dashTotalOavs').innerText = oavSet.size;
+      } catch (err) {
+        console.error("Dashboard stats error:", err);
+      }
+    }
+
+    window.updateDashboardCounts = function() {
+      const dist = document.getElementById('dashDistSelect').value;
+      const block = document.getElementById('dashBlockSelect').value;
+      const oav = document.getElementById('dashOavSelect').value;
+      const all = window.dashboardAllMembers || [];
+
+      const distCard = document.getElementById('dashDistCard');
+      const blockCard = document.getElementById('dashBlockCard');
+      const oavCard = document.getElementById('dashOavCard');
+
+      distCard.style.display = dist ? 'flex' : 'none';
+      blockCard.style.display = (dist && block) ? 'flex' : 'none';
+      oavCard.style.display = (dist && block && oav) ? 'flex' : 'none';
+
+      if (dist) {
+        document.getElementById('dashDistName').innerText = dist;
+        document.getElementById('dashDistCount').innerText = all.filter(m => m.district === dist).length;
+      }
+      if (dist && block) {
+        document.getElementById('dashBlockName').innerText = block;
+        document.getElementById('dashBlockCount').innerText = all.filter(m => m.district === dist && m.block === block).length;
+      }
+      if (dist && block && oav) {
+        document.getElementById('dashOavName').innerText = oav;
+        document.getElementById('dashOavCount').innerText = all.filter(m => m.district === dist && m.block === block && m.oavName === oav).length;
+      }
+    };
+
+    function loadPasswordManagerTable() {
+      const tbody = document.getElementById('districtPasswordsTable');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      Object.keys(districtPasswords).sort().forEach(d => {
+        tbody.innerHTML += `<tr><td><strong>${d}</strong></td><td><code>${districtPasswords[d]}</code></td></tr>`;
+      });
+    }
 
     window.switchSubTab = function(subPanelId, evt) {
       const parent = evt.currentTarget.closest('.glass-card');
@@ -708,8 +1370,9 @@ const districtPasswords = {
       document.getElementById('editName').value = d.name;
       document.getElementById('editDesignation').value = d.designation;
       document.getElementById('editDist').value = d.district;
-      populateBlocks(d.district, 'editBlock');
+      populateBlocks(d.district, 'editBlock', 'editOav');
       document.getElementById('editBlock').value = d.block;
+      populateOAVs(d.district, d.block, 'editOav');
       document.getElementById('editOav').value = d.oavName;
       document.getElementById('editYear').value = d.joinYear;
       document.getElementById('editMobile').value = d.mobile;
@@ -1055,7 +1718,7 @@ const districtPasswords = {
         document.getElementById('distPassAuthArea').style.display = 'none';
         document.getElementById('liveDistName').innerText = distVal;
         document.getElementById('liveDistNameMemberTab').innerText = distVal;
-        populateBlocks(distVal, 'pBlock');
+        populateBlocks(distVal, 'pBlock', 'pOav');
         document.getElementById('distAdminEditPane').style.display = 'block';
         loadDistPortfolios(distVal);
         loadDistMembers(distVal);
@@ -1265,17 +1928,93 @@ const districtPasswords = {
     </div>
   </div>
 
-  <div class="main-container">
-    <div class="nav-tabs">
-      <button class="tab-btn active" onclick="switchTab('register', event)"><i class="fa-solid fa-id-card"></i> Join Association</button>
-      <button class="tab-btn" onclick="switchTab('memberLogin', event)"><i class="fa-solid fa-user-check"></i> Member Login</button>
-      <button class="tab-btn" onclick="switchTab('publicPortfolios', event)"><i class="fa-solid fa-sitemap"></i> District Portfolios</button>
-      <button class="tab-btn" onclick="switchTab('distAdmin', event)"><i class="fa-solid fa-user-gear"></i> District Admin</button>
-      <button class="tab-btn" onclick="switchTab('stateAdmin', event)"><i class="fa-solid fa-building-shield"></i> State Admin</button>
+  <button class="sidebar-toggle" id="sidebarToggleBtn" onclick="toggleSidebar()" aria-label="Toggle Menu"><i class="fa-solid fa-bars"></i></button>
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+  <div class="app-shell">
+    <aside class="sidebar" id="appSidebar">
+      <div class="sidebar-head">
+        <img src="" data-logo alt="Crest" class="sidebar-logo">
+        <div class="sidebar-title">OAVTA<br>ODISHA PORTAL</div>
+      </div>
+      <button class="side-tab-btn active" onclick="switchTab('home', event)"><i class="fa-solid fa-gauge-high"></i> <span>Home Dashboard</span></button>
+      <button class="side-tab-btn" onclick="switchTab('register', event)"><i class="fa-solid fa-id-card"></i> <span>Join Association</span></button>
+      <button class="side-tab-btn" onclick="switchTab('memberLogin', event)"><i class="fa-solid fa-user-check"></i> <span>Member Login</span></button>
+      <button class="side-tab-btn" onclick="switchTab('publicPortfolios', event)"><i class="fa-solid fa-sitemap"></i> <span>District Portfolios</span></button>
+      <button class="side-tab-btn" onclick="switchTab('distAdmin', event)"><i class="fa-solid fa-user-gear"></i> <span>District Admin</span></button>
+      <button class="side-tab-btn" onclick="switchTab('stateAdmin', event)"><i class="fa-solid fa-building-shield"></i> <span>State Admin</span></button>
+    </aside>
+
+    <main class="main-content">
+
+    <!-- 0. HOME DASHBOARD -->
+    <div id="home" class="panel active">
+      <div class="glass-card">
+        <div class="section-header">
+          <div class="section-title"><i class="fa-solid fa-gauge-high"></i> Home Dashboard</div>
+        </div>
+
+        <div class="dash-cards-grid">
+          <div class="dash-card">
+            <div class="dash-icon"><i class="fa-solid fa-users"></i></div>
+            <div class="dash-label">Total Members Joined</div>
+            <div class="dash-value" id="dashTotalMembers">0</div>
+            <div class="dash-sub">Across the Association</div>
+          </div>
+          <div class="dash-card">
+            <div class="dash-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+            <div class="dash-label">Districts Covered</div>
+            <div class="dash-value" id="dashTotalDistricts">0</div>
+            <div class="dash-sub">Out of 30 Districts</div>
+          </div>
+          <div class="dash-card">
+            <div class="dash-icon"><i class="fa-solid fa-location-dot"></i></div>
+            <div class="dash-label">Blocks Covered</div>
+            <div class="dash-value" id="dashTotalBlocks">0</div>
+            <div class="dash-sub">With Registered Members</div>
+          </div>
+          <div class="dash-card">
+            <div class="dash-icon"><i class="fa-solid fa-school"></i></div>
+            <div class="dash-label">OAVs Represented</div>
+            <div class="dash-value" id="dashTotalOavs">0</div>
+            <div class="dash-sub">With Registered Members</div>
+          </div>
+        </div>
+
+        <div class="dash-drill-section">
+          <h4 style="font-family:'Cinzel'; color: var(--primary); margin-bottom: 15px;"><i class="fa-solid fa-filter"></i> View Members District / Block / Vidyalaya Wise</h4>
+          <div class="dash-drill-selects">
+            <div class="form-group"><label><i class="fa-solid fa-map-location-dot"></i> District</label><select id="dashDistSelect"></select></div>
+            <div class="form-group"><label><i class="fa-solid fa-location-dot"></i> Block</label><select id="dashBlockSelect"><option value="">-- Select Block --</option></select></div>
+            <div class="form-group"><label><i class="fa-solid fa-school"></i> OAV Name</label><select id="dashOavSelect"><option value="">-- Select OAV --</option></select></div>
+          </div>
+        </div>
+
+        <div class="dash-cards-grid">
+          <div class="dash-card" id="dashDistCard" style="display:none;">
+            <div class="dash-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+            <div class="dash-label">District: <span id="dashDistName"></span></div>
+            <div class="dash-value" id="dashDistCount">0</div>
+            <div class="dash-sub">Members Joined</div>
+          </div>
+          <div class="dash-card" id="dashBlockCard" style="display:none;">
+            <div class="dash-icon"><i class="fa-solid fa-location-dot"></i></div>
+            <div class="dash-label">Block: <span id="dashBlockName"></span></div>
+            <div class="dash-value" id="dashBlockCount">0</div>
+            <div class="dash-sub">Members Joined</div>
+          </div>
+          <div class="dash-card" id="dashOavCard" style="display:none;">
+            <div class="dash-icon"><i class="fa-solid fa-school"></i></div>
+            <div class="dash-label">OAV: <span id="dashOavName"></span></div>
+            <div class="dash-value" id="dashOavCount">0</div>
+            <div class="dash-sub">Members Joined</div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- 1. REGISTRATION PANEL -->
-    <div id="register" class="panel active">
+    <div id="register" class="panel">
       <div class="glass-card">
         <div class="section-header">
           <div class="section-title"><i class="fa-solid fa-user-plus"></i> Member Registration Form</div>
@@ -1288,7 +2027,7 @@ const districtPasswords = {
             <div class="form-group"><label><i class="fa-solid fa-graduation-cap"></i> Vidyalaya Designation</label><input type="text" id="regDesignation" required placeholder="e.g. PGT Physics"></div>
             <div class="form-group"><label><i class="fa-solid fa-map-location-dot"></i> District</label><select id="regDist" required></select></div>
             <div class="form-group"><label><i class="fa-solid fa-location-dot"></i> Block</label><select id="regBlock" required><option value="">-- Select Block --</option></select></div>
-            <div class="form-group"><label><i class="fa-solid fa-school"></i> OAV School Name</label><input type="text" id="regOav" required placeholder="OAV Name"></div>
+            <div class="form-group"><label><i class="fa-solid fa-school"></i> OAV School Name</label><select id="regOav" required><option value="">-- Select District &amp; Block First --</option></select></div>
             <div class="form-group"><label><i class="fa-solid fa-calendar"></i> Year of Joining</label><input type="number" id="regYear" required placeholder="YYYY"></div>
             <div class="form-group"><label><i class="fa-solid fa-phone"></i> Mobile Number</label><input type="tel" id="regMobile" required placeholder="+91..."></div>
             <div class="form-group">
@@ -1388,7 +2127,7 @@ const districtPasswords = {
                   <div class="form-group"><label>Vidyalaya Designation</label><input type="text" id="editDesignation" required></div>
                   <div class="form-group"><label>District</label><select id="editDist" required></select></div>
                   <div class="form-group"><label>Block</label><select id="editBlock" required><option value="">-- Select Block --</option></select></div>
-                  <div class="form-group"><label>OAV Name</label><input type="text" id="editOav" required></div>
+                  <div class="form-group"><label>OAV Name</label><select id="editOav" required><option value="">-- Select District &amp; Block First --</option></select></div>
                   <div class="form-group"><label>Year of Joining</label><input type="number" id="editYear" required></div>
                   <div class="form-group"><label>Mobile Number</label><input type="tel" id="editMobile" required></div>
                 </div>
@@ -1504,7 +2243,7 @@ const districtPasswords = {
                 <div class="form-group"><label>Association Designation</label><input type="text" id="pAssocDesig" placeholder="e.g. District President" required></div>
                 <div class="form-group"><label>Vidyalaya Designation</label><input type="text" id="pSchoolDesig" placeholder="e.g. TGT SST" required></div>
                 <div class="form-group"><label>Block</label><select id="pBlock" required><option value="">-- Select Block --</option></select></div>
-                <div class="form-group"><label>OAV Name</label><input type="text" id="pOav" placeholder="School Name" required></div>
+                <div class="form-group"><label>OAV Name</label><select id="pOav" required><option value="">-- Select District &amp; Block First --</option></select></div>
                 <div class="form-group"><label>Joining Year</label><input type="number" id="pYear" placeholder="YYYY" required></div>
                 <div class="form-group"><label>Mobile Number</label><input type="tel" id="pMobile" placeholder="+91..." required></div>
               </div>
@@ -1538,6 +2277,7 @@ const districtPasswords = {
             <button class="sub-tab-btn active" onclick="switchSubTab('subStateAllMembers', event)"><i class="fa-solid fa-users-gear"></i> State Cadre Records</button>
             <button class="sub-tab-btn" onclick="switchSubTab('subStateDistMembers', event)"><i class="fa-solid fa-filter"></i> District-Wise Viewer</button>
             <button class="sub-tab-btn" onclick="switchSubTab('subStatePortfolios', event)"><i class="fa-solid fa-sitemap"></i> State Portfolios Registry</button>
+            <button class="sub-tab-btn" onclick="switchSubTab('subStatePasswords', event)"><i class="fa-solid fa-key"></i> Password Manager</button>
           </div>
 
           <!-- STATE SUB 1: ALL MEMBERS -->
@@ -1545,6 +2285,9 @@ const districtPasswords = {
             <div class="section-header" style="border:none; margin-bottom:10px;">
               <h3 style="font-family:'Cinzel'; color:var(--primary); display:flex; align-items:center; gap:10px;"><img src="" data-logo alt="Crest" class="logo-badge-sm"> Master Members Directory (Total: <span id="stateTotalMembersCount">0</span>)</h3>
               <button onclick="exportStateData('allMembers')" class="btn btn-gold"><i class="fa-solid fa-file-csv"></i> Download Master State CSV</button>
+            </div>
+            <div style="margin-bottom:15px;">
+              <input type="text" id="stateAllMembersSearch" onkeyup="filterTableRows('allMembersTable', 'stateAllMembersSearch')" placeholder="Search by name / ID / district / block / mobile..." style="width:100%; max-width:420px;">
             </div>
             <div class="table-wrapper">
               <table>
@@ -1567,6 +2310,9 @@ const districtPasswords = {
               <h3 style="font-family:'Cinzel'; color:var(--primary);">Filtered District Directory</h3>
               <button onclick="exportStateData('distMembers')" class="btn btn-gold"><i class="fa-solid fa-file-csv"></i> Download Filtered CSV</button>
             </div>
+            <div style="margin-bottom:15px;">
+              <input type="text" id="stateDistMembersSearch" onkeyup="filterTableRows('stateDistMembersTable', 'stateDistMembersSearch')" placeholder="Search by name / ID / block / mobile..." style="width:100%; max-width:420px;">
+            </div>
 
             <div class="table-wrapper">
               <table>
@@ -1584,6 +2330,9 @@ const districtPasswords = {
               <h3 style="font-family:'Cinzel'; color:var(--primary);">Master Executive Bodies Registry</h3>
               <button onclick="exportStateData('portfolios')" class="btn btn-gold"><i class="fa-solid fa-file-csv"></i> Download Portfolios CSV</button>
             </div>
+            <div style="margin-bottom:15px;">
+              <input type="text" id="statePortfoliosSearch" onkeyup="filterTableRows('allPortfoliosTable', 'statePortfoliosSearch')" placeholder="Search by name / district / block / mobile..." style="width:100%; max-width:420px;">
+            </div>
             <div class="table-wrapper">
               <table>
                 <thead><tr><th>District</th><th>Name</th><th>Assoc. Designation</th><th>School Designation</th><th>Block</th><th>Mobile</th></tr></thead>
@@ -1592,10 +2341,28 @@ const districtPasswords = {
             </div>
           </div>
 
+          <!-- STATE SUB 4: DISTRICT PASSWORD MANAGER -->
+          <div id="subStatePasswords" class="sub-panel">
+            <div class="section-header" style="border:none; margin-bottom:10px;">
+              <h3 style="font-family:'Cinzel'; color:var(--primary);"><i class="fa-solid fa-key"></i> District Admin Password Manager</h3>
+            </div>
+            <p style="margin-bottom:15px; color:var(--text-muted); font-size:13px;"><i class="fa-solid fa-triangle-exclamation" style="color:var(--accent-gold);"></i> Confidential — visible only to State Admin. Use these credentials to help District Admins log in to their panel.</p>
+            <div style="margin-bottom:15px;">
+              <input type="text" id="statePasswordsSearch" onkeyup="filterTableRows('districtPasswordsTable', 'statePasswordsSearch')" placeholder="Search by district name..." style="width:100%; max-width:420px;">
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead><tr><th>District</th><th>Admin Password</th></tr></thead>
+                <tbody id="districtPasswordsTable"></tbody>
+              </table>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
 
+    </main>
   </div>
 
   <div class="site-footer">
