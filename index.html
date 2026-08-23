@@ -794,7 +794,7 @@
         "Basudevpur": ["OAV Eram"],
         "Bhadrak": ["OAV Olanga"],
         "Bhandaripokhari": ["OAV Uttarabada"],
-        "Bonth": ["OAV Pallasgadia"],
+        "Bonth": ["OAV Palasagadia"],
         "Chandabali": ["OAV Majhigaon"],
         "Dhamnagar": ["OAV Shyampur"],
         "Tihidi": ["OAV Santhapur"]
@@ -1580,7 +1580,7 @@
         document.getElementById('distCount').innerText = snap.size;
 
         if (snap.empty) {
-          container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:15px; background:#fff; border-radius:10px; border:1px dashed #cbd5e1; color:#64748b;">No Executive Council Members Assigned Yet.</div>`;
+          container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:15px; background:#fff; border-radius:10px; border:1px dashed #cbd5e1; color:#64748b;">No Portfolios Assigned Yet.</div>`;
           return;
         }
 
@@ -1753,7 +1753,7 @@
         };
 
         await addDoc(collection(db, "portfolios"), pData);
-        msg.innerHTML = `<div class="alert alert-success"><i class="fa-solid fa-check"></i> Executive added successfully.</div>`;
+        msg.innerHTML = `<div class="alert alert-success"><i class="fa-solid fa-check"></i> Portfolio added successfully.</div>`;
         document.getElementById('distPortfolioForm').reset();
         loadDistPortfolios(dist);
       } catch(err) {
@@ -1774,7 +1774,7 @@
         const snap = await getDocs(q);
 
         if (snap.empty) {
-          cardContainer.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:30px; background:#f8fafc; border-radius:12px; border:1px dashed #cbd5e1; color:#64748b;">No Executive Council Members Registered for Selected District.</div>';
+          cardContainer.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:30px; background:#f8fafc; border-radius:12px; border:1px dashed #cbd5e1; color:#64748b;">No Portfolio Members Registered for Selected District.</div>';
           return;
         }
 
@@ -1806,7 +1806,7 @@
         document.getElementById('stateAdminDashboard').style.display = 'block';
         fetchStateMasterData();
       } else {
-        msg.innerHTML = `<div class="alert alert-danger" style="margin-top:10px;"><i class="fa-solid fa-lock"></i> Invalid Master Admin Credentials!</div>`;
+        msg.innerHTML = `<div class="alert alert-danger" style="margin-top:10px;"><i class="fa-solid fa-lock"></i> Invalid Admin Credentials!</div>`;
       }
     };
 
@@ -1935,7 +1935,7 @@
     <aside class="sidebar" id="appSidebar">
       <div class="sidebar-head">
         <img src="" data-logo alt="Crest" class="sidebar-logo">
-        <div class="sidebar-title">OAVTA<br>ODISHA PORTAL</div>
+        <div class="sidebar-title">ODISHA ADARSHA VIDYALAYA TEACHERS' ASSOCIATION<br>OAVTA</div>
       </div>
       <button class="side-tab-btn active" onclick="switchTab('home', event)"><i class="fa-solid fa-gauge-high"></i> <span>Home Dashboard</span></button>
       <button class="side-tab-btn" onclick="switchTab('register', event)"><i class="fa-solid fa-id-card"></i> <span>Join Association</span></button>
@@ -1975,7 +1975,7 @@
           </div>
           <div class="dash-card">
             <div class="dash-icon"><i class="fa-solid fa-school"></i></div>
-            <div class="dash-label">OAVs Represented</div>
+            <div class="dash-label">Vidyalaya Represented</div>
             <div class="dash-value" id="dashTotalOavs">0</div>
             <div class="dash-sub">With Registered Members</div>
           </div>
@@ -2017,7 +2017,7 @@
     <div id="register" class="panel">
       <div class="glass-card">
         <div class="section-header">
-          <div class="section-title"><i class="fa-solid fa-user-plus"></i> Member Registration Form</div>
+          <div class="section-title"><i class="fa-solid fa-user-plus"></i> Member Registration Portal</div>
         </div>
         <p style="margin-bottom:20px; color:var(--text-muted); font-size:14px;">Enter details to complete registration and get Membership ID Number.</p>
         <div id="regMsg"></div>
@@ -2027,7 +2027,7 @@
             <div class="form-group"><label><i class="fa-solid fa-graduation-cap"></i> Vidyalaya Designation</label><input type="text" id="regDesignation" required placeholder="e.g. PGT Physics"></div>
             <div class="form-group"><label><i class="fa-solid fa-map-location-dot"></i> District</label><select id="regDist" required></select></div>
             <div class="form-group"><label><i class="fa-solid fa-location-dot"></i> Block</label><select id="regBlock" required><option value="">-- Select Block --</option></select></div>
-            <div class="form-group"><label><i class="fa-solid fa-school"></i> OAV School Name</label><select id="regOav" required><option value="">-- Select District &amp; Block First --</option></select></div>
+            <div class="form-group"><label><i class="fa-solid fa-school"></i> OAV Name</label><select id="regOav" required><option value="">-- Select District &amp; Block First --</option></select></div>
             <div class="form-group"><label><i class="fa-solid fa-calendar"></i> Year of Joining</label><input type="number" id="regYear" required placeholder="YYYY"></div>
             <div class="form-group"><label><i class="fa-solid fa-phone"></i> Mobile Number</label><input type="tel" id="regMobile" required placeholder="+91..."></div>
             <div class="form-group">
@@ -2264,19 +2264,19 @@
 
         <div id="stateAdminLoginArea" style="max-width:400px; margin: 0 auto 20px; background:#f8fafc; padding:25px; border-radius:12px; border:1px solid var(--border-color); text-align:center;">
           <div class="form-group">
-            <label><i class="fa-solid fa-lock"></i> Master Password</label>
+            <label><i class="fa-solid fa-lock"></i> Password</label>
             <input type="password" id="stateAdminPassInput" placeholder="Password">
           </div>
-          <button type="button" onclick="verifyStatePassword()" class="btn" style="margin-top:12px; width:100%;"><i class="fa-solid fa-key"></i> Authorize Access</button>
+          <button type="button" onclick="verifyStatePassword()" class="btn" style="margin-top:12px; width:100%;"><i class="fa-solid fa-key"></i> Login</button>
           <div id="statePassMsg"></div>
         </div>
 
         <div id="stateAdminDashboard" class="dynamic-edit-pane">
           
           <div class="sub-tabs">
-            <button class="sub-tab-btn active" onclick="switchSubTab('subStateAllMembers', event)"><i class="fa-solid fa-users-gear"></i> State Cadre Records</button>
-            <button class="sub-tab-btn" onclick="switchSubTab('subStateDistMembers', event)"><i class="fa-solid fa-filter"></i> District-Wise Viewer</button>
-            <button class="sub-tab-btn" onclick="switchSubTab('subStatePortfolios', event)"><i class="fa-solid fa-sitemap"></i> State Portfolios Registry</button>
+            <button class="sub-tab-btn active" onclick="switchSubTab('subStateAllMembers', event)"><i class="fa-solid fa-users-gear"></i> All registered Members</button>
+            <button class="sub-tab-btn" onclick="switchSubTab('subStateDistMembers', event)"><i class="fa-solid fa-filter"></i> District-Wise Members</button>
+            <button class="sub-tab-btn" onclick="switchSubTab('subStatePortfolios', event)"><i class="fa-solid fa-sitemap"></i> District Portfolios</button>
             <button class="sub-tab-btn" onclick="switchSubTab('subStatePasswords', event)"><i class="fa-solid fa-key"></i> Password Manager</button>
           </div>
 
@@ -2284,7 +2284,7 @@
           <div id="subStateAllMembers" class="sub-panel active">
             <div class="section-header" style="border:none; margin-bottom:10px;">
               <h3 style="font-family:'Cinzel'; color:var(--primary); display:flex; align-items:center; gap:10px;"><img src="" data-logo alt="Crest" class="logo-badge-sm"> Master Members Directory (Total: <span id="stateTotalMembersCount">0</span>)</h3>
-              <button onclick="exportStateData('allMembers')" class="btn btn-gold"><i class="fa-solid fa-file-csv"></i> Download Master State CSV</button>
+              <button onclick="exportStateData('allMembers')" class="btn btn-gold"><i class="fa-solid fa-file-csv"></i> Download All Members CSV</button>
             </div>
             <div style="margin-bottom:15px;">
               <input type="text" id="stateAllMembersSearch" onkeyup="filterTableRows('allMembersTable', 'stateAllMembersSearch')" placeholder="Search by name / ID / district / block / mobile..." style="width:100%; max-width:420px;">
@@ -2327,7 +2327,7 @@
           <!-- STATE SUB 3: EXECUTIVE PORTFOLIOS -->
           <div id="subStatePortfolios" class="sub-panel">
             <div class="section-header" style="border:none; margin-bottom:10px;">
-              <h3 style="font-family:'Cinzel'; color:var(--primary);">Master Executive Bodies Registry</h3>
+              <h3 style="font-family:'Cinzel'; color:var(--primary);">District Portfolios</h3>
               <button onclick="exportStateData('portfolios')" class="btn btn-gold"><i class="fa-solid fa-file-csv"></i> Download Portfolios CSV</button>
             </div>
             <div style="margin-bottom:15px;">
@@ -2335,7 +2335,7 @@
             </div>
             <div class="table-wrapper">
               <table>
-                <thead><tr><th>District</th><th>Name</th><th>Assoc. Designation</th><th>School Designation</th><th>Block</th><th>Mobile</th></tr></thead>
+                <thead><tr><th>District</th><th>Name</th><th>Assoc. Designation</th><th>Vidyalaya Designation</th><th>Block</th><th>Mobile</th></tr></thead>
                 <tbody id="allPortfoliosTable"></tbody>
               </table>
             </div>
@@ -2368,7 +2368,7 @@
   <div class="site-footer">
     <img src="" data-logo alt="OAVTA Crest" class="logo-badge">
     <p>Odisha Adarsha Vidyalaya Teachers' Association</p>
-    <p class="copyright">&copy; OAVTA Odisha &mdash; Official Portal</p>
+    <p class="copyright">&copy; OAVTA &mdash; Official Portal</p>
   </div>
 
 </body>
