@@ -1276,19 +1276,37 @@
       document.getElementById('successModal').style.display = 'none';
     };
 
-    window.regPhotoData = "";
-    window.previewRegPhoto = function(evt) {
-      const file = evt.target.files[0];
-      const preview = document.getElementById('regPhotoPreview');
-      if (!file) { window.regPhotoData = ""; preview.style.display = 'none'; return; }
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        window.regPhotoData = e.target.result;
-        preview.src = e.target.result;
-        preview.style.display = 'block';
-      };
-      reader.readAsDataURL(file);
+window.regPhotoData = "";
+window.previewRegPhoto = function(evt) {
+  const file = evt.target.files[0];
+  const preview = document.getElementById('regPhotoPreview');
+  if (!file) { window.regPhotoData = ""; preview.style.display = 'none'; return; }
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      const SIZE = 240; // stored photo will be a 240x240 square, ~15-30KB
+      const canvas = document.createElement('canvas');
+      canvas.width = SIZE;
+      canvas.height = SIZE;
+      const ctx = canvas.getContext('2d');
+
+      // Center-crop the source image to a square before scaling down
+      const side = Math.min(img.width, img.height);
+      const sx = (img.width - side) / 2;
+      const sy = (img.height - side) / 2;
+      ctx.drawImage(img, sx, sy, side, side, 0, 0, SIZE, SIZE);
+
+      const compressed = canvas.toDataURL('image/jpeg', 0.72);
+      window.regPhotoData = compressed;
+      preview.src = compressed;
+      preview.style.display = 'block';
     };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+};
 
     function renderStatusBadge(status) {
       const s = (status || 'Active');
