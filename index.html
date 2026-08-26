@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AVTAO Portal - Adarsha Vidyalaya Teachers Association, Odisha</title>
+  <title>OAVTA Portal - Odisha Adarsha Vidyalaya Teachers Association</title>
   
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -121,20 +121,10 @@
       border: 1px solid var(--border-color);
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
       flex-wrap: wrap;
     }
-
-    .topnav-head {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 4px 14px 4px 4px;
-      border-right: 2px solid var(--bg-slate);
-      margin-right: 6px;
-    }
-    .sidebar-logo { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--accent-gold); object-fit: cover; flex-shrink: 0; }
-    .sidebar-title { font-family: 'Cinzel', serif; font-weight: 800; font-size: 13px; color: var(--primary); line-height: 1.25; white-space: nowrap; }
 
     .side-tab-btn {
       display: flex;
@@ -153,12 +143,13 @@
       transition: all 0.25s ease;
     }
     .side-tab-btn i { width: 16px; text-align: center; color: var(--accent-gold); }
-    .side-tab-btn:hover { background: rgba(255, 255, 255, 0.06); color: var(--text-dark); }
+    .side-tab-btn:hover { background: rgba(56, 189, 248, 0.12); color: var(--text-dark); transform: translateY(-1px); }
     .side-tab-btn.active {
       background: var(--blue-gradient);
       color: #ffffff;
       box-shadow: 0 4px 15px rgba(30, 58, 138, 0.35);
     }
+    .side-tab-btn.active:hover { transform: none; }
     .side-tab-btn.active i { color: #fbbf24; }
 
     .main-content { flex: 1; min-width: 0; width: 100%; }
@@ -166,8 +157,6 @@
     @media (max-width: 900px) {
       .app-shell { padding: 0 12px; }
       .topnav { justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
-      .topnav-head { border-right: none; }
-      .sidebar-title { display: none; }
       .side-tab-btn span { display: none; }
       .side-tab-btn { padding: 10px 12px; }
       .side-tab-btn i { font-size: 16px; }
@@ -408,18 +397,35 @@
       border-radius: 10px;
       font-size: 14px;
       font-family: inherit;
-      background: rgba(255, 255, 255, 0.05);
+      background: #182338;
       color: var(--text-dark);
       transition: all 0.2s ease;
     }
 
     input::placeholder, select::placeholder { color: #64748b; }
 
+    input:hover, select:hover {
+      border-color: rgba(56, 189, 248, 0.5);
+      background: #1d2a44;
+    }
+
     input:focus, select:focus {
       outline: none;
       border-color: #38bdf8;
-      background: rgba(255, 255, 255, 0.08);
+      background: #1d2a44;
       box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
+    }
+
+    /* Ensure dropdown option lists stay readable on dark backgrounds */
+    select option, select optgroup {
+      background: #182338;
+      color: #f1f5f9;
+    }
+    select option:hover,
+    select option:focus,
+    select option:checked {
+      background: #38bdf8;
+      color: #0a192f;
     }
 
     .btn {
@@ -1880,7 +1886,7 @@ window.previewRegPhoto = function(evt) {
   </div>
 
   <div class="gov-topbar">
-    <span><i class="fa-solid fa-building-columns"></i> Adarsha Vidyalaya Teachers' Association, Odisha</span>
+    <span><i class="fa-solid fa-building-columns"></i> Odisha Adarsha Vidyalaya Teachers' Association</span>
     <span><i class="fa-solid fa-shield-halved"></i> Official Portal</span>
   </div>
 
@@ -1888,17 +1894,14 @@ window.previewRegPhoto = function(evt) {
     <div class="brand-container">
       <img src="" data-logo alt="OAVTA Crest" class="logo-badge">
       <div class="brand-titles">
-        
+        <h1>Odisha Adarsha Vidyalaya Teachers' Association</h1>
+        <p>OAVTA</p>
       </div>
     </div>
   </div>
 
   <div class="app-shell">
     <nav class="topnav" id="appTopnav">
-      <div class="topnav-head">
-        <img src="" data-logo alt="Crest" class="sidebar-logo">
-        <div class="sidebar-title">ODISHA ADARSHA VIDYALAYA TEACHERS' ASSOCIATION<br>OAVTA</div>
-      </div>
       <button class="side-tab-btn active" onclick="switchTab('home', event)"><i class="fa-solid fa-gauge-high"></i> <span>Home Dashboard</span></button>
       <button class="side-tab-btn" onclick="switchTab('register', event)"><i class="fa-solid fa-id-card"></i> <span>Join Association</span></button>
       <button class="side-tab-btn" onclick="switchTab('memberLogin', event)"><i class="fa-solid fa-user-check"></i> <span>Member Login</span></button>
