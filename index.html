@@ -10,18 +10,18 @@
   
   <style>
     :root {
-      --primary: #0a192f;
+      --primary: #38bdf8;
       --primary-light: #172a45;
-      --accent-gold: #d97706;
-      --gold-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      --accent-gold: #38bdf8;
+      --gold-gradient: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
       --blue-gradient: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0284c7 100%);
-      --bg-slate: #f1f5f9;
-      --card-bg: #ffffff;
-      --text-dark: #0f172a;
-      --text-muted: #64748b;
-      --border-color: #e2e8f0;
-      --radius-lg: 16px;
-      --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+      --bg-slate: #0b0f19;
+      --card-bg: #131c31;
+      --text-dark: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border-color: rgba(255, 255, 255, 0.1);
+      --radius-lg: 20px;
+      --shadow-premium: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -68,7 +68,7 @@
       background: #ffffff;
       border-radius: 50%;
       padding: 2px;
-      box-shadow: 0 0 20px rgba(217, 119, 6, 0.4);
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
       border: 2px solid var(--accent-gold);
       object-fit: cover;
     }
@@ -100,7 +100,7 @@
       z-index: 10;
     }
 
-    /* ================= SIDEBAR APP SHELL ================= */
+    /* ================= TOP NAVIGATION APP SHELL ================= */
     .app-shell {
       max-width: 1400px;
       margin: -40px auto 0;
@@ -108,45 +108,40 @@
       position: relative;
       z-index: 10;
       display: flex;
-      align-items: flex-start;
+      flex-direction: column;
       gap: 22px;
     }
 
-    .sidebar {
-      width: 250px;
-      flex-shrink: 0;
-      background: #ffffff;
+    .topnav {
+      width: 100%;
+      background: var(--card-bg);
       border-radius: 16px;
-      padding: 18px 14px;
+      padding: 12px 14px;
       box-shadow: var(--shadow-premium);
       border: 1px solid var(--border-color);
-      position: sticky;
-      top: 20px;
       display: flex;
-      flex-direction: column;
-      gap: 6px;
-      max-height: calc(100vh - 40px);
-      overflow-y: auto;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
-    .sidebar-head {
+    .topnav-head {
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 4px 6px 14px;
-      border-bottom: 2px solid var(--bg-slate);
-      margin-bottom: 8px;
+      padding: 4px 14px 4px 4px;
+      border-right: 2px solid var(--bg-slate);
+      margin-right: 6px;
     }
-    .sidebar-logo { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--accent-gold); object-fit: cover; }
-    .sidebar-title { font-family: 'Cinzel', serif; font-weight: 800; font-size: 13px; color: var(--primary); line-height: 1.25; }
+    .sidebar-logo { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--accent-gold); object-fit: cover; flex-shrink: 0; }
+    .sidebar-title { font-family: 'Cinzel', serif; font-weight: 800; font-size: 13px; color: var(--primary); line-height: 1.25; white-space: nowrap; }
 
     .side-tab-btn {
       display: flex;
       align-items: center;
-      gap: 10px;
-      width: 100%;
+      gap: 8px;
       text-align: left;
-      padding: 12px 14px;
+      padding: 10px 16px;
       border: none;
       background: transparent;
       color: var(--text-muted);
@@ -154,10 +149,11 @@
       font-size: 13px;
       border-radius: 10px;
       cursor: pointer;
+      white-space: nowrap;
       transition: all 0.25s ease;
     }
-    .side-tab-btn i { width: 18px; text-align: center; color: var(--accent-gold); }
-    .side-tab-btn:hover { background: #f8fafc; color: var(--primary); }
+    .side-tab-btn i { width: 16px; text-align: center; color: var(--accent-gold); }
+    .side-tab-btn:hover { background: rgba(255, 255, 255, 0.06); color: var(--text-dark); }
     .side-tab-btn.active {
       background: var(--blue-gradient);
       color: #ffffff;
@@ -165,53 +161,16 @@
     }
     .side-tab-btn.active i { color: #fbbf24; }
 
-    .main-content { flex: 1; min-width: 0; }
-
-    .sidebar-toggle {
-      display: none;
-      position: fixed;
-      top: 14px;
-      right: 14px;
-      z-index: 1001;
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      border: none;
-      background: var(--blue-gradient);
-      color: #fff;
-      font-size: 18px;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.3);
-      cursor: pointer;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .sidebar-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.55);
-      z-index: 999;
-    }
+    .main-content { flex: 1; min-width: 0; width: 100%; }
 
     @media (max-width: 900px) {
-      .app-shell { display: block; padding: 0 12px; }
-      .sidebar-toggle { display: flex; }
-      .sidebar {
-        position: fixed;
-        top: 0; left: 0;
-        height: 100vh;
-        max-height: 100vh;
-        width: 78%;
-        max-width: 300px;
-        border-radius: 0 16px 16px 0;
-        transform: translateX(-105%);
-        transition: transform 0.3s ease;
-        z-index: 1000;
-      }
-      .sidebar.open { transform: translateX(0); }
-      .sidebar-overlay.open { display: block; }
-      .main-content { width: 100%; }
+      .app-shell { padding: 0 12px; }
+      .topnav { justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
+      .topnav-head { border-right: none; }
+      .sidebar-title { display: none; }
+      .side-tab-btn span { display: none; }
+      .side-tab-btn { padding: 10px 12px; }
+      .side-tab-btn i { font-size: 16px; }
       .header-hero { padding: 25px 15px 55px; }
       .brand-titles h1 { font-size: 20px; letter-spacing: 0.8px; }
       .brand-titles p { font-size: 11px; letter-spacing: 1.5px; }
@@ -280,7 +239,7 @@
     }
 
     .dash-card {
-      background: linear-gradient(145deg, #ffffff, #f8fafc);
+      background: linear-gradient(145deg, #172a45, #131c31);
       border: 1px solid var(--border-color);
       border-top: 4px solid var(--accent-gold);
       border-radius: 16px;
@@ -325,8 +284,8 @@
     }
 
     .dash-drill-section {
-      background: #f8fafc;
-      border: 2px dashed #cbd5e1;
+      background: rgba(255, 255, 255, 0.03);
+      border: 2px dashed rgba(255, 255, 255, 0.15);
       border-radius: 16px;
       padding: 25px;
       margin-bottom: 25px;
@@ -343,14 +302,14 @@
       display: flex;
       gap: 10px;
       margin-bottom: 20px;
-      border-bottom: 2px solid #e2e8f0;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
       padding-bottom: 10px;
     }
 
     .sub-tab-btn {
       padding: 10px 18px;
       border: none;
-      background: #e2e8f0;
+      background: rgba(255, 255, 255, 0.06);
       color: var(--text-muted);
       font-weight: 700;
       font-size: 13px;
@@ -403,8 +362,8 @@
     .section-title i { color: var(--accent-gold); }
 
     .selection-banner {
-      background: #f8fafc;
-      border: 2px dashed #cbd5e1;
+      background: rgba(255, 255, 255, 0.03);
+      border: 2px dashed rgba(255, 255, 255, 0.15);
       border-radius: 14px;
       padding: 25px;
       margin-bottom: 25px;
@@ -436,7 +395,7 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      color: #475569;
+      color: #94a3b8;
       margin-bottom: 8px;
       display: flex;
       align-items: center;
@@ -449,16 +408,18 @@
       border-radius: 10px;
       font-size: 14px;
       font-family: inherit;
-      background: #f8fafc;
+      background: rgba(255, 255, 255, 0.05);
       color: var(--text-dark);
       transition: all 0.2s ease;
     }
 
+    input::placeholder, select::placeholder { color: #64748b; }
+
     input:focus, select:focus {
       outline: none;
-      border-color: #2563eb;
-      background: #ffffff;
-      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+      border-color: #38bdf8;
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
     }
 
     .btn {
@@ -509,7 +470,8 @@
     }
 
     .modal-card {
-      background: #ffffff;
+      background: #131c31;
+      border: 1px solid rgba(255, 255, 255, 0.1);
       width: 90%;
       max-width: 450px;
       border-radius: 20px;
@@ -534,7 +496,7 @@
     }
 
     .modal-title { font-family: 'Cinzel', serif; font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 10px; }
-    .modal-text { font-size: 15px; color: #334155; line-height: 1.6; margin-bottom: 25px; }
+    .modal-text { font-size: 15px; color: #cbd5e1; line-height: 1.6; margin-bottom: 25px; }
 
     .portfolio-grid {
       display: grid;
@@ -544,7 +506,7 @@
     }
 
     .portfolio-card {
-      background: linear-gradient(145deg, #ffffff, #f8fafc);
+      background: linear-gradient(145deg, #172a45, #131c31);
       border: 1px solid var(--border-color);
       border-top: 4px solid var(--accent-gold);
       border-radius: 14px;
@@ -578,10 +540,10 @@
     }
 
     table { width: 100%; border-collapse: collapse; font-size: 13.5px; text-align: left; }
-    th { background: #f8fafc; color: var(--primary); font-weight: 700; padding: 14px 16px; border-bottom: 2px solid var(--border-color); text-transform: uppercase; font-size: 11px; }
-    td { padding: 14px 16px; border-bottom: 1px solid var(--border-color); color: #334155; }
-    tr:nth-child(even) { background: #fafafa; }
-    tr:hover { background: #f1f5f9; }
+    th { background: rgba(255, 255, 255, 0.04); color: var(--primary); font-weight: 700; padding: 14px 16px; border-bottom: 2px solid var(--border-color); text-transform: uppercase; font-size: 11px; }
+    td { padding: 14px 16px; border-bottom: 1px solid var(--border-color); color: #cbd5e1; }
+    tr:nth-child(even) { background: rgba(255, 255, 255, 0.02); }
+    tr:hover { background: rgba(56, 189, 248, 0.08); }
 
     .live-dist-indicator {
       background: var(--blue-gradient);
@@ -598,26 +560,26 @@
 
     .id-display-container { display: flex; flex-direction: column; align-items: center; gap: 20px; }
     .id-card-frame {
-      width: 320px; max-width: 100%; min-height: 450px; background: #ffffff; border-radius: 18px; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-      border: 1px solid #cbd5e1; position: relative; overflow: visible; display: flex; flex-direction: column;
-      background-image: radial-gradient(#e2e8f0 0.75px, transparent 0.75px); background-size: 12px 12px;
+      width: 320px; max-width: 100%; min-height: 450px; background: #131c31; border-radius: 18px; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.1); position: relative; overflow: visible; display: flex; flex-direction: column;
+      background-image: radial-gradient(rgba(255,255,255,0.06) 0.75px, transparent 0.75px); background-size: 12px 12px;
     }
     .id-card-header { background: var(--blue-gradient); color: #ffffff; padding: 14px 15px 12px; text-align: center; border-bottom: 4px solid var(--accent-gold); border-radius: 18px 18px 0 0; }
     .id-card-header img { width: 42px; height: 42px; border-radius: 50%; background: #fff; padding: 1px; object-fit: cover; }
     .id-card-header h3 { font-family: 'Cinzel', serif; font-size: 13px; font-weight: 800; margin-top: 4px; }
     .id-card-header p { font-size: 8px; letter-spacing: 1.5px; color: #fbbf24; text-transform: uppercase; font-weight: 700; }
     .id-card-body { padding: 12px 18px 16px; flex: 1; display: flex; flex-direction: column; align-items: center; }
-    .id-member-name { font-family: 'Cinzel', serif; font-size: 19px; font-weight: 800; color: #0a192f; text-align: center; }
-    .id-code-large { font-size: 12px; font-weight: 700; color: #475569; letter-spacing: 1.5px; margin-top: 3px; }
+    .id-member-name { font-family: 'Cinzel', serif; font-size: 19px; font-weight: 800; color: #f1f5f9; text-align: center; }
+    .id-code-large { font-size: 12px; font-weight: 700; color: #94a3b8; letter-spacing: 1.5px; margin-top: 3px; }
     .id-member-tag { background: #fef3c7; color: #b45309; font-size: 10.5px; font-weight: 800; padding: 3px 12px; border-radius: 20px; margin-top: 6px; border: 1px solid #fde68a; }
     .id-info-grid { width: 100%; margin-top: 12px; font-size: 11.5px; }
-    .id-info-row { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px dashed #e2e8f0; }
-    .id-info-row span:first-child { color: #64748b; font-weight: 600; }
+    .id-info-row { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px dashed rgba(255,255,255,0.1); }
+    .id-info-row span:first-child { color: #94a3b8; font-weight: 600; }
     .id-info-row span:last-child { color: var(--primary); font-weight: 700; text-align: right; }
-    .id-card-footer { background: #f8fafc; padding: 9px 18px; border-top: 1px solid var(--border-color); border-radius: 0 0 18px 18px; display: flex; justify-content: space-between; align-items: flex-end; }
+    .id-card-footer { background: rgba(255,255,255,0.04); padding: 9px 18px; border-top: 1px solid var(--border-color); border-radius: 0 0 18px 18px; display: flex; justify-content: space-between; align-items: flex-end; }
     .barcode-stub { font-family: 'Courier New', monospace; font-weight: bold; font-size: 11px; letter-spacing: 3px; }
     .signature-stub { text-align: center; font-size: 8px; color: #64748b; font-weight: 600; }
-    .signature-line { width: 70px; border-bottom: 1px solid #0f172a; margin-bottom: 2px; }
+    .signature-line { width: 70px; border-bottom: 1px solid #cbd5e1; margin-bottom: 2px; }
 
     /* --- Locked / Read-only field styling --- */
     input:disabled, .locked-field {
@@ -633,7 +595,7 @@
     /* --- Member photo --- */
     .id-photo-frame {
       width: 58px; height: 58px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
-      border: 3px solid var(--accent-gold); background: #f1f5f9;
+      border: 3px solid var(--accent-gold); background: rgba(255,255,255,0.06);
       display: flex; align-items: center; justify-content: center;
       margin: 0 auto 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
@@ -1179,19 +1141,6 @@
       document.getElementById(tabId).classList.add('active');
       if (evt) evt.currentTarget.classList.add('active');
       window.scrollTo({ top: 0, behavior: 'smooth' });
-      closeSidebarOnMobile();
-    };
-
-    window.toggleSidebar = function() {
-      document.getElementById('appSidebar').classList.toggle('open');
-      document.getElementById('sidebarOverlay').classList.toggle('open');
-    };
-
-    window.closeSidebarOnMobile = function() {
-      if (window.innerWidth <= 900) {
-        document.getElementById('appSidebar').classList.remove('open');
-        document.getElementById('sidebarOverlay').classList.remove('open');
-      }
     };
 
     window.filterTableRows = function(tableBodyId, searchInputId) {
@@ -1597,7 +1546,7 @@ window.previewRegPhoto = function(evt) {
         document.getElementById('distCount').innerText = snap.size;
 
         if (snap.empty) {
-          container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:15px; background:#fff; border-radius:10px; border:1px dashed #cbd5e1; color:#64748b;">No Portfolios Assigned Yet.</div>`;
+          container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:15px; background:rgba(255,255,255,0.04); border-radius:10px; border:1px dashed rgba(255,255,255,0.15); color:#94a3b8;">No Portfolios Assigned Yet.</div>`;
           return;
         }
 
@@ -1638,7 +1587,7 @@ window.previewRegPhoto = function(evt) {
         window.currentDistMembersData = [];
 
         if (snap.empty) {
-          tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#64748b;">No registered members in ${distVal} district.</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#94a3b8;">No registered members in ${distVal} district.</td></tr>`;
           return;
         }
 
@@ -1791,7 +1740,7 @@ window.previewRegPhoto = function(evt) {
         const snap = await getDocs(q);
 
         if (snap.empty) {
-          cardContainer.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:30px; background:#f8fafc; border-radius:12px; border:1px dashed #cbd5e1; color:#64748b;">No Portfolio Members Registered for Selected District.</div>';
+          cardContainer.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:30px; background:rgba(255,255,255,0.04); border-radius:12px; border:1px dashed rgba(255,255,255,0.15); color:#94a3b8;">No Portfolio Members Registered for Selected District.</div>';
           return;
         }
 
@@ -1871,7 +1820,7 @@ window.previewRegPhoto = function(evt) {
       window.filteredStateDistMembers = window.masterMembers.filter(m => m.district === selectedDist);
 
       if (window.filteredStateDistMembers.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#64748b;">No registered members in ${selectedDist}.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#94a3b8;">No registered members in ${selectedDist}.</td></tr>`;
         return;
       }
 
@@ -1945,12 +1894,9 @@ window.previewRegPhoto = function(evt) {
     </div>
   </div>
 
-  <button class="sidebar-toggle" id="sidebarToggleBtn" onclick="toggleSidebar()" aria-label="Toggle Menu"><i class="fa-solid fa-bars"></i></button>
-  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-
   <div class="app-shell">
-    <aside class="sidebar" id="appSidebar">
-      <div class="sidebar-head">
+    <nav class="topnav" id="appTopnav">
+      <div class="topnav-head">
         <img src="" data-logo alt="Crest" class="sidebar-logo">
         <div class="sidebar-title">ODISHA ADARSHA VIDYALAYA TEACHERS' ASSOCIATION<br>OAVTA</div>
       </div>
@@ -1960,7 +1906,7 @@ window.previewRegPhoto = function(evt) {
       <button class="side-tab-btn" onclick="switchTab('publicPortfolios', event)"><i class="fa-solid fa-sitemap"></i> <span>District Portfolios</span></button>
       <button class="side-tab-btn" onclick="switchTab('distAdmin', event)"><i class="fa-solid fa-user-gear"></i> <span>District Admin</span></button>
       <button class="side-tab-btn" onclick="switchTab('stateAdmin', event)"><i class="fa-solid fa-building-shield"></i> <span>State Admin</span></button>
-    </aside>
+    </nav>
 
     <main class="main-content">
 
@@ -2189,7 +2135,7 @@ window.previewRegPhoto = function(evt) {
           </div>
         </div>
 
-        <div id="distPassAuthArea" style="display:none; max-width:400px; margin: 0 auto 20px; background:#f8fafc; padding:20px; border-radius:12px; border:1px solid var(--border-color); text-align:center;">
+        <div id="distPassAuthArea" style="display:none; max-width:400px; margin: 0 auto 20px; background:rgba(255,255,255,0.04); padding:20px; border-radius:12px; border:1px solid var(--border-color); text-align:center;">
           <div class="form-group">
             <label><i class="fa-solid fa-lock"></i> District Password</label>
             <input type="password" id="distAdminPassInput" placeholder="Enter Password">
@@ -2248,7 +2194,7 @@ window.previewRegPhoto = function(evt) {
               <span style="font-size:12px; opacity:0.9;">Portfolios Added: (<span id="distCount">0</span>/10)</span>
             </div>
 
-            <div style="margin-bottom: 30px; background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid var(--border-color);">
+            <div style="margin-bottom: 30px; background: rgba(255,255,255,0.04); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color);">
               <h4 style="font-family:'Cinzel'; color: var(--primary); margin-bottom: 15px;"><i class="fa-solid fa-list-check"></i> Assigned Portfolios</h4>
               <div id="distAdminPortfoliosList" class="portfolio-grid"></div>
             </div>
@@ -2279,7 +2225,7 @@ window.previewRegPhoto = function(evt) {
           <div class="section-title"><i class="fa-solid fa-vault"></i> State Administrative Control Panel</div>
         </div>
 
-        <div id="stateAdminLoginArea" style="max-width:400px; margin: 0 auto 20px; background:#f8fafc; padding:25px; border-radius:12px; border:1px solid var(--border-color); text-align:center;">
+        <div id="stateAdminLoginArea" style="max-width:400px; margin: 0 auto 20px; background:rgba(255,255,255,0.04); padding:25px; border-radius:12px; border:1px solid var(--border-color); text-align:center;">
           <div class="form-group">
             <label><i class="fa-solid fa-lock"></i> Password</label>
             <input type="password" id="stateAdminPassInput" placeholder="Password">
