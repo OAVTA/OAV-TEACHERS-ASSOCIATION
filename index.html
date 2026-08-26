@@ -33,6 +33,42 @@
       padding-bottom: 50px;
     }
 
+/* Ensure header-hero supports absolute positioning for children */
+.header-hero {
+  position: relative; /* Already present in your existing code */
+}
+
+/* Top-Right Navigation Button Styling */
+.top-right-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: var(--gold-gradient);
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 13px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.25s ease;
+  z-index: 20;
+}
+
+.top-right-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+  color: #ffffff;
+}
+
+
+
+
+
+    
     .gov-topbar {
       background: #020617;
       color: #94a3b8;
@@ -319,7 +355,14 @@
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
+@media (max-width: 900px) {
+  .top-right-btn {
+    top: 10px;
+    right: 10px;
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+}
     .glass-card {
       background: var(--card-bg);
       border-radius: var(--radius-lg);
@@ -1892,6 +1935,10 @@ window.previewRegPhoto = function(evt) {
   </div>
 
   <div class="header-hero">
+    <a href="https://oavta.blogspot.com/" class="top-right-btn" target="_blank">
+    <i class="fa-solid fa-arrow-right-to-bracket"></i> Login
+  </a>
+
     <div class="brand-container">
       <img src="" data-logo alt="OAVTA Crest" class="logo-badge">
       <div class="brand-titles">
