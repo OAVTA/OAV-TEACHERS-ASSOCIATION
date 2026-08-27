@@ -1224,14 +1224,35 @@ const OAV_DATA = {
       }
       loadDashboardStats();
       loadPasswordManagerTable();
+      loadAllEBMembers();
+      goToTabFromLink();
     });
 
     window.switchTab = function(tabId, evt) {
+      const panel = document.getElementById(tabId);
+      if (!panel) return;
       document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.side-tab-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-      if (evt) evt.currentTarget.classList.add('active');
+      panel.classList.add('active');
+      if (evt) {
+        evt.currentTarget.classList.add('active');
+      } else {
+        const navBtn = document.querySelector(`.side-tab-btn[data-tab="${tabId}"]`);
+        if (navBtn) navBtn.classList.add('active');
+      }
+      if (window.location.hash !== '#' + tabId) {
+        history.replaceState(null, '', '#' + tabId);
+      }
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    window.goToTabFromLink = function() {
+      const validTabs = ['home', 'register', 'memberLogin', 'publicPortfolios', 'ebMembers', 'distAdmin', 'stateAdmin'];
+      const params = new URLSearchParams(window.location.search);
+      const requested = (window.location.hash || '').replace('#', '') || params.get('tab');
+      if (requested && validTabs.includes(requested)) {
+        switchTab(requested);
+      }
     };
 
     window.filterTableRows = function(tableBodyId, searchInputId) {
@@ -2051,13 +2072,13 @@ window.previewRegPhoto = function(evt) {
 
   <div class="app-shell">
     <nav class="topnav" id="appTopnav">
-      <button class="side-tab-btn active" onclick="switchTab('home', event)"><i class="fa-solid fa-gauge-high"></i> <span>Home Dashboard</span></button>
-      <button class="side-tab-btn" onclick="switchTab('register', event)"><i class="fa-solid fa-id-card"></i> <span>Join Association</span></button>
-      <button class="side-tab-btn" onclick="switchTab('memberLogin', event)"><i class="fa-solid fa-user-check"></i> <span>Member Login</span></button>
-      <button class="side-tab-btn" onclick="switchTab('publicPortfolios', event)"><i class="fa-solid fa-sitemap"></i> <span>District Portfolios</span></button>
-      <button class="side-tab-btn" onclick="switchTab('ebMembers', event); loadAllEBMembers();"><i class="fa-solid fa-people-group"></i> <span>EB Members</span></button>
-      <button class="side-tab-btn" onclick="switchTab('distAdmin', event)"><i class="fa-solid fa-user-gear"></i> <span>District Admin</span></button>
-      <button class="side-tab-btn" onclick="switchTab('stateAdmin', event)"><i class="fa-solid fa-building-shield"></i> <span>State Admin</span></button>
+      <button class="side-tab-btn active" data-tab="home" onclick="switchTab('home', event)"><i class="fa-solid fa-gauge-high"></i> <span>Home Dashboard</span></button>
+      <button class="side-tab-btn" data-tab="register" onclick="switchTab('register', event)"><i class="fa-solid fa-id-card"></i> <span>Join Association</span></button>
+      <button class="side-tab-btn" data-tab="memberLogin" onclick="switchTab('memberLogin', event)"><i class="fa-solid fa-user-check"></i> <span>Member Login</span></button>
+      <button class="side-tab-btn" data-tab="publicPortfolios" onclick="switchTab('publicPortfolios', event)"><i class="fa-solid fa-sitemap"></i> <span>District Portfolios</span></button>
+      <button class="side-tab-btn" data-tab="ebMembers" onclick="switchTab('ebMembers', event)"><i class="fa-solid fa-people-group"></i> <span>EB Members</span></button>
+      <button class="side-tab-btn" data-tab="distAdmin" onclick="switchTab('distAdmin', event)"><i class="fa-solid fa-user-gear"></i> <span>District Admin</span></button>
+      <button class="side-tab-btn" data-tab="stateAdmin" onclick="switchTab('stateAdmin', event)"><i class="fa-solid fa-building-shield"></i> <span>State Admin</span></button>
     </nav>
 
     <main class="main-content">
