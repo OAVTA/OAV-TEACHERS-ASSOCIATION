@@ -1812,10 +1812,21 @@ window.previewRegPhoto = function(evt) {
       const msg = document.getElementById('distMsg');
       const memberIdInput = document.getElementById('pMemberId').value.trim();
       const role = document.getElementById('pRole').value;
+      const submitBtn = document.querySelector('#distPortfolioForm button[type="submit"]');
 
       if (!memberIdInput || !role) {
         msg.innerHTML = `<div class="alert alert-danger"><i class="fa-solid fa-triangle-exclamation"></i> Enter a Membership ID and select a role.</div>`;
         return;
+      }
+
+      // Guard against double-click / slow-network double submission: if a
+      // submission is already in flight, ignore this one instead of firing
+      // a second addDoc for the same role.
+      if (submitBtn) {
+        if (submitBtn.disabled) return;
+        submitBtn.disabled = true;
+        submitBtn.dataset.originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Assigning...';
       }
 
       try {
@@ -1859,6 +1870,13 @@ window.previewRegPhoto = function(evt) {
       } catch(err) {
         console.error(err);
         msg.innerHTML = `<div class="alert alert-danger">Error: ${err.message}</div>`;
+      } finally {
+        // Re-enable the button. loadDistPortfolios() -> populatePortfolioRoleSelect()
+        // will re-disable it if that role/all roles are now taken.
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          if (submitBtn.dataset.originalText) submitBtn.innerHTML = submitBtn.dataset.originalText;
+        }
       }
     });
 
