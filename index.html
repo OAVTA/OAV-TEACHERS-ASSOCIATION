@@ -10,18 +10,18 @@
   
   <style>
     :root {
-      --primary: #38bdf8;
-      --primary-light: #172a45;
-      --accent-gold: #38bdf8;
-      --gold-gradient: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
+      --primary: #0369a1;
+      --primary-light: #e0f2fe;
+      --accent-gold: #b45309;
+      --gold-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
       --blue-gradient: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0284c7 100%);
-      --bg-slate: #0b0f19;
-      --card-bg: #131c31;
-      --text-dark: #f1f5f9;
-      --text-muted: #94a3b8;
-      --border-color: rgba(255, 255, 255, 0.1);
+      --bg-slate: #f1f5f9;
+      --card-bg: #ffffff;
+      --text-dark: #1e293b;
+      --text-muted: #64748b;
+      --border-color: rgba(15, 23, 42, 0.12);
       --radius-lg: 20px;
-      --shadow-premium: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+      --shadow-premium: 0 15px 35px -15px rgba(15, 23, 42, 0.18);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -70,14 +70,14 @@
 
     
     .gov-topbar {
-      background: #020617;
-      color: #94a3b8;
+      background: #eef2f7;
+      color: #475569;
       font-size: 12px;
       padding: 6px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #1e293b;
+      border-bottom: 1px solid #dbe3ec;
     }
 
     .header-hero {
@@ -179,7 +179,7 @@
       transition: all 0.25s ease;
     }
     .side-tab-btn i { width: 16px; text-align: center; color: var(--accent-gold); }
-    .side-tab-btn:hover { background: rgba(56, 189, 248, 0.12); color: var(--text-dark); transform: translateY(-1px); }
+    .side-tab-btn:hover { background: rgba(3, 105, 161, 0.1); color: var(--text-dark); transform: translateY(-1px); }
     .side-tab-btn.active {
       background: var(--blue-gradient);
       color: #ffffff;
@@ -264,7 +264,7 @@
     }
 
     .dash-card {
-      background: linear-gradient(145deg, #172a45, #131c31);
+      background: linear-gradient(145deg, #ffffff, #f8fafc);
       border: 1px solid var(--border-color);
       border-top: 4px solid var(--accent-gold);
       border-radius: 16px;
@@ -309,8 +309,8 @@
     }
 
     .dash-drill-section {
-      background: rgba(255, 255, 255, 0.03);
-      border: 2px dashed rgba(255, 255, 255, 0.15);
+      background: rgba(15, 23, 42, 0.03);
+      border: 2px dashed rgba(15, 23, 42, 0.15);
       border-radius: 16px;
       padding: 25px;
       margin-bottom: 25px;
@@ -327,14 +327,14 @@
       display: flex;
       gap: 10px;
       margin-bottom: 20px;
-      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 2px solid rgba(15, 23, 42, 0.1);
       padding-bottom: 10px;
     }
 
     .sub-tab-btn {
       padding: 10px 18px;
       border: none;
-      background: rgba(255, 255, 255, 0.06);
+      background: rgba(15, 23, 42, 0.05);
       color: var(--text-muted);
       font-weight: 700;
       font-size: 13px;
@@ -394,8 +394,8 @@
     .section-title i { color: var(--accent-gold); }
 
     .selection-banner {
-      background: rgba(255, 255, 255, 0.03);
-      border: 2px dashed rgba(255, 255, 255, 0.15);
+      background: rgba(15, 23, 42, 0.03);
+      border: 2px dashed rgba(15, 23, 42, 0.15);
       border-radius: 14px;
       padding: 25px;
       margin-bottom: 25px;
@@ -427,7 +427,7 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      color: #94a3b8;
+      color: #475569;
       margin-bottom: 8px;
       display: flex;
       align-items: center;
@@ -440,35 +440,35 @@
       border-radius: 10px;
       font-size: 14px;
       font-family: inherit;
-      background: #182338;
+      background: #ffffff;
       color: var(--text-dark);
       transition: all 0.2s ease;
     }
 
-    input::placeholder, select::placeholder { color: #64748b; }
+    input::placeholder, select::placeholder { color: #94a3b8; }
 
     input:hover, select:hover {
-      border-color: rgba(56, 189, 248, 0.5);
-      background: #1d2a44;
+      border-color: rgba(3, 105, 161, 0.5);
+      background: #f8fafc;
     }
 
     input:focus, select:focus {
       outline: none;
-      border-color: #38bdf8;
-      background: #1d2a44;
-      box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
+      border-color: #0369a1;
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(3, 105, 161, 0.12);
     }
 
-    /* Ensure dropdown option lists stay readable on dark backgrounds */
+    /* Ensure dropdown option lists stay readable */
     select option, select optgroup {
-      background: #182338;
-      color: #f1f5f9;
+      background: #ffffff;
+      color: #1e293b;
     }
     select option:hover,
     select option:focus,
     select option:checked {
-      background: #38bdf8;
-      color: #0a192f;
+      background: #0369a1;
+      color: #ffffff;
     }
 
     .btn {
@@ -519,8 +519,8 @@
     }
 
     .modal-card {
-      background: #131c31;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: #ffffff;
+      border: 1px solid var(--border-color);
       width: 90%;
       max-width: 450px;
       border-radius: 20px;
@@ -545,7 +545,7 @@
     }
 
     .modal-title { font-family: 'Cinzel', serif; font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 10px; }
-    .modal-text { font-size: 15px; color: #cbd5e1; line-height: 1.6; margin-bottom: 25px; }
+    .modal-text { font-size: 15px; color: #475569; line-height: 1.6; margin-bottom: 25px; }
 
     .portfolio-grid {
       display: grid;
@@ -555,7 +555,7 @@
     }
 
     .portfolio-card {
-      background: linear-gradient(145deg, #172a45, #131c31);
+      background: linear-gradient(145deg, #ffffff, #f8fafc);
       border: 1px solid var(--border-color);
       border-top: 4px solid var(--accent-gold);
       border-radius: 14px;
@@ -589,10 +589,10 @@
     }
 
     table { width: 100%; border-collapse: collapse; font-size: 13.5px; text-align: left; }
-    th { background: rgba(255, 255, 255, 0.04); color: var(--primary); font-weight: 700; padding: 14px 16px; border-bottom: 2px solid var(--border-color); text-transform: uppercase; font-size: 11px; }
-    td { padding: 14px 16px; border-bottom: 1px solid var(--border-color); color: #cbd5e1; }
-    tr:nth-child(even) { background: rgba(255, 255, 255, 0.02); }
-    tr:hover { background: rgba(56, 189, 248, 0.08); }
+    th { background: rgba(15, 23, 42, 0.035); color: var(--primary); font-weight: 700; padding: 14px 16px; border-bottom: 2px solid var(--border-color); text-transform: uppercase; font-size: 11px; }
+    td { padding: 14px 16px; border-bottom: 1px solid var(--border-color); color: #334155; }
+    tr:nth-child(even) { background: rgba(15, 23, 42, 0.015); }
+    tr:hover { background: rgba(3, 105, 161, 0.07); }
 
     .live-dist-indicator {
       background: var(--blue-gradient);
@@ -609,23 +609,23 @@
 
     .id-display-container { display: flex; flex-direction: column; align-items: center; gap: 20px; }
     .id-card-frame {
-      width: 320px; max-width: 100%; min-height: 450px; background: #131c31; border-radius: 18px; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-      border: 1px solid rgba(255,255,255,0.1); position: relative; overflow: visible; display: flex; flex-direction: column;
-      background-image: radial-gradient(rgba(255,255,255,0.06) 0.75px, transparent 0.75px); background-size: 12px 12px;
+      width: 320px; max-width: 100%; min-height: 450px; background: #ffffff; border-radius: 18px; box-shadow: 0 20px 40px rgba(15,23,42,0.15);
+      border: 1px solid var(--border-color); position: relative; overflow: visible; display: flex; flex-direction: column;
+      background-image: radial-gradient(rgba(15,23,42,0.05) 0.75px, transparent 0.75px); background-size: 12px 12px;
     }
     .id-card-header { background: var(--blue-gradient); color: #ffffff; padding: 14px 15px 12px; text-align: center; border-bottom: 4px solid var(--accent-gold); border-radius: 18px 18px 0 0; }
     .id-card-header img { width: 42px; height: 42px; border-radius: 50%; background: #fff; padding: 1px; object-fit: cover; }
     .id-card-header h3 { font-family: 'Cinzel', serif; font-size: 13px; font-weight: 800; margin-top: 4px; }
     .id-card-header p { font-size: 8px; letter-spacing: 1.5px; color: #fbbf24; text-transform: uppercase; font-weight: 700; }
     .id-card-body { padding: 12px 18px 16px; flex: 1; display: flex; flex-direction: column; align-items: center; }
-    .id-member-name { font-family: 'Cinzel', serif; font-size: 19px; font-weight: 800; color: #f1f5f9; text-align: center; }
-    .id-code-large { font-size: 12px; font-weight: 700; color: #94a3b8; letter-spacing: 1.5px; margin-top: 3px; }
+    .id-member-name { font-family: 'Cinzel', serif; font-size: 19px; font-weight: 800; color: #1e293b; text-align: center; }
+    .id-code-large { font-size: 12px; font-weight: 700; color: #64748b; letter-spacing: 1.5px; margin-top: 3px; }
     .id-member-tag { background: #fef3c7; color: #b45309; font-size: 10.5px; font-weight: 800; padding: 3px 12px; border-radius: 20px; margin-top: 6px; border: 1px solid #fde68a; }
     .id-info-grid { width: 100%; margin-top: 12px; font-size: 11.5px; }
-    .id-info-row { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px dashed rgba(255,255,255,0.1); }
-    .id-info-row span:first-child { color: #94a3b8; font-weight: 600; }
+    .id-info-row { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px dashed rgba(15,23,42,0.15); }
+    .id-info-row span:first-child { color: #64748b; font-weight: 600; }
     .id-info-row span:last-child { color: var(--primary); font-weight: 700; text-align: right; }
-    .id-card-footer { background: rgba(255,255,255,0.04); padding: 9px 18px; border-top: 1px solid var(--border-color); border-radius: 0 0 18px 18px; display: flex; justify-content: space-between; align-items: flex-end; }
+    .id-card-footer { background: rgba(15,23,42,0.03); padding: 9px 18px; border-top: 1px solid var(--border-color); border-radius: 0 0 18px 18px; display: flex; justify-content: space-between; align-items: flex-end; }
     .barcode-stub { font-family: 'Courier New', monospace; font-weight: bold; font-size: 11px; letter-spacing: 3px; }
     .signature-stub { text-align: center; font-size: 8px; color: #64748b; font-weight: 600; }
     .signature-line { width: 70px; border-bottom: 1px solid #cbd5e1; margin-bottom: 2px; }
@@ -644,7 +644,7 @@
     /* --- Member photo --- */
     .id-photo-frame {
       width: 58px; height: 58px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
-      border: 3px solid var(--accent-gold); background: rgba(255,255,255,0.06);
+      border: 3px solid var(--accent-gold); background: rgba(15,23,42,0.05);
       display: flex; align-items: center; justify-content: center;
       margin: 0 auto 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
@@ -1122,6 +1122,47 @@ const OAV_DATA = {
     "Tangarpalli": ["OAV Ujalpur"]
   }
 };
+    const PORTFOLIO_ROLES = [
+      "President",
+      "Vice President",
+      "Vice President (Female)",
+      "Gen. Secretary",
+      "Joint Secretary",
+      "Treasurer",
+      "Joint Treasurer",
+      "EB Member"
+    ];
+
+    async function populatePortfolioRoleSelect(distVal) {
+      const roleSelect = document.getElementById('pRole');
+      if (!roleSelect) return [];
+      let assignedRoles = [];
+      try {
+        const q = query(collection(db, "portfolios"), where("district", "==", distVal));
+        const snap = await getDocs(q);
+        snap.forEach(docSnap => assignedRoles.push(docSnap.data().assocDesignation));
+      } catch (err) {
+        console.error(err);
+      }
+
+      roleSelect.innerHTML = '<option value="">-- Select Role --</option>';
+      const availableRoles = PORTFOLIO_ROLES.filter(r => !assignedRoles.includes(r));
+      availableRoles.forEach(r => {
+        roleSelect.innerHTML += `<option value="${r}">${r}</option>`;
+      });
+
+      const submitBtn = document.querySelector('#distPortfolioForm button[type="submit"]');
+      if (availableRoles.length === 0) {
+        roleSelect.innerHTML = '<option value="">All portfolios assigned</option>';
+        roleSelect.disabled = true;
+        if (submitBtn) submitBtn.disabled = true;
+      } else {
+        roleSelect.disabled = false;
+        if (submitBtn) submitBtn.disabled = false;
+      }
+      return assignedRoles;
+    }
+
     window.populateDistricts = function(distId, blockId, oavId) {
       const distEl = document.getElementById(distId);
       if (!distEl) return;
@@ -1171,7 +1212,7 @@ const OAV_DATA = {
 
       populateDistricts('regDist', 'regBlock', 'regOav');
       populateDistricts('editDist', 'editBlock', 'editOav');
-      populateDistricts('pDist', 'pBlock', 'pOav');
+      populateDistricts('pDist', null, null);
       populateDistricts('publicDistSelect', null);
       populateDistricts('stateDistFilterSelect', null);
       populateDistricts('dashDistSelect', 'dashBlockSelect', 'dashOavSelect');
@@ -1588,7 +1629,9 @@ window.previewRegPhoto = function(evt) {
     async function loadDistPortfolios(distVal) {
       const container = document.getElementById('distAdminPortfoliosList');
       container.innerHTML = '<div style="grid-column:1/-1; text-align:center;">Loading portfolios...</div>';
-      
+
+      populatePortfolioRoleSelect(distVal);
+
       try {
         const q = query(collection(db, "portfolios"), where("district", "==", distVal));
         const snap = await getDocs(q);
@@ -1596,7 +1639,7 @@ window.previewRegPhoto = function(evt) {
         document.getElementById('distCount').innerText = snap.size;
 
         if (snap.empty) {
-          container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:15px; background:rgba(255,255,255,0.04); border-radius:10px; border:1px dashed rgba(255,255,255,0.15); color:#94a3b8;">No Portfolios Assigned Yet.</div>`;
+          container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:15px; background:rgba(15,23,42,0.035); border-radius:10px; border:1px dashed rgba(15,23,42,0.15); color:#64748b;">No Portfolios Assigned Yet.</div>`;
           return;
         }
 
@@ -1734,7 +1777,6 @@ window.previewRegPhoto = function(evt) {
         document.getElementById('distPassAuthArea').style.display = 'none';
         document.getElementById('liveDistName').innerText = distVal;
         document.getElementById('liveDistNameMemberTab').innerText = distVal;
-        populateBlocks(distVal, 'pBlock', 'pOav');
         document.getElementById('distAdminEditPane').style.display = 'block';
         loadDistPortfolios(distVal);
         loadDistMembers(distVal);
@@ -1747,29 +1789,50 @@ window.previewRegPhoto = function(evt) {
       e.preventDefault();
       const dist = document.getElementById('pDist').value;
       const msg = document.getElementById('distMsg');
+      const memberIdInput = document.getElementById('pMemberId').value.trim();
+      const role = document.getElementById('pRole').value;
+
+      if (!memberIdInput || !role) {
+        msg.innerHTML = `<div class="alert alert-danger"><i class="fa-solid fa-triangle-exclamation"></i> Enter a Membership ID and select a role.</div>`;
+        return;
+      }
 
       try {
-        const q = query(collection(db, "portfolios"), where("district", "==", dist));
-        const snap = await getDocs(q);
-
-        if (snap.size >= 10) {
-          msg.innerHTML = `<div class="alert alert-danger"><i class="fa-solid fa-lock"></i> Executive limit (10) reached for ${dist}.</div>`;
+        // 1. Re-check role availability for this district (in case it was just taken)
+        const qPort = query(collection(db, "portfolios"), where("district", "==", dist));
+        const snapPort = await getDocs(qPort);
+        const alreadyAssigned = snapPort.docs.some(d => d.data().assocDesignation === role);
+        if (alreadyAssigned) {
+          msg.innerHTML = `<div class="alert alert-danger"><i class="fa-solid fa-lock"></i> "${role}" has already been assigned in ${dist}.</div>`;
+          populatePortfolioRoleSelect(dist);
           return;
         }
 
+        // 2. Look up the member by Membership ID within this district
+        const qMember = query(collection(db, "members"), where("memberId", "==", memberIdInput), where("district", "==", dist));
+        const snapMember = await getDocs(qMember);
+
+        if (snapMember.empty) {
+          msg.innerHTML = `<div class="alert alert-danger"><i class="fa-solid fa-circle-xmark"></i> No registered member found with Membership ID "${memberIdInput}" in ${dist} district.</div>`;
+          return;
+        }
+
+        const memberData = snapMember.docs[0].data();
+
         const pData = {
-          name: document.getElementById('pName').value,
-          assocDesignation: document.getElementById('pAssocDesig').value,
-          schoolDesignation: document.getElementById('pSchoolDesig').value,
+          memberId: memberData.memberId,
+          name: memberData.name,
+          assocDesignation: role,
+          schoolDesignation: memberData.designation,
           district: dist,
-          block: document.getElementById('pBlock').value,
-          oavName: document.getElementById('pOav').value,
-          joinYear: document.getElementById('pYear').value,
-          mobile: document.getElementById('pMobile').value
+          block: memberData.block,
+          oavName: memberData.oavName,
+          joinYear: memberData.joinYear,
+          mobile: memberData.mobile
         };
 
         await addDoc(collection(db, "portfolios"), pData);
-        msg.innerHTML = `<div class="alert alert-success"><i class="fa-solid fa-check"></i> Portfolio added successfully.</div>`;
+        msg.innerHTML = `<div class="alert alert-success"><i class="fa-solid fa-check"></i> ${memberData.name} assigned as ${role} for ${dist}.</div>`;
         document.getElementById('distPortfolioForm').reset();
         loadDistPortfolios(dist);
       } catch(err) {
@@ -1790,7 +1853,7 @@ window.previewRegPhoto = function(evt) {
         const snap = await getDocs(q);
 
         if (snap.empty) {
-          cardContainer.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:30px; background:rgba(255,255,255,0.04); border-radius:12px; border:1px dashed rgba(255,255,255,0.15); color:#94a3b8;">No Portfolio Members Registered for Selected District.</div>';
+          cardContainer.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:30px; background:rgba(15,23,42,0.035); border-radius:12px; border:1px dashed rgba(15,23,42,0.15); color:#64748b;">No Portfolio Members Registered for Selected District.</div>';
           return;
         }
 
@@ -1812,6 +1875,44 @@ window.previewRegPhoto = function(evt) {
         cardContainer.innerHTML = `<div style="grid-column:1/-1; color:red;">Error: ${err.message}</div>`;
       }
     });
+
+    window.loadAllEBMembers = async function() {
+      const cardContainer = document.getElementById('ebMembersGrid');
+      const countEl = document.getElementById('ebMembersCount');
+      if (!cardContainer) return;
+      cardContainer.innerHTML = '<div style="grid-column:1/-1; text-align:center;">Loading EB Members...</div>';
+
+      try {
+        const q = query(collection(db, "portfolios"), where("assocDesignation", "==", "EB Member"));
+        const snap = await getDocs(q);
+
+        if (countEl) countEl.innerText = snap.size;
+
+        if (snap.empty) {
+          cardContainer.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:30px; background:rgba(15,23,42,0.03); border-radius:12px; border:1px dashed rgba(15,23,42,0.15); color:#64748b;">No EB Members Assigned Yet.</div>';
+          return;
+        }
+
+        cardContainer.innerHTML = '';
+        snap.forEach(docSnap => {
+          const d = docSnap.data();
+          cardContainer.innerHTML += `
+            <div class="portfolio-card">
+              <div class="exec-name">${d.name}</div>
+              <div class="assoc-desig-small">${d.assocDesignation}</div>
+              <div class="info-item"><i class="fa-solid fa-map-location-dot"></i> <span>District: <strong>${d.district}</strong></span></div>
+              <div class="info-item"><i class="fa-solid fa-graduation-cap"></i> <span>School Post: <strong>${d.schoolDesignation}</strong></span></div>
+              <div class="info-item"><i class="fa-solid fa-location-dot"></i> <span>Block: <strong>${d.block}</strong></span></div>
+              <div class="info-item"><i class="fa-solid fa-school"></i> <span>OAV: <strong>${d.oavName}</strong></span></div>
+              <div class="info-item"><i class="fa-solid fa-phone"></i> <span>Mobile: <strong>${d.mobile}</strong></span></div>
+            </div>
+          `;
+        });
+      } catch(err) {
+        console.error(err);
+        cardContainer.innerHTML = `<div style="grid-column:1/-1; color:red;">Error: ${err.message}</div>`;
+      }
+    };
 
     window.verifyStatePassword = function() {
       const inputPass = document.getElementById('stateAdminPassInput').value.trim();
@@ -1954,6 +2055,7 @@ window.previewRegPhoto = function(evt) {
       <button class="side-tab-btn" onclick="switchTab('register', event)"><i class="fa-solid fa-id-card"></i> <span>Join Association</span></button>
       <button class="side-tab-btn" onclick="switchTab('memberLogin', event)"><i class="fa-solid fa-user-check"></i> <span>Member Login</span></button>
       <button class="side-tab-btn" onclick="switchTab('publicPortfolios', event)"><i class="fa-solid fa-sitemap"></i> <span>District Portfolios</span></button>
+      <button class="side-tab-btn" onclick="switchTab('ebMembers', event); loadAllEBMembers();"><i class="fa-solid fa-people-group"></i> <span>EB Members</span></button>
       <button class="side-tab-btn" onclick="switchTab('distAdmin', event)"><i class="fa-solid fa-user-gear"></i> <span>District Admin</span></button>
       <button class="side-tab-btn" onclick="switchTab('stateAdmin', event)"><i class="fa-solid fa-building-shield"></i> <span>State Admin</span></button>
     </nav>
@@ -2171,6 +2273,18 @@ window.previewRegPhoto = function(evt) {
       </div>
     </div>
 
+    <!-- 3B. EB MEMBERS DIRECTORY -->
+    <div id="ebMembers" class="panel">
+      <div class="glass-card">
+        <div class="section-header">
+          <div class="section-title"><i class="fa-solid fa-people-group"></i> Executive Body (EB) Members</div>
+        </div>
+        <p style="margin-bottom:15px; color:var(--text-muted); font-size:14px;">All EB Members across every district. Membership ID Numbers are kept private and are not shown here.</p>
+        <h4 style="font-family:'Cinzel'; color: var(--primary); margin-bottom: 5px;">Total EB Members: <span id="ebMembersCount">0</span></h4>
+        <div id="ebMembersGrid" class="portfolio-grid" style="margin-top:15px;"></div>
+      </div>
+    </div>
+
     <!-- 4. DISTRICT ADMIN (SPLIT PANELS) -->
     <div id="distAdmin" class="panel">
       <div class="glass-card">
@@ -2185,7 +2299,7 @@ window.previewRegPhoto = function(evt) {
           </div>
         </div>
 
-        <div id="distPassAuthArea" style="display:none; max-width:400px; margin: 0 auto 20px; background:rgba(255,255,255,0.04); padding:20px; border-radius:12px; border:1px solid var(--border-color); text-align:center;">
+        <div id="distPassAuthArea" style="display:none; max-width:400px; margin: 0 auto 20px; background:rgba(15,23,42,0.03); padding:20px; border-radius:12px; border:1px solid var(--border-color); text-align:center;">
           <div class="form-group">
             <label><i class="fa-solid fa-lock"></i> District Password</label>
             <input type="password" id="distAdminPassInput" placeholder="Enter Password">
@@ -2241,26 +2355,22 @@ window.previewRegPhoto = function(evt) {
           <div id="subDistExec" class="sub-panel">
             <div class="live-dist-indicator">
               <span><i class="fa-solid fa-landmark"></i> District: <strong id="liveDistName">DISTRICT NAME</strong></span>
-              <span style="font-size:12px; opacity:0.9;">Portfolios Added: (<span id="distCount">0</span>/10)</span>
+              <span style="font-size:12px; opacity:0.9;">Portfolios Assigned: (<span id="distCount">0</span>/8)</span>
             </div>
 
-            <div style="margin-bottom: 30px; background: rgba(255,255,255,0.04); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color);">
+            <div style="margin-bottom: 30px; background: rgba(15,23,42,0.03); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color);">
               <h4 style="font-family:'Cinzel'; color: var(--primary); margin-bottom: 15px;"><i class="fa-solid fa-list-check"></i> Assigned Portfolios</h4>
               <div id="distAdminPortfoliosList" class="portfolio-grid"></div>
             </div>
 
-            <h4 style="font-family:'Cinzel'; color: var(--primary); margin-bottom: 15px;"><i class="fa-solid fa-user-plus"></i> Assign Portfolios</h4>
+            <h4 style="font-family:'Cinzel'; color: var(--primary); margin-bottom: 15px;"><i class="fa-solid fa-user-plus"></i> Assign Portfolio</h4>
+            <p style="margin-bottom:15px; color:var(--text-muted); font-size:13px;"><i class="fa-solid fa-circle-info" style="color:var(--accent-gold);"></i> Enter the member's Membership ID and pick a role — their name, school post, block, OAV and mobile are pulled automatically from their registration. Once a role is assigned in this district, it will no longer appear in the list below.</p>
             <form id="distPortfolioForm">
               <div class="form-grid">
-                <div class="form-group"><label>Portfolio Name</label><input type="text" id="pName" placeholder="Full Name" required></div>
-                <div class="form-group"><label>Association Designation</label><input type="text" id="pAssocDesig" placeholder="e.g. District President" required></div>
-                <div class="form-group"><label>Vidyalaya Designation</label><input type="text" id="pSchoolDesig" placeholder="e.g. TGT SST" required></div>
-                <div class="form-group"><label>Block</label><select id="pBlock" required><option value="">-- Select Block --</option></select></div>
-                <div class="form-group"><label>OAV Name</label><select id="pOav" required><option value="">-- Select District &amp; Block First --</option></select></div>
-                <div class="form-group"><label>Joining Year</label><input type="number" id="pYear" placeholder="YYYY" required></div>
-                <div class="form-group"><label>Mobile Number</label><input type="tel" id="pMobile" placeholder="+91..." required></div>
+                <div class="form-group"><label><i class="fa-solid fa-id-card"></i> Membership ID No</label><input type="text" id="pMemberId" placeholder="e.g. 20150001" required></div>
+                <div class="form-group"><label><i class="fa-solid fa-user-tie"></i> Assign Role / Portfolio</label><select id="pRole" required><option value="">-- Select Role --</option></select></div>
               </div>
-              <button type="submit" class="btn" style="margin-top:20px;"><i class="fa-solid fa-plus-circle"></i> Update</button>
+              <button type="submit" class="btn" style="margin-top:20px;"><i class="fa-solid fa-plus-circle"></i> Assign Portfolio</button>
             </form>
           </div>
 
@@ -2275,7 +2385,7 @@ window.previewRegPhoto = function(evt) {
           <div class="section-title"><i class="fa-solid fa-vault"></i> State Administrative Control Panel</div>
         </div>
 
-        <div id="stateAdminLoginArea" style="max-width:400px; margin: 0 auto 20px; background:rgba(255,255,255,0.04); padding:25px; border-radius:12px; border:1px solid var(--border-color); text-align:center;">
+        <div id="stateAdminLoginArea" style="max-width:400px; margin: 0 auto 20px; background:rgba(15,23,42,0.03); padding:25px; border-radius:12px; border:1px solid var(--border-color); text-align:center;">
           <div class="form-group">
             <label><i class="fa-solid fa-lock"></i> Password</label>
             <input type="password" id="stateAdminPassInput" placeholder="Password">
