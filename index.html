@@ -68,6 +68,57 @@
 
 
 
+
+/* --- Search Button & Input Bar Styling --- */
+.search-container {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.search-input-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.search-input-wrapper .search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--accent-gold);
+  font-size: 14px;
+}
+
+.search-input-wrapper input {
+  width: 100%;
+  padding-left: 40px;
+}
+
+@media (max-width: 600px) {
+  .search-container {
+    flex-direction: column;
+  }
+  .search-input-wrapper, 
+  .search-container .btn {
+    width: 100%;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     .gov-topbar {
       background: #eef2f7;
@@ -2321,6 +2372,7 @@ window.previewRegPhoto = function(evt) {
         <p style="margin-bottom:15px; color:var(--text-muted); font-size:14px;">All EB Members across every district. Membership ID Numbers are kept private and are not shown here.</p>
         <h4 style="font-family:'Cinzel'; color: var(--primary); margin-bottom: 5px;">Total EB Members: <span id="ebMembersCount">0</span></h4>
         <div id="ebMembersGrid" class="portfolio-grid" style="margin-top:15px;"></div>
+
       </div>
     </div>
 
@@ -2495,6 +2547,32 @@ window.previewRegPhoto = function(evt) {
             <div style="margin-bottom:15px;">
               <input type="text" id="statePortfoliosSearch" onkeyup="filterTableRows('allPortfoliosTable', 'statePortfoliosSearch')" placeholder="Search by name / district / block / mobile..." style="width:100%; max-width:420px;">
             </div>
+
+
+
+<!-- SEARCH BAR COMPONENT -->
+<div class="search-container">
+  <div class="search-input-wrapper">
+    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+    <input type="text" id="portalSearchInput" placeholder="Search members, IDs, designations..." onkeyup="filterPortalTable()">
+  </div>
+  <button type="button" class="btn btn-gold" onclick="filterPortalTable()">
+    <i class="fa-solid fa-search"></i> Search
+  </button>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+            
             <div class="table-wrapper">
               <table>
                 <thead><tr><th>District</th><th>Name</th><th>Assoc. Designation</th><th>Vidyalaya Designation</th><th>Block</th><th>Mobile</th></tr></thead>
@@ -2533,5 +2611,54 @@ window.previewRegPhoto = function(evt) {
     <p class="copyright">&copy; AVTAO &mdash; Official Portal</p>
   </div>
 
+
+
+
+
+
+<script>
+  function filterPortalTable() {
+    const input = document.getElementById("portalSearchInput");
+    const filter = input.value.toLowerCase();
+    
+    // Selects all table rows within tbody (or all trs inside tables except header)
+    const table = document.querySelector("table");
+    if (!table) return;
+    
+    const rows = table.getElementsByTagName("tr");
+
+    // Loop through all table rows (skipping the first header row)
+    for (let i = 1; i < rows.length; i++) {
+      const row = rows[i];
+      const cells = row.getElementsByTagName("td");
+      let matchFound = false;
+
+      // Check all cells within the current row
+      for (let j = 0; j < cells.length; j++) {
+        const cellText = cells[j].textContent || cells[j].innerText;
+        if (cellText.toLowerCase().indexOf(filter) > -1) {
+          matchFound = true;
+          break;
+        }
+      }
+
+      // Show or hide row based on search match
+      if (matchFound) {
+        row.style.display = "";
+      } else {
+        row.style.display = "none";
+      }
+    }
+  }
+</script>
+
+
+
+
+
+
+
+
+  
 </body>
 </html>
