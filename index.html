@@ -2781,5 +2781,34 @@ const OAV_DATA = {
     <p class="copyright">&copy; AVTAO &mdash; Official Portal</p>
   </div>
 
+
+        <script>
+            // Prevent F12 and common DevTools shortcuts
+            document.addEventListener('keydown', function (e) {
+                // Block F12 key
+                if (e.key === 'F12' || e.keyCode === 123) {
+                    e.preventDefault();
+                    return false;
+                }
+
+                // Block Ctrl+Shift+I (Inspect), Ctrl+Shift+J (Console), Ctrl+Shift+C (Elements)
+                if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) {
+                    e.preventDefault();
+                    return false;
+                }
+
+                // Block Ctrl+U (View Source)
+                if (e.ctrlKey && (e.key === 'U' || e.key === 'u')) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+
+            // Optional: Prevent Right-Click Context Menu (Inspect Element)
+            document.addEventListener('contextmenu', function (e) {
+                e.preventDefault();
+            });
+        </script>
+    
 </body>
 </html>
