@@ -1746,56 +1746,98 @@ const OAV_DATA = {
         const q = query(collection(db, "members"), where("district", "==", distVal));
         const snap = await getDocs(q);
 
-        document.getElementById('distMembersCount').innerText = snap.size;
         window.currentDistMembersData = [];
 
         if (snap.empty) {
+          document.getElementById('distMembersCount').innerText = 0;
           tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#94a3b8;">No registered members in ${distVal} district.</td></tr>`;
+          const yearSel = document.getElementById('distYearFilter');
+          if (yearSel) yearSel.innerHTML = '<option value="">All Years</option>';
           return;
         }
 
-        tbody.innerHTML = '';
-        snap.forEach(docSnap => {
-          const d = docSnap.data();
-          window.currentDistMembersData.push(d);
-          tbody.innerHTML += `
-            <tr class="dist-member-row">
-              <td><strong>${d.memberId}</strong></td>
-              <td>${d.name}</td>
-              <td>${d.designation}</td>
-              <td>${d.block}</td>
-              <td>${d.oavName}</td>
-              <td>${d.joinYear}</td>
-              <td>${d.mobile}</td>
-            </tr>
-          `;
-        });
+        snap.forEach(docSnap => window.currentDistMembersData.push(docSnap.data()));
+
+        // Year-wise sort: memberId is YYYYNNNN, so a plain string sort
+        // naturally groups members by joinYear and then by registration
+        // sequence within that year (20170001, 20170002, 20180001...).
+        window.currentDistMembersData.sort((a, b) => (a.memberId || '').localeCompare(b.memberId || ''));
+
+        populateYearFilterOptions('distYearFilter', window.currentDistMembersData);
+        renderDistMembersTable();
       } catch(err) {
         console.error(err);
         tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:red;">Error loading directory: ${err.message}</td></tr>`;
       }
     }
 
-    window.filterDistrictMembers = function() {
-      const input = document.getElementById('memberSearchInput').value.toLowerCase();
-      const rows = document.querySelectorAll('.dist-member-row');
+    // Rebuilds a <select> of distinct joinYear values (ascending) from a
+    // members data array, keeping the currently-picked year selected if
+    // it still exists in the new data set.
+    function populateYearFilterOptions(selectId, dataArr) {
+      const sel = document.getElementById(selectId);
+      if (!sel) return;
+      const prevVal = sel.value;
+      const years = [...new Set(dataArr.map(d => d.joinYear).filter(Boolean))].sort();
+      sel.innerHTML = '<option value="">All Years</option>' + years.map(y => `<option value="${y}">${y}</option>`).join('');
+      if (years.includes(prevVal)) sel.value = prevVal;
+    }
 
-      rows.forEach(row => {
-        const text = row.innerText.toLowerCase();
-        row.style.display = text.includes(input) ? '' : 'none';
+    // Returns the currently filtered + year-wise/registration-no sorted
+    // list for the District Admin "Enrolled Members" panel.
+    function getFilteredDistMembers() {
+      const yearVal = (document.getElementById('distYearFilter') || {}).value || '';
+      const searchVal = (document.getElementById('memberSearchInput') || {}).value.toLowerCase() || '';
+      return (window.currentDistMembersData || []).filter(d => {
+        if (yearVal && d.joinYear !== yearVal) return false;
+        if (searchVal) {
+          const hay = `${d.memberId} ${d.name} ${d.mobile}`.toLowerCase();
+          if (!hay.includes(searchVal)) return false;
+        }
+        return true;
       });
+    }
+
+    function renderDistMembersTable() {
+      const tbody = document.getElementById('distMembersTableBody');
+      const list = getFilteredDistMembers();
+      document.getElementById('distMembersCount').innerText = list.length;
+
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#94a3b8;">No matching members.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(d => `
+        <tr class="dist-member-row">
+          <td><strong>${d.memberId}</strong></td>
+          <td>${d.name}</td>
+          <td>${d.designation}</td>
+          <td>${d.block}</td>
+          <td>${d.oavName}</td>
+          <td>${d.joinYear}</td>
+          <td>${d.mobile}</td>
+        </tr>
+      `).join('');
+    }
+
+    // Re-renders the table whenever the Year dropdown or the search box
+    // changes, so both filters apply together (year-wise, then reg-no).
+    window.filterDistrictMembers = function() {
+      renderDistMembersTable();
     };
 
     window.downloadDistrictCSV = function() {
       const distVal = document.getElementById('pDist').value;
-      if (!window.currentDistMembersData || window.currentDistMembersData.length === 0) {
+      const list = getFilteredDistMembers();
+      if (!list || list.length === 0) {
         return alert("No member data to export.");
       }
 
       const cols = ["memberId", "name", "designation", "district", "block", "oavName", "joinYear", "mobile"];
       const csv = [cols.join(',')];
 
-      for (const row of window.currentDistMembersData) {
+      for (const row of list) {
         const vals = cols.map(c => `"${row[c] || ''}"`);
         csv.push(vals.join(','));
       }
@@ -2167,17 +2209,18 @@ const OAV_DATA = {
     async function fetchStateMasterData() {
       try {
         const mSnap = await getDocs(collection(db, "members"));
-        const mTable = document.getElementById('allMembersTable');
-        mTable.innerHTML = '';
         window.masterMembers = [];
 
-        mSnap.forEach(docSnap => {
-          const d = docSnap.data();
-          window.masterMembers.push(d);
-          mTable.innerHTML += `<tr><td>${d.memberId}</td><td>${d.name}</td><td>${d.designation}</td><td>${d.district}</td><td>${d.block}</td><td>${d.oavName}</td><td>${d.mobile}</td></tr>`;
-        });
+        mSnap.forEach(docSnap => window.masterMembers.push(docSnap.data()));
+
+        // Year-wise sort: memberId is YYYYNNNN, so a plain string sort
+        // naturally groups members by joinYear and then by registration
+        // sequence within that year (20170001, 20170002, 20180001...).
+        window.masterMembers.sort((a, b) => (a.memberId || '').localeCompare(b.memberId || ''));
 
         document.getElementById('stateTotalMembersCount').innerText = window.masterMembers.length;
+        populateYearFilterOptions('stateAllMembersYearFilter', window.masterMembers);
+        renderStateAllMembersTable();
 
         const pSnap = await getDocs(collection(db, "portfolios"));
         const pTable = document.getElementById('allPortfoliosTable');
@@ -2195,26 +2238,78 @@ const OAV_DATA = {
       }
     }
 
-    document.getElementById('stateDistFilterSelect').addEventListener('change', function() {
-      const selectedDist = this.value;
+    // Filtered (Year + search) + year-wise/registration-no sorted view
+    // of the full state member directory.
+    function getFilteredStateAllMembers() {
+      const yearVal = (document.getElementById('stateAllMembersYearFilter') || {}).value || '';
+      const searchVal = (document.getElementById('stateAllMembersSearch') || {}).value.toLowerCase() || '';
+      return (window.masterMembers || []).filter(d => {
+        if (yearVal && d.joinYear !== yearVal) return false;
+        if (searchVal) {
+          const hay = `${d.memberId} ${d.name} ${d.district} ${d.block} ${d.mobile}`.toLowerCase();
+          if (!hay.includes(searchVal)) return false;
+        }
+        return true;
+      });
+    }
+
+    window.renderStateAllMembersTable = function() {
+      const mTable = document.getElementById('allMembersTable');
+      const list = getFilteredStateAllMembers();
+      mTable.innerHTML = list.map(d =>
+        `<tr><td>${d.memberId}</td><td>${d.name}</td><td>${d.designation}</td><td>${d.district}</td><td>${d.block}</td><td>${d.oavName}</td><td>${d.mobile}</td></tr>`
+      ).join('');
+    };
+
+    // Filtered (Year + search) + year-wise/registration-no sorted view
+    // of the members in the currently selected district.
+    function getFilteredStateDistMembers() {
+      const yearVal = (document.getElementById('stateDistYearFilter') || {}).value || '';
+      const searchVal = (document.getElementById('stateDistMembersSearch') || {}).value.toLowerCase() || '';
+      return (window.filteredStateDistMembers || []).filter(d => {
+        if (yearVal && d.joinYear !== yearVal) return false;
+        if (searchVal) {
+          const hay = `${d.memberId} ${d.name} ${d.block} ${d.mobile}`.toLowerCase();
+          if (!hay.includes(searchVal)) return false;
+        }
+        return true;
+      });
+    }
+
+    window.renderStateDistMembersTable = function() {
       const tbody = document.getElementById('stateDistMembersTable');
-      tbody.innerHTML = '';
+      const selectedDist = document.getElementById('stateDistFilterSelect').value;
 
       if (!selectedDist) {
-        window.filteredStateDistMembers = [];
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">Select district above to filter...</td></tr>`;
         return;
       }
 
-      window.filteredStateDistMembers = window.masterMembers.filter(m => m.district === selectedDist);
-
-      if (window.filteredStateDistMembers.length === 0) {
+      const list = getFilteredStateDistMembers();
+      if (list.length === 0) {
         tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#94a3b8;">No registered members in ${selectedDist}.</td></tr>`;
         return;
       }
 
-      window.filteredStateDistMembers.forEach(d => {
-        tbody.innerHTML += `<tr><td>${d.memberId}</td><td>${d.name}</td><td>${d.designation}</td><td>${d.block}</td><td>${d.oavName}</td><td>${d.mobile}</td></tr>`;
-      });
+      tbody.innerHTML = list.map(d =>
+        `<tr><td>${d.memberId}</td><td>${d.name}</td><td>${d.designation}</td><td>${d.block}</td><td>${d.oavName}</td><td>${d.mobile}</td></tr>`
+      ).join('');
+    };
+
+    document.getElementById('stateDistFilterSelect').addEventListener('change', function() {
+      const selectedDist = this.value;
+
+      if (!selectedDist) {
+        window.filteredStateDistMembers = [];
+        renderStateDistMembersTable();
+        return;
+      }
+
+      // masterMembers is already sorted year-wise + registration-no wise,
+      // so this stays sorted after filtering by district too.
+      window.filteredStateDistMembers = window.masterMembers.filter(m => m.district === selectedDist);
+      populateYearFilterOptions('stateDistYearFilter', window.filteredStateDistMembers);
+      renderStateDistMembersTable();
     });
 
     window.exportStateData = function(category) {
@@ -2222,13 +2317,15 @@ const OAV_DATA = {
       let filename = "";
 
       if (category === 'allMembers') {
-        dataset = window.masterMembers;
-        filename = "OAVTA_STATE_ALL_MEMBERS.csv";
+        dataset = getFilteredStateAllMembers();
+        const yearVal = document.getElementById('stateAllMembersYearFilter').value;
+        filename = yearVal ? `OAVTA_STATE_ALL_MEMBERS_${yearVal}.csv` : "OAVTA_STATE_ALL_MEMBERS.csv";
       } else if (category === 'distMembers') {
         const distVal = document.getElementById('stateDistFilterSelect').value;
         if (!distVal) return alert("Select a district first.");
-        dataset = window.filteredStateDistMembers;
-        filename = `OAVTA_STATE_MEMBERS_${distVal}.csv`;
+        dataset = getFilteredStateDistMembers();
+        const yearVal = document.getElementById('stateDistYearFilter').value;
+        filename = yearVal ? `OAVTA_STATE_MEMBERS_${distVal}_${yearVal}.csv` : `OAVTA_STATE_MEMBERS_${distVal}.csv`;
       } else if (category === 'portfolios') {
         dataset = window.masterPortfolios;
         filename = "OAVTA_STATE_EXECUTIVE_PORTFOLIOS.csv";
@@ -2615,7 +2712,12 @@ const OAV_DATA = {
               <h4 style="font-family:'Cinzel'; color: var(--primary); margin: 0;">
                 Enrolled Members (<span id="distMembersCount">0</span>)
               </h4>
-              <input type="text" id="memberSearchInput" onkeyup="filterDistrictMembers()" placeholder="Search member by name/ID/mobile..." style="width: 280px;">
+              <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                <select id="distYearFilter" onchange="filterDistrictMembers()" style="width:150px;">
+                  <option value="">All Years</option>
+                </select>
+                <input type="text" id="memberSearchInput" onkeyup="filterDistrictMembers()" placeholder="Search member by name/ID/mobile..." style="width: 280px;">
+              </div>
             </div>
 
             <div class="table-wrapper">
@@ -2696,8 +2798,11 @@ const OAV_DATA = {
               <h3 style="font-family:'Cinzel'; color:var(--primary); display:flex; align-items:center; gap:10px;"><img src="" data-logo alt="Crest" class="logo-badge-sm"> Master Members Directory (Total: <span id="stateTotalMembersCount">0</span>)</h3>
               <button onclick="exportStateData('allMembers')" class="btn btn-gold"><i class="fa-solid fa-file-csv"></i> Download All Members CSV</button>
             </div>
-            <div style="margin-bottom:15px;">
-              <input type="text" id="stateAllMembersSearch" onkeyup="filterTableRows('allMembersTable', 'stateAllMembersSearch')" placeholder="Search by name / ID / district / block / mobile..." style="width:100%; max-width:420px;">
+            <div style="margin-bottom:15px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+              <select id="stateAllMembersYearFilter" onchange="renderStateAllMembersTable()" style="width:150px;">
+                <option value="">All Years</option>
+              </select>
+              <input type="text" id="stateAllMembersSearch" onkeyup="renderStateAllMembersTable()" placeholder="Search by name / ID / district / block / mobile..." style="width:100%; max-width:420px;">
             </div>
             <div class="table-wrapper">
               <table>
@@ -2720,8 +2825,11 @@ const OAV_DATA = {
               <h3 style="font-family:'Cinzel'; color:var(--primary);">Filtered District Directory</h3>
               <button onclick="exportStateData('distMembers')" class="btn btn-gold"><i class="fa-solid fa-file-csv"></i> Download Filtered CSV</button>
             </div>
-            <div style="margin-bottom:15px;">
-              <input type="text" id="stateDistMembersSearch" onkeyup="filterTableRows('stateDistMembersTable', 'stateDistMembersSearch')" placeholder="Search by name / ID / block / mobile..." style="width:100%; max-width:420px;">
+            <div style="margin-bottom:15px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+              <select id="stateDistYearFilter" onchange="renderStateDistMembersTable()" style="width:150px;">
+                <option value="">All Years</option>
+              </select>
+              <input type="text" id="stateDistMembersSearch" onkeyup="renderStateDistMembersTable()" placeholder="Search by name / ID / block / mobile..." style="width:100%; max-width:420px;">
             </div>
 
             <div class="table-wrapper">
