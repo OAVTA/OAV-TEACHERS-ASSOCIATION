@@ -2481,7 +2481,19 @@ const OAV_DATA = {
         <form id="regForm">
           <div class="form-grid">
             <div class="form-group"><label><i class="fa-solid fa-user"></i> Full Name</label><input type="text" id="regName" required placeholder="Full Name"></div>
-            <div class="form-group"><label><i class="fa-solid fa-cake-candles"></i> Date of Birth</label><input type="date" id="regDob" required></div>
+           <div class="form-group">
+  <label for="regDob"><i class="fa-solid fa-cake-candles"></i> Date of Birth</label>
+  <input 
+    type="text" 
+    id="regDob" 
+    name="regDob" 
+    placeholder="DD/MM/YYYY" 
+    pattern="\d{2}/\d{2}/\d{4}" 
+    maxlength="10" 
+    title="Please enter a date in DD/MM/YYYY format" 
+    required
+  />
+</div>
             <div class="form-group"><label><i class="fa-solid fa-graduation-cap"></i> Vidyalaya Designation</label><input type="text" id="regDesignation" required placeholder="e.g. PGT Physics"></div>
             <div class="form-group"><label><i class="fa-solid fa-map-location-dot"></i> District</label><select id="regDist" required></select></div>
             <div class="form-group"><label><i class="fa-solid fa-location-dot"></i> Block</label><select id="regBlock" required><option value="">-- Select Block --</option></select></div>
